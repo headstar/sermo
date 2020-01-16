@@ -1,6 +1,7 @@
 package com.headstartech.sermo;
 
 import org.springframework.messaging.Message;
+import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.action.Action;
@@ -88,7 +89,7 @@ public class USSDApplicationBuilder {
             boolean guard = true;
             Object event = context.getEvent();
             if(event instanceof MOInput) {
-                Map<Object, Object> inputTransitionKeyMap = context.getExtendedState().get(ExtendedStateKeys.INPUT_TRANSITION_MAP, Map.class);
+                Map<Object, Object> inputTransitionKeyMap = getInputTransitionKeyMap(context.getExtendedState());
                 if (inputTransitionKeyMap != null) {
                     MOInput MOInput = (MOInput) event;
                     guard = !inputTransitionKeyMap.containsKey(MOInput.getInput());
@@ -100,7 +101,7 @@ public class USSDApplicationBuilder {
 
     private static Guard<String, Object> createMenuItemGuard(Object key) {
         return (context) -> {
-            Map<Object, Object> inputTransitionKeyMap = context.getExtendedState().get(ExtendedStateKeys.INPUT_TRANSITION_MAP, Map.class);
+            Map<Object, Object> inputTransitionKeyMap = getInputTransitionKeyMap(context.getExtendedState());
             Object event = context.getEvent();
             boolean res = false;
             if(event instanceof MOInput) {
@@ -111,6 +112,10 @@ public class USSDApplicationBuilder {
         };
     }
 
+    @SuppressWarnings("unchecked")
+    private static Map<Object, Object> getInputTransitionKeyMap(ExtendedState extendedState) {
+        return (Map<Object, Object>)extendedState.get(ExtendedStateKeys.INPUT_TRANSITION_MAP, Map.class);
+    }
 
     static class StateWrapperAction implements Action<String, Object> {
 
@@ -144,7 +149,7 @@ public class USSDApplicationBuilder {
         }
 
         private void transferItemKey(StateContext<String, Object> context) {
-            Map<Object, Object> inputItemMap = context.getExtendedState().get(ExtendedStateKeys.INPUT_ITEM_MAP, Map.class);
+            Map<Object, Object> inputItemMap = getInputTransitionKeyMap(context.getExtendedState());
             if(inputItemMap != null) {
                 Object event = context.getEvent();
                 if (event instanceof MOInput) {
