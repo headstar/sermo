@@ -56,12 +56,9 @@ public class USSDApplicationBuilder {
     }
 
     public USSDApplication build() throws Exception {
-        //SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-        //taskExecutor.setThreadNamePrefix("statemachine");
         builder.configureConfiguration()
                 .withConfiguration()
                 .machineId("atm")
-            //    .taskExecutor(taskExecutor)
                 .listener(listener());
         StateMachine<String, Object> sm = builder.build();
         return new USSDApplication(sm);
