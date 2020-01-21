@@ -16,7 +16,7 @@ public class StatementMenuUSSDState implements USSDState {
     }
 
     @Override
-    public void onExit(USSDSupport ussdSupport) {
+    public void onExit(USSDSupport ussdSupport, Object event) {
     }
 
     @Override

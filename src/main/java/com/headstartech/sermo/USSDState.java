@@ -9,7 +9,7 @@ public interface USSDState {
 
     String onEntry(USSDSupport ussdSupport);
 
-    void onExit(USSDSupport ussdSupport);
+    void onExit(USSDSupport ussdSupport, Object event);
 
     String onEvent(USSDSupport ussdSupport, Object event);
 }

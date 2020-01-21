@@ -6,12 +6,18 @@ package com.headstartech.sermo;
 public abstract class USSDStateAdapter implements USSDState {
 
     @Override
-    public void onExit(USSDSupport ussdSupport) {
-
+    public String onEntry(USSDSupport ussdSupport) {
+        return null;
     }
 
     @Override
     public String onEvent(USSDSupport ussdSupport, Object event) {
         return null;
     }
+
+    @Override
+    public void onExit(USSDSupport ussdSupport, Object event) {
+
+    }
+
 }

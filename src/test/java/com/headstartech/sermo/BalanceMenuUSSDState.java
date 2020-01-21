@@ -21,9 +21,4 @@ public class BalanceMenuUSSDState extends MenuUSSDState {
         setMenu(ussdSupport, menu);
         return menu.render();
     }
-
-    @Override
-    public String onEvent(USSDSupport ussdSupport, Object event) {
-        return null;
-    }
 }
