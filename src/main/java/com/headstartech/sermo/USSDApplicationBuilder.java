@@ -50,6 +50,16 @@ public class USSDApplicationBuilder {
         return this;
     }
 
+    public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, USSDAction action, Object transitionKey) throws Exception {
+        transitionConfigurer
+                .withExternal()
+                .source(from.getId()).target(to.getId())
+                .event(MOInput.INSTANCE)
+                .guard(createMenuItemGuard(transitionKey))
+                .action(new ActionWrapperAction(action));
+        return this;
+    }
+
     public USSDApplication build() throws Exception {
         builder.configureConfiguration()
                 .withConfiguration()
