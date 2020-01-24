@@ -15,7 +15,7 @@ public abstract class MenuUSSDState extends USSDStateAdapter {
         clearMenu(ussdSupport);
     }
 
-    protected void setMenu(USSDSupport ussdSupport, Menu menu) {
+    protected void setMenu(USSDSupport ussdSupport, Screen menu) {
         ussdSupport.getVariables().put(ExtendedStateKeys.INPUT_TRANSITION_MAP, menu.getInputTransitionKeyMap());
         ussdSupport.getVariables().put(ExtendedStateKeys.INPUT_ITEM_MAP, menu.getInputItemKeyMap());
     }
