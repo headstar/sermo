@@ -14,12 +14,12 @@ public class RootMenuUSSDState extends MenuUSSDState implements USSDState {
     public String onEntry(USSDSupport ussdSupport) {
         Screen.Builder screenBuilder =  Screen.builder();
 
-        MenuGroup accounts = MenuGroup.builder()
-                .withMenuItem("Account 1", RootMenuItems.BALANCE)
-                .withMenuItem("Account 2", RootMenuItems.STATEMENT)
-                .build();
-
         screenBuilder.withScreenBlock(new Text("Main Menu"));
+
+        MenuGroup accounts = MenuGroup.builder()
+                .withMenuItem("Accounts", RootMenuItems.ACCOUNTS)
+                .withMenuItem("Statements", RootMenuItems.STATEMENT)
+                .build();
         screenBuilder.withScreenBlock(accounts);
 
         Screen screen = screenBuilder.build();

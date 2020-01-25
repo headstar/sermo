@@ -15,6 +15,9 @@ public class ExtendedStateKeys {
     public static final Object SUPPORT_KEY = new Object();
     public static final Object OUTPUT_KEY = new Object();
 
+    public static final Object NEXT_PAGE_KEY = new Object();
+    public static final Object PREVIOUS_PAGE_KEY = new Object();
+
     @SuppressWarnings("unchecked")
     static Map<Object, Object> getInputTransitionKeyMap(ExtendedState extendedState) {
         return (Map<Object, Object>)extendedState.get(INPUT_TRANSITION_MAP, Map.class);

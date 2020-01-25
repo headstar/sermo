@@ -7,8 +7,8 @@ public class StaticMenuItem extends MenuItem implements ScreenBlock {
 
     private final String input;
 
-    public StaticMenuItem(String input, String label, Object transitionKey, Object itemKey) {
-        super(label, transitionKey, itemKey);
+    public StaticMenuItem(String input, String label, Object transitionKey) {
+        super(label, transitionKey);
         this.input = input;
     }
 

@@ -30,4 +30,9 @@ public class MOInput {
     public boolean equals(Object o) {
         return true;
     }  // rely on guards
+
+    @Override
+    public String toString() {
+        return "MOInput [input=" + input + "]";
+    }
 }

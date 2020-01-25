@@ -40,7 +40,9 @@ public class Screen {
         private List<ScreenBlock> screenBlocks = new ArrayList<>();
 
         public Builder withScreenBlock(ScreenBlock screenBlock) {
-            screenBlocks.add(screenBlock);
+            if(screenBlock != null) {
+                screenBlocks.add(screenBlock);
+            }
             return this;
         }
 

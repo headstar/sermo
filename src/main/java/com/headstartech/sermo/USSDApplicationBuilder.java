@@ -42,11 +42,19 @@ public class USSDApplicationBuilder {
     }
 
     public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, Object transitionKey) throws Exception {
-        transitionConfigurer
+        if(from != to) {
+            transitionConfigurer
                 .withExternal()
                 .source(from.getId()).target(to.getId())
                 .event(MOInput.INSTANCE)
                 .guard(createMenuItemGuard(transitionKey));
+        } else {
+            transitionConfigurer
+                    .withInternal()
+                    .source(from.getId()).event(MOInput.INSTANCE)
+                    .guard(createMenuItemGuard(transitionKey))
+                    .action(new StateWrapperAction(from, StateWrapperAction.ActionEnum.EVENT));
+        }
         return this;
     }
 
@@ -79,11 +87,11 @@ public class USSDApplicationBuilder {
             stateConfigurer.initial(ussdState.getId());
         }
 
-        transitionConfigurer
+       /* transitionConfigurer
                     .withInternal()
                     .source(ussdState.getId()).event(MOInput.INSTANCE)
                 .guard(createNotAnyMenuItemGuard())
-                .action(new StateWrapperAction(ussdState, StateWrapperAction.ActionEnum.EVENT));
+                .action(new StateWrapperAction(ussdState, StateWrapperAction.ActionEnum.EVENT));*/
     }
 
     private static Guard<String, Object> createNotAnyMenuItemGuard() {

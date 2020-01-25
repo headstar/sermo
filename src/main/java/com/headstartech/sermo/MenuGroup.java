@@ -10,7 +10,7 @@ public class MenuGroup implements ScreenBlock {
 
     private final List<MenuItem> menuItems;
 
-    private MenuGroup(List<MenuItem> menuItems) {
+    public MenuGroup(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
 
@@ -29,6 +29,11 @@ public class MenuGroup implements ScreenBlock {
 
     public static class Builder {
         private List<MenuItem> menuItems = new ArrayList<>();
+
+        public Builder withMenuItem(MenuItem menuItem) {
+            menuItems.add(menuItem);
+            return this;
+        }
 
         public Builder withMenuItem(String label, Object transitionKey) {
             menuItems.add(new MenuItem(label, transitionKey));

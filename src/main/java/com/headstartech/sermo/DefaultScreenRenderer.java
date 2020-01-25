@@ -42,11 +42,8 @@ public class DefaultScreenRenderer implements ScreenRenderer {
     public void visit(MenuGroup menuGroup) {
         int i = 1;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
-            if (i > 1) {
-                sb.append("\n");
-            }
             String input = String.format("%d", i);
-            sb.append(String.format("%s. %s", input, menuItem.getLabel()));
+            sb.append(String.format("%s. %s\n", input, menuItem.getLabel()));
             inputTransitionKeyMap.put(input, menuItem.getTransitionKey());
             inputItemKeyMap.put(input, menuItem.getItemKey());
             ++i;
@@ -55,7 +52,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     @Override
     public void visit(StaticMenuItem staticMenuItem) {
-        sb.append(String.format("%s. %s", staticMenuItem.getInput(), staticMenuItem.getLabel()));
+        sb.append(String.format("%s %s\n", staticMenuItem.getInput(), staticMenuItem.getLabel()));
         inputTransitionKeyMap.put(staticMenuItem.getInput(), staticMenuItem.getTransitionKey());
         inputItemKeyMap.put(staticMenuItem.getInput(), staticMenuItem.getItemKey());
     }
