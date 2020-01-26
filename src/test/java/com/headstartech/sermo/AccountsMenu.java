@@ -29,6 +29,10 @@ public class AccountsMenu extends PagedScreenUSSDState {
     }
 
 
+    @Override
+    protected ScreenBlock getHeaderBlock() {
+        return new Text("Accounts for 1234");
+    }
 
     @Override
     protected NextPageMenuItem getNextScreenItem() {
