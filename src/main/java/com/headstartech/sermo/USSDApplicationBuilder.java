@@ -86,12 +86,6 @@ public class USSDApplicationBuilder {
         if(initial) {
             stateConfigurer.initial(ussdState.getId());
         }
-
-       /* transitionConfigurer
-                    .withInternal()
-                    .source(ussdState.getId()).event(MOInput.INSTANCE)
-                .guard(createNotAnyMenuItemGuard())
-                .action(new StateWrapperAction(ussdState, StateWrapperAction.ActionEnum.EVENT));*/
     }
 
     private static Guard<String, Object> createNotAnyMenuItemGuard() {
