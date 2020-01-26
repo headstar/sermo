@@ -29,17 +29,18 @@ public abstract class PagedScreenUSSDState extends MenuUSSDState {
 
     @Override
     public String onEvent(USSDSupport ussdSupport, Object event) {
-        System.out.println("event key " + event);
         Optional<Object> transitionKeyOpt = ussdSupport.getTransitionKey(event);
         if(transitionKeyOpt.isPresent()) {
             Object transitionKey = transitionKeyOpt.get();
             if(transitionKey.equals(ExtendedStateKeys.NEXT_PAGE_KEY)) {
-                System.out.println("NEXT ");
+                incrementPageIndex(ussdSupport);
             } else if(transitionKey.equals(ExtendedStateKeys.PREVIOUS_PAGE_KEY)) {
-                System.out.println("PREV");
+                decrementtPageIndex(ussdSupport);
             }
         }
-        return "PAGE";
+        Screen screen = createScreen(ussdSupport);
+        setMenu(ussdSupport, screen);
+        return screen.getOutput();
     }
 
     protected abstract List<MenuItem> getAllItems();
@@ -110,6 +111,21 @@ public abstract class PagedScreenUSSDState extends MenuUSSDState {
         Integer pageIndex = (Integer) ussdSupport.getVariables().get(getPageIndexContextKey());
         return pageIndex != null ? pageIndex : 0;
     }
+
+    private void setPageIndex(USSDSupport ussdSupport, int pageIndex) {
+        ussdSupport.getVariables().put(getPageIndexContextKey(), pageIndex);
+    }
+
+    private void incrementPageIndex(USSDSupport ussdSupport) {
+        int pageIndex = getPageIndex(ussdSupport);
+        setPageIndex(ussdSupport, pageIndex + 1);
+    }
+
+    private void decrementtPageIndex(USSDSupport ussdSupport) {
+        int pageIndex = getPageIndex(ussdSupport);
+        setPageIndex(ussdSupport, pageIndex - 1);
+    }
+
 
     private String getPageIndexContextKey() {
         return String.format("%s_%s", getId(), PAGE_INDEX_CONTEXT_KEY);

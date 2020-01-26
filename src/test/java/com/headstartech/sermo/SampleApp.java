@@ -31,8 +31,10 @@ public class SampleApp {
         result = ussdApplication.start();
         System.out.println("start\n" + result);
 
-        String input = "1";
         result = ussdApplication.applyEvent(new MOInput("1"));
+        System.out.println(result);
+
+        result = ussdApplication.applyEvent(new MOInput("0"));
         System.out.println(result);
 
         result = ussdApplication.applyEvent(new MOInput("0"));
