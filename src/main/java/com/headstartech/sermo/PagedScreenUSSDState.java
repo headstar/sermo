@@ -28,7 +28,7 @@ public abstract class PagedScreenUSSDState extends MenuUSSDState {
     }
 
     @Override
-    public String onEvent(USSDSupport ussdSupport, Object event) {
+    public String onInternal(USSDSupport ussdSupport, Object event) {
         Optional<Object> transitionKeyOpt = ussdSupport.getTransitionKey(event);
         if(transitionKeyOpt.isPresent()) {
             Object transitionKey = transitionKeyOpt.get();

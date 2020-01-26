@@ -28,7 +28,7 @@ public class RootMenuUSSDState extends MenuUSSDState implements USSDState {
     }
 
     @Override
-    public String onEvent(USSDSupport ussdSupport, Object event) {
+    public String onInternal(USSDSupport ussdSupport, Object event) {
         return null;
     }
 

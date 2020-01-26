@@ -8,7 +8,7 @@ import org.springframework.statemachine.action.Action;
  */
 class StateWrapperAction implements Action<String, Object> {
 
-    public enum ActionEnum {ENTRY, EXIT, EVENT}
+    public enum ActionEnum {ENTRY, EXIT, INTERNAL}
 
     private final USSDState delegate;
     private final ActionEnum actionEnum;
@@ -26,8 +26,8 @@ class StateWrapperAction implements Action<String, Object> {
             output = delegate.onEntry(ussdSupport);
         } else if (ActionEnum.EXIT.equals(actionEnum)) {
             delegate.onExit(ussdSupport, context.getEvent());
-        } else if (ActionEnum.EVENT.equals(actionEnum)) {
-            output = delegate.onEvent(ussdSupport, context.getEvent());
+        } else if (ActionEnum.INTERNAL.equals(actionEnum)) {
+            output = delegate.onInternal(ussdSupport, context.getEvent());
         } else {
             throw new IllegalStateException("unknown enum " + actionEnum.name());
         }

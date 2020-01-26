@@ -20,7 +20,7 @@ public class StatementMenuUSSDState implements USSDState {
     }
 
     @Override
-    public String onEvent(USSDSupport ussdSupport, Object event) {
+    public String onInternal(USSDSupport ussdSupport, Object event) {
         return null;
     }
 }

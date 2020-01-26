@@ -53,7 +53,7 @@ public class USSDApplicationBuilder {
                     .withInternal()
                     .source(from.getId()).event(MOInput.INSTANCE)
                     .guard(createMenuItemGuard(transitionKey))
-                    .action(new StateWrapperAction(from, StateWrapperAction.ActionEnum.EVENT));
+                    .action(new StateWrapperAction(from, StateWrapperAction.ActionEnum.INTERNAL));
         }
         return this;
     }
