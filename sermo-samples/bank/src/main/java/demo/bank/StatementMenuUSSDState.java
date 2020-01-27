@@ -1,4 +1,7 @@
-package com.headstartech.sermo;
+package demo.bank;
+
+import com.headstartech.sermo.USSDState;
+import com.headstartech.sermo.USSDSupport;
 
 /**
  * @author Per Johansson

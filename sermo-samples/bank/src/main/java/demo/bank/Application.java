@@ -1,15 +1,13 @@
-package com.headstartech.sermo;
+package demo.bank;
 
+import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.USSDApplication;
+import com.headstartech.sermo.USSDApplicationBuilder;
+import com.headstartech.sermo.USSDState;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+public class Application {
 
-@RunWith(JUnit4.class)
-public class SampleApp {
-
-    @Test
-    public void test() throws Exception {
+    public static void main(String[] args) throws Exception {
         USSDApplicationBuilder builder = USSDApplicationBuilder.builder();
         USSDState rootMenu = new RootMenuUSSDState();
         USSDState accountsMenu = new AccountsMenu();

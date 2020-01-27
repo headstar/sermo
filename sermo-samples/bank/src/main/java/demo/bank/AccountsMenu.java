@@ -1,4 +1,6 @@
-package com.headstartech.sermo;
+package demo.bank;
+
+import com.headstartech.sermo.*;
 
 import java.util.ArrayList;
 import java.util.List;

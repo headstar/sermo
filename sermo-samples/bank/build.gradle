@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+
+dependencies {
+    implementation project(':sermo-core')
+
+    implementation 'org.springframework:spring-context-support:5.2.3.RELEASE'
+}
+
+mainClassName = 'demo.bank.Application';

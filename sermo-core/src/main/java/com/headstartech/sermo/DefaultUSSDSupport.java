@@ -29,6 +29,7 @@ public class DefaultUSSDSupport implements USSDSupport {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Optional<Object> getTransitionKey(Object event) {
         Optional<Object> res = Optional.empty();
         Map<String, Object> inputTransitionMap = (Map<String, Object>) getVariables().get(ExtendedStateKeys.INPUT_TRANSITION_MAP);

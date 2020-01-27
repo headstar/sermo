@@ -1,1 +1,20 @@
 rootProject.name = 'sermo'
+
+def String[] modules = [
+        'sermo-core'
+]
+
+include modules
+
+def String[] samples = [
+        'bank'
+]
+
+include samples
+
+samples.each {name ->
+    def p = findProject(":${name}")
+    def fullName = name.replaceAll('/','')
+    p.name = "sermo-samples-${fullName}"
+    p.projectDir = new File(settingsDir, "sermo-samples/${name}");
+}

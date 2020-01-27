@@ -1,4 +1,6 @@
-package com.headstartech.sermo;
+package demo.bank;
+
+import com.headstartech.sermo.*;
 
 /**
  * @author Per Johansson

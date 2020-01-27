@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package demo.bank;
 
 /**
  * @author Per Johansson
