@@ -86,6 +86,11 @@ public class USSDApplicationBuilder {
         if(initial) {
             stateConfigurer.initial(ussdState.getId());
         }
+
+        if(ussdState instanceof PagedScreenUSSDState) {
+            withMenuTransition(ussdState, ussdState, ExtendedStateKeys.NEXT_PAGE_KEY);
+            withMenuTransition(ussdState, ussdState, ExtendedStateKeys.PREVIOUS_PAGE_KEY);
+        }
     }
 
     private static Guard<String, Object> createNotAnyMenuItemGuard() {

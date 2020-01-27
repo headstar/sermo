@@ -21,8 +21,6 @@ public class SampleApp {
         builder.withState(statementMenu);
         builder.withState(accountDetailState);
         builder.withMenuTransition(rootMenu, accountsMenu, RootMenuItems.ACCOUNTS);
-		builder.withMenuTransition(accountsMenu, accountsMenu, ExtendedStateKeys.NEXT_PAGE_KEY);
-		builder.withMenuTransition(accountsMenu, accountsMenu, ExtendedStateKeys.PREVIOUS_PAGE_KEY);
         builder.withMenuTransition(accountsMenu, accountDetailState, RootMenuItems.ACCOUNT_DETAIL);
         builder.withMenuTransition(rootMenu, statementMenu, RootMenuItems.STATEMENT);
 
