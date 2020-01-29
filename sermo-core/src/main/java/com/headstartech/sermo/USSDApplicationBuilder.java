@@ -10,8 +10,6 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 
-import java.util.Map;
-
 /**
  * @author Per Johansson
  */
@@ -41,29 +39,29 @@ public class USSDApplicationBuilder {
         return this;
     }
 
-    public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, Object transitionKey) throws Exception {
+    public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, Object transitionName) throws Exception {
         if(from != to) {
             transitionConfigurer
                 .withExternal()
                 .source(from.getId()).target(to.getId())
                 .event(MOInput.INSTANCE)
-                .guard(createMenuItemGuard(transitionKey));
+                .guard(createMenuItemGuard(transitionName));
         } else {
             transitionConfigurer
                     .withInternal()
                     .source(from.getId()).event(MOInput.INSTANCE)
-                    .guard(createMenuItemGuard(transitionKey))
+                    .guard(createMenuItemGuard(transitionName))
                     .action(new StateWrapperAction(from, StateWrapperAction.ActionEnum.INTERNAL));
         }
         return this;
     }
 
-    public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, USSDAction action, Object transitionKey) throws Exception {
+    public USSDApplicationBuilder withMenuTransition(USSDState from, USSDState to, USSDAction action, Object transitionName) throws Exception {
         transitionConfigurer
                 .withExternal()
                 .source(from.getId()).target(to.getId())
                 .event(MOInput.INSTANCE)
-                .guard(createMenuItemGuard(transitionKey))
+                .guard(createMenuItemGuard(transitionName))
                 .action(new ActionWrapperAction(action));
         return this;
     }
@@ -93,29 +91,14 @@ public class USSDApplicationBuilder {
         }
     }
 
-    private static Guard<String, Object> createNotAnyMenuItemGuard() {
+    private static Guard<String, Object> createMenuItemGuard(Object transitionName) {
         return (context) -> {
-            boolean guard = true;
-            Object event = context.getEvent();
-            if(event instanceof MOInput) {
-                Map<Object, Object> inputTransitionKeyMap = ExtendedStateKeys.getInputTransitionKeyMap(context.getExtendedState());
-                if (inputTransitionKeyMap != null) {
-                    MOInput MOInput = (MOInput) event;
-                    guard = !inputTransitionKeyMap.containsKey(MOInput.getInput());
-                }
-            }
-            return guard;
-        };
-    }
-
-    private static Guard<String, Object> createMenuItemGuard(Object key) {
-        return (context) -> {
-            Map<Object, Object> inputTransitionKeyMap = ExtendedStateKeys.getInputTransitionKeyMap(context.getExtendedState());
+            InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
             Object event = context.getEvent();
             boolean res = false;
             if(event instanceof MOInput) {
                 MOInput moInput = (MOInput) event;
-                res = key.equals(inputTransitionKeyMap.get(moInput.getInput()));
+                res = input.hasTransitionNameForInput(transitionName, moInput.getInput());
             }
             return res;
         };

@@ -6,25 +6,25 @@ package com.headstartech.sermo;
 public class MenuItem {
 
     private final String label;
-    private final Object transitionKey;
+    private final Object transitionName;
     private final Object itemKey;
 
-    public MenuItem(String label, Object transitionKey, Object itemKey) {
-        this.transitionKey = transitionKey;
+    public MenuItem(String label, Object transitionName, Object itemKey) {
+        this.transitionName = transitionName;
         this.label = label;
         this.itemKey = itemKey;
     }
 
-    public MenuItem(String label, Object transitionKey) {
+    public MenuItem(String label, Object transitionName) {
         this.label = label;
-        this.transitionKey = transitionKey;
+        this.transitionName = transitionName;
         this.itemKey = null;
     }
 
 
 
-    public Object getTransitionKey() {
-        return transitionKey;
+    public Object getTransitionName() {
+        return transitionName;
     }
 
     public String getLabel() {

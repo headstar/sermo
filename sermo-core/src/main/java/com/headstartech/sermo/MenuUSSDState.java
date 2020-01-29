@@ -1,6 +1,6 @@
 package com.headstartech.sermo;
 
-import java.util.Map;
+import java.util.Optional;
 
 import static com.headstartech.sermo.ExtendedStateKeys.INPUT_ITEM_KEY;
 
@@ -15,25 +15,23 @@ public abstract class MenuUSSDState extends USSDStateAdapter {
         clearMenu(ussdSupport);
     }
 
-    protected void setMenu(USSDSupport ussdSupport, Screen menu) {
-        ussdSupport.getVariables().put(ExtendedStateKeys.INPUT_TRANSITION_MAP, menu.getInputTransitionKeyMap());
-        ussdSupport.getVariables().put(ExtendedStateKeys.INPUT_ITEM_MAP, menu.getInputItemKeyMap());
+    protected void setMenu(USSDSupport ussdSupport, Screen screen) {
+        ussdSupport.getVariables().put(ExtendedStateKeys.INPUT_MAP_KEY, screen.getInputMap());
     }
 
     protected void clearMenu(USSDSupport ussdSupport) {
-        ussdSupport.getVariables().remove(ExtendedStateKeys.INPUT_TRANSITION_MAP);
-        ussdSupport.getVariables().remove(ExtendedStateKeys.INPUT_ITEM_MAP);
+        ussdSupport.getVariables().remove(ExtendedStateKeys.INPUT_MAP_KEY);
     }
 
     private void transferItemKey(USSDSupport ussdSupport, Object event) {
         @SuppressWarnings("unchecked")
-        Map<String, Object> inputItemMap = (Map<String, Object>) ussdSupport.getVariables().get(ExtendedStateKeys.INPUT_ITEM_MAP);
-        if (inputItemMap != null) {
+        InputMap inputMap = (InputMap) ussdSupport.getVariables().get(ExtendedStateKeys.INPUT_MAP_KEY);
+        if (inputMap != null) {
             if (event instanceof MOInput) {
                 MOInput moInput = (MOInput) event;
-                Object inputItemKey = inputItemMap.get(moInput.getInput());
-                if (inputItemKey != null) {
-                    ussdSupport.getVariables().put(INPUT_ITEM_KEY, inputItemKey);
+                Optional<Object> itemData = inputMap.getItemDataForInput(moInput.getInput());
+                if(itemData.isPresent()) {
+                    ussdSupport.getVariables().put(INPUT_ITEM_KEY, itemData.get());
                 }
             }
         }
