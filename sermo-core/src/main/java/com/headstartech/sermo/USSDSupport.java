@@ -12,6 +12,6 @@ public interface USSDSupport {
 
     Optional<Object> getItemKey();
 
-    boolean hasTransitionNameForInput(Object transitionName, String input);
+    Optional<Object> getTransition();
 
 }

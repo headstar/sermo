@@ -1,6 +1,7 @@
 package com.headstartech.sermo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Per Johansson
@@ -28,11 +29,11 @@ public abstract class PagedScreenUSSDState extends MenuUSSDState {
 
     @Override
     public String onInternal(USSDSupport ussdSupport, Object event) {
-        if(event instanceof  MOInput) {
-            MOInput moInput = (MOInput) event;
-            if(ussdSupport.hasTransitionNameForInput(ExtendedStateKeys.NEXT_PAGE_KEY, moInput.getInput())) {
+        Optional<Object> transition = ussdSupport.getTransition();
+        if(transition.isPresent()) {
+            if(transition.get().equals(ExtendedStateKeys.NEXT_PAGE_KEY)) {
                 incrementPageIndex(ussdSupport);
-            } else if(ussdSupport.hasTransitionNameForInput(ExtendedStateKeys.PREVIOUS_PAGE_KEY, moInput.getInput())) {
+            } else if(transition.get().equals(ExtendedStateKeys.PREVIOUS_PAGE_KEY)) {
                 decrementtPageIndex(ussdSupport);
             }
         }

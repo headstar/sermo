@@ -14,6 +14,8 @@ public class ExtendedStateKeys {
     public static final Object SUPPORT_KEY = new Object();
     public static final Object OUTPUT_KEY = new Object();
 
+    public static final Object TRANSITION_KEY = new Object();
+
     public static final Object NEXT_PAGE_KEY = new Object();
     public static final Object PREVIOUS_PAGE_KEY = new Object();
 

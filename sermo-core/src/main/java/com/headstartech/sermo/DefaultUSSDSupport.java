@@ -27,13 +27,8 @@ public class DefaultUSSDSupport implements USSDSupport {
     }
 
     @Override
-    public boolean hasTransitionNameForInput(Object transitionName, String input) {
-        InputMap inputMap = ExtendedStateKeys.getInputMap(extendedState);
-        if(inputMap != null &&  inputMap.hasTransitionNameForInput(transitionName, input)
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+    public Optional<Object> getTransition() {
+        return Optional.ofNullable(extendedState.getVariables().get(ExtendedStateKeys.TRANSITION_KEY));
     }
+
 }

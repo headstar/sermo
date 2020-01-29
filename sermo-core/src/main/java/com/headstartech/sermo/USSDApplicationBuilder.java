@@ -99,6 +99,9 @@ public class USSDApplicationBuilder {
             if(event instanceof MOInput) {
                 MOInput moInput = (MOInput) event;
                 res = input.hasTransitionNameForInput(transitionName, moInput.getInput());
+                if(res) {
+                    context.getExtendedState().getVariables().put(ExtendedStateKeys.TRANSITION_KEY, transitionName);
+                }
             }
             return res;
         };
