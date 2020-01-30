@@ -93,13 +93,12 @@ public class USSDApplicationBuilder {
 
     private static Guard<String, Object> createMenuItemGuard(Object transitionName) {
         return (context) -> {
-            InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
-            Object event = context.getEvent();
             boolean res = false;
+            Object event = context.getEvent();
             if(event instanceof MOInput) {
                 MOInput moInput = (MOInput) event;
-                res = input.hasTransitionNameForInput(transitionName, moInput.getInput());
-                if(res) {
+                InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
+                if(input != null && input.hasTransitionNameForInput(transitionName, moInput.getInput())) {
                     context.getExtendedState().getVariables().put(ExtendedStateKeys.TRANSITION_KEY, transitionName);
                 }
             }
