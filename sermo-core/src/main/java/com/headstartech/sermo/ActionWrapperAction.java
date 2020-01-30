@@ -18,7 +18,12 @@ class ActionWrapperAction implements Action<String, Object> {
 
     @Override
     public void execute(StateContext<String, Object> context) {
-        USSDSupport ussdSupport = context.getExtendedState().get(ExtendedStateKeys.SUPPORT_KEY, USSDSupport.class);
-        ussdAction.execute(ussdSupport, Optional.ofNullable(context.getEvent()));
+        try {
+            USSDSupport ussdSupport = context.getExtendedState().get(ExtendedStateKeys.SUPPORT_KEY, USSDSupport.class);
+            ussdAction.execute(ussdSupport, Optional.ofNullable(context.getEvent()));
+        } catch (Exception e) {
+            // treat Exception as fatal error
+            context.getStateMachine().setStateMachineError(e);
+        }
     }
 }
