@@ -15,7 +15,7 @@ public class StatementMenuUSSDState implements USSDState {
 
     @Override
     public String onEntry(USSDSupport ussdSupport) {
-        return "statement";
+        return "Statement";
     }
 
     @Override

@@ -10,10 +10,14 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Per Johansson
  */
 public class USSDApplicationBuilder {
+
+    private static final String INITIAL_STATE_ID = "_INITIAL_STATE_ID_";
 
     private final StateMachineBuilder.Builder<String, Object> builder;
     private final StateConfigurer<String, Object> stateConfigurer;
@@ -23,14 +27,21 @@ public class USSDApplicationBuilder {
         this.builder = StateMachineBuilder.builder();
         this.stateConfigurer = builder.configureStates().withStates();
         this.transitionConfigurer = builder.configureTransitions();
+
+        stateConfigurer.state(INITIAL_STATE_ID);
+        stateConfigurer.initial(INITIAL_STATE_ID);
     }
 
     public static USSDApplicationBuilder builder() throws Exception {
         return new USSDApplicationBuilder();
     }
 
-    public USSDApplicationBuilder withInitialState(USSDState ussdState) throws Exception {
-        withState(ussdState, true);
+    public USSDApplicationBuilder withInitialTransition(USSDState to, Pattern pattern) throws Exception {
+        transitionConfigurer
+                .withExternal()
+                .source(INITIAL_STATE_ID).target(to.getId())
+                .event(MOInput.INSTANCE)
+                .guard(new InitialTransitionGuard(pattern));
         return this;
     }
 
@@ -80,10 +91,6 @@ public class USSDApplicationBuilder {
                     .state(ussdState.getId(),
                             new StateWrapperAction(ussdState, StateWrapperAction.ActionEnum.ENTRY),
                             new StateWrapperAction(ussdState, StateWrapperAction.ActionEnum.EXIT));
-
-        if(initial) {
-            stateConfigurer.initial(ussdState.getId());
-        }
 
         if(ussdState instanceof PagedScreenUSSDState) {
             withMenuTransition(ussdState, ussdState, ExtendedStateKeys.NEXT_PAGE_KEY);

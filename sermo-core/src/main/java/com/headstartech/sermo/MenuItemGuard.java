@@ -26,5 +26,6 @@ public class MenuItemGuard implements Guard<String, Object> {
                 res = true;
             }
         }
-        return res;    }
+        return res;
+    }
 }

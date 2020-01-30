@@ -13,12 +13,8 @@ public class USSDApplication {
         this.sm = sm;
     }
 
-    public String start() {
-        sm.getExtendedState().getVariables().put(ExtendedStateKeys.SUPPORT_KEY, new DefaultUSSDSupport(sm.getExtendedState()));
+    public void start() {
         sm.start();
-        String output = sm.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
-        sm.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
-        return output;
     }
 
     public String applyEvent(Object event) {
