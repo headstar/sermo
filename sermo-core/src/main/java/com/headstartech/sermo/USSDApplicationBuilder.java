@@ -100,6 +100,7 @@ public class USSDApplicationBuilder {
                 InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
                 if(input != null && input.hasTransitionNameForInput(transitionName, moInput.getInput())) {
                     context.getExtendedState().getVariables().put(ExtendedStateKeys.TRANSITION_KEY, transitionName);
+                    return true;
                 }
             }
             return res;
@@ -116,6 +117,11 @@ public class USSDApplicationBuilder {
             @Override
             public void eventNotAccepted(Message<Object> event) {
                 System.out.println("Event not accepted" + event);
+            }
+
+            @Override
+            public void stateMachineError(StateMachine<String, Object> stateMachine, Exception exception) {
+                System.out.println("State machine error " + exception);
             }
         };
     }
