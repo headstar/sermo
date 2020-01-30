@@ -92,19 +92,7 @@ public class USSDApplicationBuilder {
     }
 
     private static Guard<String, Object> createMenuItemGuard(Object transitionName) {
-        return (context) -> {
-            boolean res = false;
-            Object event = context.getEvent();
-            if(event instanceof MOInput) {
-                MOInput moInput = (MOInput) event;
-                InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
-                if(input != null && input.hasTransitionNameForInput(transitionName, moInput.getInput())) {
-                    context.getExtendedState().getVariables().put(ExtendedStateKeys.TRANSITION_KEY, transitionName);
-                    return true;
-                }
-            }
-            return res;
-        };
+        return new MenuItemGuard(transitionName);
     }
 
     private static StateMachineListener<String, Object> listener() {
