@@ -19,12 +19,14 @@ public class USSDApplicationBuilder {
 
     private static final String INITIAL_STATE_ID = "_INITIAL_STATE_ID_";
 
-    private final StateMachineBuilder.Builder<String, Object> builder;
+//    private final StateMachineBuilder.Builder<String, Object> builder;
     private final StateConfigurer<String, Object> stateConfigurer;
     private final StateMachineTransitionConfigurer<String, Object> transitionConfigurer;
 
+    private final StateMachineFactoryBuilder.Builder<String, Object> builder;
+
     USSDApplicationBuilder() throws Exception {
-        this.builder = StateMachineBuilder.builder();
+        this.builder = StateMachineFactoryBuilder.builder();
         this.stateConfigurer = builder.configureStates().withStates();
         this.transitionConfigurer = builder.configureTransitions();
 
@@ -80,9 +82,8 @@ public class USSDApplicationBuilder {
     public USSDApplication build() throws Exception {
         builder.configureConfiguration()
                 .withConfiguration()
-                .machineId("atm")
                 .listener(listener());
-        StateMachine<String, Object> sm = builder.build();
+        StateMachine<String, Object> sm = builder.build().getStateMachine();
         return new USSDApplication(sm);
     }
 
