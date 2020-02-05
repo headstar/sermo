@@ -18,7 +18,6 @@ public class USSDApplication {
     }
 
     public String applyEvent(Object event) {
-        sm.getExtendedState().getVariables().put(ExtendedStateKeys.SUPPORT_KEY, new DefaultUSSDSupport(sm.getExtendedState()));
         sm.sendEvent(event);
         String output = sm.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
         sm.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);

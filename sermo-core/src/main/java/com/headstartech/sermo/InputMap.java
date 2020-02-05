@@ -9,16 +9,16 @@ import java.util.Optional;
  */
 public class InputMap {
 
-    private final Map<String, Object> inputTransitionNameMap;
+    private final Map<String, Object> inputTransitionMap;
     private final Map<String, Object> inputItemDataMap;
 
     public InputMap() {
-        inputTransitionNameMap = new HashMap<>();
+        inputTransitionMap = new HashMap<>();
         inputItemDataMap = new HashMap<>();
     }
 
-    public void addMapping(String input, Object transitionName, Object itemData) {
-        inputTransitionNameMap.put(input, transitionName);
+    public void addMapping(String input, Object transition, Object itemData) {
+        inputTransitionMap.put(input, transition);
         inputItemDataMap.put(input, itemData);
     }
 
@@ -26,11 +26,11 @@ public class InputMap {
         return Optional.ofNullable(inputItemDataMap.get(input));
     }
 
-    public boolean hasTransitionNameForInput(Object transitionName, String input) {
-        return transitionName.equals(inputTransitionNameMap.get(input));
+    public boolean hasTransitionForInput(Object transition, String input) {
+        return transition.equals(inputTransitionMap.get(input));
     }
 
-    public Optional<Object> getTransitionName(String input) {
-        return Optional.ofNullable(inputTransitionNameMap.get(input));
+    public Optional<Object> getTransition(String input) {
+        return Optional.ofNullable(inputTransitionMap.get(input));
     }
 }

@@ -6,11 +6,11 @@ import org.springframework.statemachine.guard.Guard;
 /**
  * @author Per Johansson
  */
-public class MenuItemGuard implements Guard<String, Object> {
+public class ScreenTransitionGuard implements Guard<String, Object> {
 
     private final Object transitionName;
 
-    public MenuItemGuard(Object transitionName) {
+    public ScreenTransitionGuard(Object transitionName) {
         this.transitionName = transitionName;
     }
 
@@ -21,8 +21,7 @@ public class MenuItemGuard implements Guard<String, Object> {
         if(event instanceof MOInput) {
             MOInput moInput = (MOInput) event;
             InputMap input = ExtendedStateKeys.getInputMap(context.getExtendedState());
-            if(input != null && input.hasTransitionNameForInput(transitionName, moInput.getInput())) {
-                context.getExtendedState().getVariables().put(ExtendedStateKeys.TRANSITION_KEY, transitionName);
+            if(input != null && input.hasTransitionForInput(transitionName, moInput.getInput())) {
                 res = true;
             }
         }

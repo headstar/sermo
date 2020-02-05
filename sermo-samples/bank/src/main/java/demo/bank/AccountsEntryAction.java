@@ -1,6 +1,7 @@
 package demo.bank;
 
 import com.headstartech.sermo.*;
+import org.springframework.statemachine.StateContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,40 +9,28 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class AccountsMenu extends PagedScreenUSSDState {
-
-    public AccountsMenu() {
-        super(2);
-    }
+public class AccountsEntryAction extends PagedMenuScreenEntryAction {
 
     @Override
-    public String getId() {
-        return "BALANCE";
-    }
-
-    @Override
-    protected List<MenuItem> getAllItems() {
+    protected PagedScreenSetup getPagedScreenSetup(StateContext<String, Object> context) {
         List<MenuItem> items = new ArrayList<>();
         items.add(new MenuItem("Account A", RootMenuItems.ACCOUNT_DETAIL, "a"));
         items.add(new MenuItem("Account B", RootMenuItems.ACCOUNT_DETAIL, "b"));
         items.add(new MenuItem("Account C", RootMenuItems.ACCOUNT_DETAIL, "c"));
         items.add(new MenuItem("Account D", RootMenuItems.ACCOUNT_DETAIL, "d"));
         items.add(new MenuItem("Account E", RootMenuItems.ACCOUNT_DETAIL, "e"));
-        return items;
+        return new PagedScreenSetup(items, getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null, 2);
     }
 
 
-    @Override
     protected ScreenBlock getHeaderBlock() {
         return new Text("Accounts for 1234");
     }
 
-    @Override
     protected NextPageMenuItem getNextScreenItem() {
         return new NextPageMenuItem("0", "Next page");
     }
 
-    @Override
     protected PreviousPageMenuItem getPreviousScreenItem() {
         return new PreviousPageMenuItem("#", "Previous page");
     }

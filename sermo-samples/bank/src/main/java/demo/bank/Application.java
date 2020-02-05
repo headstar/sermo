@@ -1,35 +1,37 @@
 package demo.bank;
 
-import com.headstartech.sermo.MOInput;
-import com.headstartech.sermo.USSDApplication;
-import com.headstartech.sermo.USSDApplicationBuilder;
-import com.headstartech.sermo.USSDState;
+import com.headstartech.sermo.*;
+import org.springframework.messaging.Message;
+import org.springframework.statemachine.listener.StateMachineListenerAdapter;
+import org.springframework.statemachine.state.State;
 
 import java.util.regex.Pattern;
 
 public class Application {
 
     public static void main(String[] args) throws Exception {
-        USSDApplicationBuilder builder = USSDApplicationBuilder.builder();
-        USSDState rootMenu = new RootMenuUSSDState();
-        USSDState accountsMenu = new AccountsMenu();
-        USSDState statementMenu = new StatementMenuUSSDState();
-        USSDState accountDetailState = new AccountDetailState();
 
-        builder.withState(rootMenu);
-        builder.withState(accountsMenu);
-        builder.withState(statementMenu);
-        builder.withState(accountDetailState);
+        StateMachineFactoryBuilder.Builder<String, Object> builder = StateMachineFactoryBuilder.builder();
 
-        builder.withInitialTransition(rootMenu, Pattern.compile("111"));
-        builder.withInitialTransition(statementMenu, Pattern.compile("222"));
+        builder.configureStates().withStates()
+                .stateEntry(States.ROOT.name(), new RootEntryAction())
+                .state(States.ACCOUNTS.name(), new AccountsEntryAction(), new MenuScreenExitAction())
+                .stateEntry(States.STATEMENT.name(), new StatementEntryAction())
+                .stateEntry(States.ACCOUNT_DETAILS.name(), new AccountDetailStateEntryAction());
 
-        builder.withMenuTransition(rootMenu, accountsMenu, RootMenuItems.ACCOUNTS);
-        builder.withMenuTransition(accountsMenu, accountDetailState, RootMenuItems.ACCOUNT_DETAIL);
-        builder.withMenuTransition(rootMenu, statementMenu, RootMenuItems.STATEMENT);
+        USSDAppSupport.init(builder.configureStates().withStates());
+        USSDAppSupport.withShortCodeTransition(builder.configureTransitions(), States.ROOT.name(), Pattern.compile("111"));
+        USSDAppSupport.withShortCodeTransition(builder.configureTransitions(), States.STATEMENT.name(), Pattern.compile("222"));
 
-        USSDApplication ussdApplication = builder.build();
+        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ROOT.name(), States.ACCOUNTS.name(), RootMenuItems.ACCOUNTS);
+        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ACCOUNTS.name(), States.ACCOUNT_DETAILS.name(), RootMenuItems.ACCOUNT_DETAIL);
+        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ROOT.name(), States.STATEMENT.name(), RootMenuItems.STATEMENT);
 
+        USSDAppSupport.withPagedScreenTransitions(builder.configureTransitions(), States.ACCOUNTS.name(), new PagedMenuScreenInternalAction());
+
+        builder.configureConfiguration().withConfiguration().listener(new Listener());
+
+        USSDApplication ussdApplication = new USSDApplication(builder.build().getStateMachine());
         ussdApplication.start();
         System.out.println("started\n");
 
@@ -56,6 +58,13 @@ public class Application {
 
 	}
 
+	private static class Listener extends StateMachineListenerAdapter<String, Object> {
+
+        @Override
+        public void eventNotAccepted(Message<Object> event) {
+            System.out.println("Event not accepted " + event);
+        }
+    }
 
 }
 
