@@ -9,16 +9,16 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class AccountsEntryAction extends PagedMenuScreenEntryAction {
+public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, Object> {
 
     @Override
-    protected PagedScreenSetup getPagedScreenSetup(StateContext<String, Object> context) {
+    protected PagedScreenSetup getPagedScreenSetup(StateContext<States, Object> context) {
         List<MenuItem> items = new ArrayList<>();
-        items.add(new MenuItem("Account A", RootMenuItems.ACCOUNT_DETAIL, "a"));
-        items.add(new MenuItem("Account B", RootMenuItems.ACCOUNT_DETAIL, "b"));
-        items.add(new MenuItem("Account C", RootMenuItems.ACCOUNT_DETAIL, "c"));
-        items.add(new MenuItem("Account D", RootMenuItems.ACCOUNT_DETAIL, "d"));
-        items.add(new MenuItem("Account E", RootMenuItems.ACCOUNT_DETAIL, "e"));
+        items.add(new MenuItem("Account A", Transitions.ACCOUNT_DETAIL, "a"));
+        items.add(new MenuItem("Account B", Transitions.ACCOUNT_DETAIL, "b"));
+        items.add(new MenuItem("Account C", Transitions.ACCOUNT_DETAIL, "c"));
+        items.add(new MenuItem("Account D", Transitions.ACCOUNT_DETAIL, "d"));
+        items.add(new MenuItem("Account E", Transitions.ACCOUNT_DETAIL, "e"));
         return new PagedScreenSetup(items, getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null, 2);
     }
 

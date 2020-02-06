@@ -6,7 +6,7 @@ import org.springframework.statemachine.action.Action;
 /**
  * @author Per Johansson
  */
-public abstract class MenuScreenEntryAction implements Action<String, Object> {
+public abstract class MenuScreenEntryAction<S, E> implements Action<S, E> {
 
 
     // TODO: remove??

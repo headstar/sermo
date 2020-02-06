@@ -5,6 +5,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
 
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -12,45 +13,83 @@ import java.util.regex.Pattern;
  */
 public class USSDAppSupport {
 
-    private static final String INITIAL_STATE_ID = "_INITIAL_STATE_ID_";
-
-
-    public static void init(StateConfigurer<String, Object> stateConfigurer) {
-        stateConfigurer.state(INITIAL_STATE_ID);
-        stateConfigurer.initial(INITIAL_STATE_ID);
+    public static <S, E> USSDAppSupport.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer,
+                                                              Function<E, String> eventToInput, E eventToken) {
+        return new USSDAppSupport.Builder<>(stateConfigurer, transitionConfigurer, eventToInput, eventToken);
     }
 
-    public static void withShortCodeTransition(StateMachineTransitionConfigurer<String, Object> transitionConfigurer, String to, Pattern pattern) throws Exception {
-        transitionConfigurer
-                .withExternal()
-                .source(INITIAL_STATE_ID).target(to)
-                .event(MOInput.INSTANCE)
-                .guard(new InitialTransitionGuard(pattern));
+    public static class Builder<S, E> {
+
+        private final StateConfigurer<S, E> stateConfigurer;
+        private final StateMachineTransitionConfigurer<S, E> transitionConfigurer;
+        private S initialState;
+        private final Function<E, String> eventToInput;
+        private final E eventToken;
+
+        public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Function<E, String> eventToInput, E eventToken) {
+            this.stateConfigurer = stateConfigurer;
+            this.transitionConfigurer = transitionConfigurer;
+            this.eventToInput = eventToInput;
+            this.eventToken = eventToken;
+        }
+
+        public Builder<S, E> withState(USSDState<S, E> state) {
+            stateConfigurer.state(state.getId(), state.getEntryAction(), state.getExitAction());
+            return this;
+        }
+
+        public Builder<S, E> withInitialState(S state) {
+            stateConfigurer.state(state);
+            stateConfigurer.initial(state);
+            initialState = state;
+            return this;
+        }
+
+        public Builder<S, E> withShortCodeTransition(S to, Pattern shortCode) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(initialState)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(new InitialTransitionGuard<>(eventToInput, shortCode));
+
+            return this;
+        }
+
+        public Builder<S, E> withScreenTransition(S from, S to, Object transition) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(screenTransitionGuard(eventToInput, transition));
+
+            return this;
+        }
+
+        public Builder<S, E> withPagedScreenTransitions(S state, Action<S, E> nextPreviousPageAction) throws Exception {
+            transitionConfigurer
+                    .withInternal()
+                    .source(state)
+                    .event(eventToken)
+                    .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.NEXT_PAGE_KEY))
+                    .action(nextPreviousPageAction);
+
+            transitionConfigurer
+                    .withInternal()
+                    .source(state)
+                    .event(eventToken)
+                    .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.PREVIOUS_PAGE_KEY))
+                    .action(nextPreviousPageAction);
+            return this;
+        }
+
+        private Guard<S, E> screenTransitionGuard(Function<E, String> eventToInput, Object transition) {
+            return new ScreenTransitionGuard<>(eventToInput, transition);
+        }
+
     }
 
-    public static void withScreenTransition(StateMachineTransitionConfigurer<String, Object> transitionConfigurer, String from, String to, Object transition) throws Exception {
-        transitionConfigurer
-                .withExternal()
-                .source(from).target(to)
-                .event(MOInput.INSTANCE)
-                .guard(createScreenTransitionGuard(transition));
-    }
 
-    public static void withPagedScreenTransitions(StateMachineTransitionConfigurer<String, Object> transitionConfigurer, String state, Action<String, Object> nextPreviousPageAction) throws Exception {
-        transitionConfigurer
-                .withInternal()
-                .source(state).event(MOInput.INSTANCE)
-                .guard(createScreenTransitionGuard(ExtendedStateKeys.NEXT_PAGE_KEY))
-                .action(nextPreviousPageAction);
 
-        transitionConfigurer
-                .withInternal()
-                .source(state).event(MOInput.INSTANCE)
-                .guard(createScreenTransitionGuard(ExtendedStateKeys.PREVIOUS_PAGE_KEY))
-                .action(nextPreviousPageAction);
-    }
-
-    private static Guard<String, Object> createScreenTransitionGuard(Object transition) {
-        return new ScreenTransitionGuard(transition);
-    }
 }

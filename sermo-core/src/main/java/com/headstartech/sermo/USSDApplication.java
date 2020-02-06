@@ -5,11 +5,11 @@ import org.springframework.statemachine.StateMachine;
 /**
  * @author Per Johansson
  */
-public class USSDApplication {
+public class USSDApplication<S, E> {
 
-    private final StateMachine<String, Object> sm;
+    private final StateMachine<S, E> sm;
 
-    public USSDApplication(StateMachine<String, Object> sm) {
+    public USSDApplication(StateMachine<S, E> sm) {
         this.sm = sm;
     }
 
@@ -17,7 +17,7 @@ public class USSDApplication {
         sm.start();
     }
 
-    public String applyEvent(Object event) {
+    public String applyEvent(E event) {
         sm.sendEvent(event);
         String output = sm.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
         sm.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);

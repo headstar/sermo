@@ -10,17 +10,17 @@ import org.springframework.statemachine.action.Action;
 /**
  * @author Per Johansson
  */
-public class RootEntryAction implements Action<String, Object> {
+public class RootEntryAction implements Action<States, Object> {
 
     @Override
-    public void execute(StateContext<String, Object> context) {
+    public void execute(StateContext<States, Object> context) {
         Screen.Builder screenBuilder =  Screen.builder();
 
         screenBuilder.withScreenBlock(new Text("Main Menu"));
 
         MenuGroup accounts = MenuGroup.builder()
-                .withMenuItem("Accounts", RootMenuItems.ACCOUNTS)
-                .withMenuItem("Statements", RootMenuItems.STATEMENT)
+                .withMenuItem("Accounts", Transitions.ACCOUNTS)
+                .withMenuItem("Statements", Transitions.STATEMENT)
                 .build();
         screenBuilder.withScreenBlock(accounts);
 

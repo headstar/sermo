@@ -11,10 +11,10 @@ import static com.headstartech.sermo.ExtendedStateKeys.INPUT_ITEM_DATA_KEY;
 /**
  * @author Per Johansson
  */
-public class MenuScreenExitAction implements Action<String, Object> {
+public class MenuScreenExitAction<S, E> implements Action<S, E> {
 
     @Override
-    public void execute(StateContext<String, Object> context) {
+    public void execute(StateContext<S, E> context) {
         transferItemKey(context.getExtendedState(), context.getEvent());
         clearMenu(context.getExtendedState());
     }

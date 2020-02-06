@@ -5,7 +5,7 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public abstract class PagedMenuScreenEntryAction extends MenuScreenEntryAction {
+public abstract class PagedMenuScreenEntryAction<S, E> extends MenuScreenEntryAction<S, E> {
 
     private final ScreenSupport screenSupport;
 
@@ -18,7 +18,7 @@ public abstract class PagedMenuScreenEntryAction extends MenuScreenEntryAction {
     }
 
     @Override
-    public void execute(StateContext<String, Object> context) {
+    public void execute(StateContext<S, E> context) {
         screenSupport.initializePagedScreen(context.getExtendedState(), getPagedScreenSetup(context));
         Screen screen = screenSupport.createScreen(context.getExtendedState());
 
@@ -26,6 +26,6 @@ public abstract class PagedMenuScreenEntryAction extends MenuScreenEntryAction {
         ExtendedStateSupport.setOutput(context.getExtendedState(), screen.getOutput());
     }
 
-    protected abstract PagedScreenSetup getPagedScreenSetup(StateContext<String, Object> context);
+    protected abstract PagedScreenSetup getPagedScreenSetup(StateContext<S, E> context);
 
 }

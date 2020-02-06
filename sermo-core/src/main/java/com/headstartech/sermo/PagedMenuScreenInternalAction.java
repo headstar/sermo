@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * @author Per Johansson
  */
-public class PagedMenuScreenInternalAction extends MenuScreenEntryAction {
+public class PagedMenuScreenInternalAction<S, E> extends MenuScreenEntryAction<S, E> {
 
     private final ScreenSupport screenSupport;
 
@@ -20,7 +20,7 @@ public class PagedMenuScreenInternalAction extends MenuScreenEntryAction {
     }
 
     @Override
-    public void execute(StateContext<String, Object> context) {
+    public void execute(StateContext<S, E> context) {
 
         if(context.getEvent() instanceof MOInput) {
             Optional<Object> transitionNameOpt = ExtendedStateSupport.getTransition(context.getExtendedState(), ((MOInput) context.getEvent()).getInput());

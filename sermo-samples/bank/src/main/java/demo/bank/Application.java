@@ -3,35 +3,42 @@ package demo.bank;
 import com.headstartech.sermo.*;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
-import org.springframework.statemachine.state.State;
 
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class Application {
 
     public static void main(String[] args) throws Exception {
 
-        StateMachineFactoryBuilder.Builder<String, Object> builder = StateMachineFactoryBuilder.builder();
+        StateMachineFactoryBuilder.Builder<States, Object> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
+        USSDAppSupport.Builder builder = USSDAppSupport.builder(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(),
+                new EventToInput(), MOInput.INSTANCE);
 
-        builder.configureStates().withStates()
-                .stateEntry(States.ROOT.name(), new RootEntryAction())
-                .state(States.ACCOUNTS.name(), new AccountsEntryAction(), new MenuScreenExitAction())
-                .stateEntry(States.STATEMENT.name(), new StatementEntryAction())
-                .stateEntry(States.ACCOUNT_DETAILS.name(), new AccountDetailStateEntryAction());
+        USSDState<States, Object> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
+        USSDState<States, Object> accountsScreen = new USSDState<>(States.ACCOUNTS, new AccountsEntryAction(), new MenuScreenExitAction());
+        USSDState<States, Object> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
+        USSDState<States, Object> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
 
-        USSDAppSupport.init(builder.configureStates().withStates());
-        USSDAppSupport.withShortCodeTransition(builder.configureTransitions(), States.ROOT.name(), Pattern.compile("111"));
-        USSDAppSupport.withShortCodeTransition(builder.configureTransitions(), States.STATEMENT.name(), Pattern.compile("222"));
+        builder
+                .withState(rootMenuScreen)
+                .withState(accountsScreen)
+                .withState(statementScreen)
+                .withState(accountDetailsScreen);
 
-        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ROOT.name(), States.ACCOUNTS.name(), RootMenuItems.ACCOUNTS);
-        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ACCOUNTS.name(), States.ACCOUNT_DETAILS.name(), RootMenuItems.ACCOUNT_DETAIL);
-        USSDAppSupport.withScreenTransition(builder.configureTransitions(), States.ROOT.name(), States.STATEMENT.name(), RootMenuItems.STATEMENT);
+        builder.withInitialState(States.INITIAL);
+        builder.withShortCodeTransition(States.ROOT, Pattern.compile("111"));
+        builder.withShortCodeTransition(States.STATEMENT, Pattern.compile("222"));
 
-        USSDAppSupport.withPagedScreenTransitions(builder.configureTransitions(), States.ACCOUNTS.name(), new PagedMenuScreenInternalAction());
+        builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
+        builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
+        builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
 
-        builder.configureConfiguration().withConfiguration().listener(new Listener());
+        builder.withPagedScreenTransitions(States.ACCOUNTS, new PagedMenuScreenInternalAction());
 
-        USSDApplication ussdApplication = new USSDApplication(builder.build().getStateMachine());
+        stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
+
+        USSDApplication ussdApplication = new USSDApplication(stateMachineFactoryBuilder.build().getStateMachine());
         ussdApplication.start();
         System.out.println("started\n");
 
@@ -58,7 +65,19 @@ public class Application {
 
 	}
 
-	private static class Listener extends StateMachineListenerAdapter<String, Object> {
+	static class EventToInput implements Function<Object, String> {
+
+        @Override
+        public String apply(Object o) {
+            if(o instanceof MOInput) {
+                return ((MOInput) o).getInput();
+            }
+            return null;
+        }
+
+    }
+
+	private static class Listener extends StateMachineListenerAdapter<States, Object> {
 
         @Override
         public void eventNotAccepted(Message<Object> event) {
