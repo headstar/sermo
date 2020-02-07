@@ -16,7 +16,7 @@ public class Application {
                 new EventToInput(), MOInput.INSTANCE);
 
         USSDState<States, Object> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
-        USSDState<States, Object> accountsScreen = new USSDState<>(States.ACCOUNTS, new AccountsEntryAction(), new MenuScreenExitAction());
+        USSDState<States, Object> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
         USSDState<States, Object> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
         USSDState<States, Object> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
 
@@ -33,8 +33,6 @@ public class Application {
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
-
-        builder.withPagedScreenTransitions(States.ACCOUNTS, new PagedMenuScreenInternalAction());
 
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 

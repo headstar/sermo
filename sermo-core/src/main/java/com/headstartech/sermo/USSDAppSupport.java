@@ -33,15 +33,19 @@ public class USSDAppSupport {
             this.eventToken = eventToken;
         }
 
-        public Builder<S, E> withState(USSDState<S, E> state) {
-            stateConfigurer.state(state.getId(), state.getEntryAction(), state.getExitAction());
-            return this;
-        }
-
         public Builder<S, E> withInitialState(S state) {
             stateConfigurer.state(state);
             stateConfigurer.initial(state);
             initialState = state;
+            return this;
+        }
+
+        public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
+            stateConfigurer.state(state.getId(), state.getEntryActions(), state.getExitActions());
+
+            if (state instanceof PagedUSSDState) {
+                withPagedScreenTransitions(state.getId(), ((PagedUSSDState) state).toNextOrToPreviousPageAction());
+            }
             return this;
         }
 
@@ -67,7 +71,7 @@ public class USSDAppSupport {
             return this;
         }
 
-        public Builder<S, E> withPagedScreenTransitions(S state, Action<S, E> nextPreviousPageAction) throws Exception {
+        private Builder<S, E> withPagedScreenTransitions(S state, Action<S, E> nextPreviousPageAction) throws Exception {
             transitionConfigurer
                     .withInternal()
                     .source(state)
