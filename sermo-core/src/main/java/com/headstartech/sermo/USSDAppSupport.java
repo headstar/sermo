@@ -1,12 +1,16 @@
 package com.headstartech.sermo;
 
 import org.springframework.statemachine.action.Action;
+import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author Per Johansson
@@ -25,6 +29,7 @@ public class USSDAppSupport {
         private S initialState;
         private final Function<E, String> eventToInput;
         private final E eventToken;
+        private Action<S, E> errorAction = new SetStateMachineErrorOnExceptionAction<>();
 
         public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Function<E, String> eventToInput, E eventToken) {
             this.stateConfigurer = stateConfigurer;
@@ -41,7 +46,7 @@ public class USSDAppSupport {
         }
 
         public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
-            stateConfigurer.state(state.getId(), state.getEntryActions(), state.getExitActions());
+            stateConfigurer.state(state.getId(), wrapWithErrorAction(state.getEntryActions()), wrapWithErrorAction(state.getExitActions()));
 
             if (state instanceof PagedUSSDState) {
                 withPagedScreenTransitions(state.getId(), ((PagedUSSDState) state).toNextOrToPreviousPageAction());
@@ -77,19 +82,28 @@ public class USSDAppSupport {
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.NEXT_PAGE_KEY))
-                    .action(nextPreviousPageAction);
+                    .action(wrapWithErrorAction(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.PREVIOUS_PAGE_KEY))
-                    .action(nextPreviousPageAction);
+                    .action(wrapWithErrorAction(nextPreviousPageAction));
             return this;
         }
 
         private Guard<S, E> screenTransitionGuard(Function<E, String> eventToInput, Object transition) {
             return new ScreenTransitionGuard<>(eventToInput, transition);
+        }
+
+        private Collection<Action<S, E>> wrapWithErrorAction(Collection<Action<S, E>> actions) {
+            return actions.stream().map(e -> wrapWithErrorAction(e)).collect(Collectors.toCollection(ArrayList::new));
+        }
+
+
+        private Action<S, E> wrapWithErrorAction(Action<S, E> action) {
+            return errorAction != null ? Actions.errorCallingAction(action, errorAction) : action;
         }
 
     }

@@ -46,7 +46,7 @@ public class USSDState<S, E> {
         return exitActions;
     }
 
-    private void addDefaultActions() {
+    protected void addDefaultActions() {
         exitActions.add(new MenuScreenExitAction<>());
     }
 }

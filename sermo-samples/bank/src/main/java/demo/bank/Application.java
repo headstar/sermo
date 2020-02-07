@@ -2,6 +2,7 @@ package demo.bank;
 
 import com.headstartech.sermo.*;
 import org.springframework.messaging.Message;
+import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 
 import java.util.function.Function;
@@ -80,6 +81,11 @@ public class Application {
         @Override
         public void eventNotAccepted(Message<Object> event) {
             System.out.println("Event not accepted " + event);
+        }
+
+        @Override
+        public void stateMachineError(StateMachine<States, Object> stateMachine, Exception exception) {
+            System.out.println("Machine error");
         }
     }
 

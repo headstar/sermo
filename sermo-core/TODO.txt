@@ -1,5 +1,4 @@
-* Act on handled exceptions in Actions
-* Return "old" screen on no event triggered
+ Return "old" screen on no event triggered
 * Support "state scope" for context variables
 * How to handle multiple guards being true?
 * What's "state action"?
