@@ -9,6 +9,7 @@ import org.springframework.statemachine.guard.Guard;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,44 @@ public class USSDAppSupport {
                     .event(eventToken)
                     .guard(new InitialTransitionGuard<>(eventToInput, shortCode));
 
+            return this;
+        }
+
+        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> predicate) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(new FormInputGuard<>(eventToInput, predicate));
+
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(from)
+                    .event(eventToken)
+                    .guard(new FormInputGuard<>(eventToInput, predicate.negate()));
+            return this;
+        }
+
+        public Builder<S, E> withTransition(S from, S to, Guard<S,E> guard, Action<S, E> action) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(guard)
+                    .action(wrapWithErrorAction(action));
+            return this;
+        }
+
+        public Builder<S, E> withTransition(S from, S to, Guard<S,E> guard) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(guard);
             return this;
         }
 
