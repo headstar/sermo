@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, Object> {
+public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, SubscriberEvent> {
 
     @Override
-    protected PagedScreenSetup getPagedScreenSetup(StateContext<States, Object> context) {
+    protected PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
         List<MenuItem> items = new ArrayList<>();
         items.add(new MenuItem("Account A", Transitions.ACCOUNT_DETAIL, "a"));
         items.add(new MenuItem("Account B", Transitions.ACCOUNT_DETAIL, "b"));

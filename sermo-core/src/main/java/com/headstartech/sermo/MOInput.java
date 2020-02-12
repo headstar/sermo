@@ -9,7 +9,7 @@ public class MOInput {
 
     private final String input;
 
-    private MOInput() {
+    public MOInput() {
         input = null;
     }
 
@@ -22,13 +22,13 @@ public class MOInput {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public final int hashCode() {
+        return 17;
     }
 
     @Override
-    public boolean equals(Object o) {
-        return true;
+    public final boolean equals(Object o) {
+        return MOInput.class.isAssignableFrom(o.getClass());
     }  // rely on guards
 
     @Override

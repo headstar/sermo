@@ -1,19 +1,16 @@
 package demo.bank;
 
-import com.headstartech.sermo.ExtendedStateSupport;
-import com.headstartech.sermo.MenuGroup;
-import com.headstartech.sermo.Screen;
-import com.headstartech.sermo.Text;
+import com.headstartech.sermo.*;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 
 /**
  * @author Per Johansson
  */
-public class RootEntryAction implements Action<States, Object> {
+public class RootEntryAction implements Action<States, SubscriberEvent> {
 
     @Override
-    public void execute(StateContext<States, Object> context) {
+    public void execute(StateContext<States, SubscriberEvent> context) {
         Screen.Builder screenBuilder =  Screen.builder();
 
         screenBuilder.withScreenBlock(new Text("Main Menu"));

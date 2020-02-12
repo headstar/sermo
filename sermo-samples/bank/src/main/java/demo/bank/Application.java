@@ -5,21 +5,20 @@ import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class Application {
 
     public static void main(String[] args) throws Exception {
 
-        StateMachineFactoryBuilder.Builder<States, Object> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        USSDAppSupport.Builder builder = USSDAppSupport.builder(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(),
-                new EventToInput(), MOInput.INSTANCE);
+        StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
+        USSDAppSupport.Builder<States, SubscriberEvent> builder = USSDAppSupport.builder(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(),
+                SubscriberEvent.class);
 
-        USSDState<States, Object> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
-        USSDState<States, Object> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
-        USSDState<States, Object> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
-        USSDState<States, Object> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
+        USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
+        USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
+        USSDState<States, SubscriberEvent> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
+        USSDState<States, SubscriberEvent> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
 
         builder
                 .withState(rootMenuScreen)
@@ -37,54 +36,44 @@ public class Application {
 
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
-        USSDApplication ussdApplication = new USSDApplication(stateMachineFactoryBuilder.build().getStateMachine());
+        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication(stateMachineFactoryBuilder.build().getStateMachine());
         ussdApplication.start();
         System.out.println("started\n");
 
-        String result = ussdApplication.applyEvent(new MOInput("111"));
+        String msisdn = "888888";
+
+        String result = ussdApplication.applyEvent(new SubscriberEvent("111", msisdn));
         System.out.println(result);
 
-        result = ussdApplication.applyEvent(new MOInput("1"));
+        result = ussdApplication.applyEvent(new SubscriberEvent("1", msisdn));
         System.out.println(result);
 
-        result = ussdApplication.applyEvent(new MOInput("0"));
+        result = ussdApplication.applyEvent(new SubscriberEvent("0", msisdn));
         System.out.println(result);
 
-        result = ussdApplication.applyEvent(new MOInput("0"));
+        result = ussdApplication.applyEvent(new SubscriberEvent("0", msisdn));
         System.out.println(result);
 
-		result = ussdApplication.applyEvent(new MOInput("#"));
+		result = ussdApplication.applyEvent(new SubscriberEvent("#", msisdn));
 		System.out.println(result);
 
-		result = ussdApplication.applyEvent(new MOInput("1"));
+		result = ussdApplication.applyEvent(new SubscriberEvent("1", msisdn));
 		System.out.println(result);
 
-		result = ussdApplication.applyEvent(new MOInput("1"));
+		result = ussdApplication.applyEvent(new SubscriberEvent("1", msisdn));
 		System.out.println(result);
 
 	}
 
-	static class EventToInput implements Function<Object, String> {
+    private static class Listener extends StateMachineListenerAdapter<States, SubscriberEvent> {
 
         @Override
-        public String apply(Object o) {
-            if(o instanceof MOInput) {
-                return ((MOInput) o).getInput();
-            }
-            return null;
-        }
-
-    }
-
-	private static class Listener extends StateMachineListenerAdapter<States, Object> {
-
-        @Override
-        public void eventNotAccepted(Message<Object> event) {
+        public void eventNotAccepted(Message<SubscriberEvent> event) {
             System.out.println("Event not accepted " + event);
         }
 
         @Override
-        public void stateMachineError(StateMachine<States, Object> stateMachine, Exception exception) {
+        public void stateMachineError(StateMachine<States, SubscriberEvent> stateMachine, Exception exception) {
             System.out.println("Machine error");
         }
     }

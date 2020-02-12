@@ -18,9 +18,8 @@ import java.util.stream.Collectors;
  */
 public class USSDAppSupport {
 
-    public static <S, E> USSDAppSupport.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer,
-                                                              Function<E, String> eventToInput, E eventToken) {
-        return new USSDAppSupport.Builder<>(stateConfigurer, transitionConfigurer, eventToInput, eventToken);
+    public static <S, E extends MOInput> USSDAppSupport.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+        return new USSDAppSupport.Builder<S, E>(stateConfigurer, transitionConfigurer, (e) -> e.getInput(), clazz.newInstance());
     }
 
     public static class Builder<S, E> {
