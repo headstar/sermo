@@ -188,7 +188,6 @@ public class USSDAppSupport {
             }
         }
 
-        // TODO: test this setting to null!
         public void setErrorAction(Action<S, E> errorAction) {
             this.errorAction = errorAction;
         }

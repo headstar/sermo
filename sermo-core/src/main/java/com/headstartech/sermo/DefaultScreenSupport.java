@@ -16,7 +16,6 @@ public class DefaultScreenSupport implements ScreenSupport {
 
     @Override
     public Screen createScreen(ExtendedState extendedState) {
-        // TODO: check for null and throw!!
         PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
 
         Screen.Builder screenBuilder =  Screen.builder();
@@ -75,9 +74,9 @@ public class DefaultScreenSupport implements ScreenSupport {
         adjustPage(pagedScreenSetup, -1);
     }
 
-    // TODO: check page limits (page < 0 etc...)
     private void adjustPage(PagedScreenSetup pagedScreenSetup, int diff) {
         int page = pagedScreenSetup.getPage() + diff;
+        page = page < 0 ? 0 : page;
         pagedScreenSetup.setPage(page);
 
     }
