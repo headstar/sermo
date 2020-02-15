@@ -17,4 +17,8 @@ public class SubscriberEvent extends MOInput {
         super(input);
         this.msisdn = msisdn;
     }
+
+    public String getMsisdn() {
+        return msisdn;
+    }
 }
