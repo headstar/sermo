@@ -47,7 +47,7 @@ public class Application {
         StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist =  inMemoryStateMachinePersist;
         StateMachineDeleter<String> stateMachineDeleter = inMemoryStateMachinePersist;
 
-        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication(stateMachineFactoryBuilder.build(), stateMachinePersist, stateMachineDeleter);
+        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(stateMachineFactoryBuilder.build(), stateMachinePersist, stateMachineDeleter);
 
         String msisdn = "888888";
 

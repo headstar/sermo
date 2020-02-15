@@ -56,7 +56,7 @@ public class USSDAppSupport {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
             if (state instanceof PagedUSSDState) {
-                withPagedScreenTransitions(state.getId(), ((PagedUSSDState) state).toNextOrToPreviousPageAction());
+                withPagedScreenTransitions(state.getId(), ((PagedUSSDState<S, E>) state).toNextOrToPreviousPageAction());
             }
             return this;
         }
