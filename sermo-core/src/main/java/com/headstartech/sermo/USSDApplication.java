@@ -30,16 +30,22 @@ public class USSDApplication<S, E> {
 
     public String applyEvent(String machineId, E event) throws Exception {
         StateMachine<S, E> stateMachine = null;
+        boolean machineCompletedOrHasError = true;
         try {
             stateMachine = stateMachineService.acquireStateMachine(machineId);
             stateMachine.sendEvent(event);
+            machineCompletedOrHasError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
             String output = stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
             stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
             return output;
         } finally {
             stateMachineService.releaseStateMachine(machineId);
             if(stateMachine != null) {
-                stateMachinePersister.persist(stateMachine, machineId);
+                if(machineCompletedOrHasError) {
+                    stateMachineDeleter.delete(machineId);
+                } else {
+                    stateMachinePersister.persist(stateMachine, machineId);
+                }
             }
         }
     }

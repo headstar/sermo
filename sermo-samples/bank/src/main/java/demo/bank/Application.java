@@ -22,12 +22,14 @@ public class Application {
         USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
         USSDState<States, SubscriberEvent> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
         USSDState<States, SubscriberEvent> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
+        USSDEndState<States, SubscriberEvent> endScreen = new USSDEndState<>(States.END);
 
         builder
                 .withState(rootMenuScreen)
                 .withState(accountsScreen)
                 .withState(statementScreen)
-                .withState(accountDetailsScreen);
+                .withState(accountDetailsScreen)
+                .withEndState(endScreen);
 
         builder.withInitialState(States.INITIAL);
         builder.withShortCodeTransition(States.ROOT, Pattern.compile("111"));
@@ -36,6 +38,7 @@ public class Application {
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
+        builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
 
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 

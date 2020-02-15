@@ -54,6 +54,12 @@ public class USSDAppSupport {
             return this;
         }
 
+        public Builder<S, E> withEndState(USSDEndState<S, E> state) throws Exception {
+            stateConfigurer.state(state.getId(), wrapWithErrorAction(state.getEntryActions()));
+            stateConfigurer.end(state.getId());
+            return this;
+        }
+
         public Builder<S, E> withShortCodeTransition(S to, Pattern shortCode) throws Exception {
             transitionConfigurer
                     .withExternal()

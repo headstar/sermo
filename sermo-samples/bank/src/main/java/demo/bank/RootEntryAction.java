@@ -18,6 +18,7 @@ public class RootEntryAction implements Action<States, SubscriberEvent> {
         MenuGroup accounts = MenuGroup.builder()
                 .withMenuItem("Accounts", Transitions.ACCOUNTS)
                 .withMenuItem("Statements", Transitions.STATEMENT)
+                .withMenuItem("Exit", Transitions.EXIT)
                 .build();
         screenBuilder.withScreenBlock(accounts);
 
