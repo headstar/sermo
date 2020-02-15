@@ -15,8 +15,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        USSDAppSupport.Builder<States, SubscriberEvent> builder = USSDAppSupport.builder(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(),
-                SubscriberEvent.class);
+        USSDAppSupport.Builder<States, SubscriberEvent> builder = USSDAppSupport.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
 
         USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
         USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
