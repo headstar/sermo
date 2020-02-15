@@ -1,5 +1,6 @@
 package com.headstartech.sermo;
 
+import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
@@ -29,7 +30,8 @@ public class USSDAppSupport {
         private S initialState;
         private final Function<E, String> eventToInput;
         private final E eventToken;
-        private Action<S, E> errorAction = new SetStateMachineErrorOnExceptionAction<>();
+        private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
+        private Action<S, E> errorAction = null;
 
         public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Function<E, String> eventToInput, E eventToken) {
             this.stateConfigurer = stateConfigurer;
@@ -46,7 +48,7 @@ public class USSDAppSupport {
         }
 
         public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
-            stateConfigurer.state(state.getId(), wrapWithErrorAction(state.getEntryActions()), wrapWithErrorAction(state.getExitActions()));
+            stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
             if (state instanceof PagedUSSDState) {
                 withPagedScreenTransitions(state.getId(), ((PagedUSSDState) state).toNextOrToPreviousPageAction());
@@ -55,7 +57,7 @@ public class USSDAppSupport {
         }
 
         public Builder<S, E> withEndState(USSDEndState<S, E> state) throws Exception {
-            stateConfigurer.state(state.getId(), wrapWithErrorAction(state.getEntryActions()));
+            stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()));
             stateConfigurer.end(state.getId());
             return this;
         }
@@ -95,7 +97,7 @@ public class USSDAppSupport {
                     .target(to)
                     .event(eventToken)
                     .guard(guard)
-                    .action(wrapWithErrorAction(action));
+                    .action(wrapWithErrorActions(action));
             return this;
         }
 
@@ -120,20 +122,25 @@ public class USSDAppSupport {
             return this;
         }
 
+        public Builder<S, E> withErrorAction(Action<S, E> action) {
+            compositeAction.setOnErrorAction(action);
+            return this;
+        }
+
         private Builder<S, E> withPagedScreenTransitions(S state, Action<S, E> nextPreviousPageAction) throws Exception {
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.NEXT_PAGE_KEY))
-                    .action(wrapWithErrorAction(nextPreviousPageAction));
+                    .action(wrapWithErrorActions(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.PREVIOUS_PAGE_KEY))
-                    .action(wrapWithErrorAction(nextPreviousPageAction));
+                    .action(wrapWithErrorActions(nextPreviousPageAction));
             return this;
         }
 
@@ -141,17 +148,42 @@ public class USSDAppSupport {
             return new ScreenTransitionGuard<>(eventToInput, transition);
         }
 
-        private Collection<Action<S, E>> wrapWithErrorAction(Collection<Action<S, E>> actions) {
-            return actions.stream().map(e -> wrapWithErrorAction(e)).collect(Collectors.toCollection(ArrayList::new));
+        private Collection<Action<S, E>> wrapWithErrorActions(Collection<Action<S, E>> actions) {
+            return actions.stream().map(e -> wrapWithErrorActions(e)).collect(Collectors.toCollection(ArrayList::new));
         }
 
 
-        private Action<S, E> wrapWithErrorAction(Action<S, E> action) {
-            return errorAction != null ? Actions.errorCallingAction(action, errorAction) : action;
+        private Action<S, E> wrapWithErrorActions(Action<S, E> action) {
+            return Actions.errorCallingAction(action, compositeAction);
+        }
+
+        private static class CompositeAction<S, E> implements Action<S, E> {
+
+            private final Action<S, E> setMachineOnErrorAction;
+            private Action<S, E> onErrorAction;
+
+            public CompositeAction(Action<S, E> setMachineOnErrorAction) {
+                this.setMachineOnErrorAction = setMachineOnErrorAction;
+            }
+
+            @Override
+            public void execute(StateContext<S, E> context) {
+                setMachineOnErrorAction.execute(context);
+                if(onErrorAction != null) {
+                    try {
+                        onErrorAction.execute(context);
+                    } catch(Exception e) {
+                        // TODO: logging
+                    }
+                }
+            }
+
+            public void setOnErrorAction(Action<S, E> onErrorAction) {
+                this.onErrorAction = onErrorAction;
+            }
         }
 
     }
-
 
 
 }

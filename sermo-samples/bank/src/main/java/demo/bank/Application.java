@@ -40,6 +40,8 @@ public class Application {
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
         builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
 
+        builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
+
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
         InMemoryStateMachinePersist inMemoryStateMachinePersist = new InMemoryStateMachinePersist();
