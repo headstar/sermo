@@ -1,5 +1,7 @@
 package com.headstartech.sermo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
@@ -31,7 +33,6 @@ public class USSDAppSupport {
         private final Function<E, String> eventToInput;
         private final E eventToken;
         private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
-        private Action<S, E> errorAction = null;
 
         public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Function<E, String> eventToInput, E eventToken) {
             this.stateConfigurer = stateConfigurer;
@@ -123,7 +124,7 @@ public class USSDAppSupport {
         }
 
         public Builder<S, E> withErrorAction(Action<S, E> action) {
-            compositeAction.setOnErrorAction(action);
+            compositeAction.setErrorAction(action);
             return this;
         }
 
@@ -157,32 +158,36 @@ public class USSDAppSupport {
             return Actions.errorCallingAction(action, compositeAction);
         }
 
-        private static class CompositeAction<S, E> implements Action<S, E> {
+    }
 
-            private final Action<S, E> setMachineOnErrorAction;
-            private Action<S, E> onErrorAction;
 
-            public CompositeAction(Action<S, E> setMachineOnErrorAction) {
-                this.setMachineOnErrorAction = setMachineOnErrorAction;
-            }
+    private static class CompositeAction<S, E> implements Action<S, E> {
 
-            @Override
-            public void execute(StateContext<S, E> context) {
-                setMachineOnErrorAction.execute(context);
-                if(onErrorAction != null) {
-                    try {
-                        onErrorAction.execute(context);
-                    } catch(Exception e) {
-                        // TODO: logging
-                    }
+        private static final Log log = LogFactory.getLog(CompositeAction.class);
+
+        private final Action<S, E> setMachineOnErrorAction;
+        private Action<S, E> errorAction;
+
+        public CompositeAction(Action<S, E> setMachineOnErrorAction) {
+            this.setMachineOnErrorAction = setMachineOnErrorAction;
+        }
+
+        @Override
+        public void execute(StateContext<S, E> context) {
+            setMachineOnErrorAction.execute(context);
+            if (errorAction != null) {
+                try {
+                    errorAction.execute(context);
+                } catch (Exception e) {
+                    log.warn("Error action threw exception:", e);
                 }
-            }
-
-            public void setOnErrorAction(Action<S, E> onErrorAction) {
-                this.onErrorAction = onErrorAction;
             }
         }
 
+        // TODO: test this setting to null!
+        public void setErrorAction(Action<S, E> errorAction) {
+            this.errorAction = errorAction;
+        }
     }
 
 
