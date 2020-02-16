@@ -7,7 +7,7 @@ public class MOInput {
 
     public static final MOInput INSTANCE = new MOInput();
 
-    private final String input;
+    protected final String input;
 
     public MOInput() {
         input = null;

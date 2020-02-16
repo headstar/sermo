@@ -1,17 +1,23 @@
 package com.headstartech.sermo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.config.StateMachineFactory;
+import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.statemachine.service.DefaultStateMachineService;
 import org.springframework.statemachine.service.StateMachineService;
+import org.springframework.statemachine.transition.Transition;
 
 /**
  * @author Per Johansson
  */
 public class USSDApplication<S, E> {
+
+    private static final Log log = LogFactory.getLog(USSDApplication.class);
 
     private final StateMachineService<S, E> stateMachineService;
     private final StateMachinePersister<S, E, String> stateMachinePersister;
@@ -28,25 +34,61 @@ public class USSDApplication<S, E> {
                 stateMachineDeleter);
     }
 
-    public String applyEvent(String machineId, E event) throws Exception {
+    public EventResult applyEvent(String machineId, E event) throws Exception {
         StateMachine<S, E> stateMachine = null;
-        boolean machineCompletedOrHasError = true;
+        EventResult eventResult = null;
         try {
             stateMachine = stateMachineService.acquireStateMachine(machineId);
+            stateMachine.addStateListener(new TransitionListener<>(stateMachine));
             stateMachine.sendEvent(event);
-            machineCompletedOrHasError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
             String output = stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
-            stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
-            return output;
+            if(!stateMachine.hasStateMachineError()) {
+                if (output != null) {
+                    stateMachine.getExtendedState().getVariables().put(ExtendedStateKeys.LAST_OUTPUT_KEY, output);
+                } else {
+                    String lastOutput = stateMachine.getExtendedState().get(ExtendedStateKeys.LAST_OUTPUT_KEY, String.class);
+                    if (lastOutput != null) {
+                        log.debug("No output set for event, using last output: machineId=" + machineId + ", lastOutput=\n" + lastOutput);
+                        output = lastOutput;
+                    }
+                }
+                stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
+
+                if(stateMachine.isComplete()) {
+                    eventResult = EventResult.ofApplicationCompleted(output);
+                } else {
+                    eventResult = EventResult.ofOutput(output);
+                }
+            } else {
+                eventResult = EventResult.ofApplicationError(output);
+            }
         } finally {
+            // releaseStateMachine() call below stops machine -> stateMachine.isComplete() = true
+            boolean isCompleteOrHasStateMachineError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
             stateMachineService.releaseStateMachine(machineId);
             if(stateMachine != null) {
-                if(machineCompletedOrHasError) {
+                if(isCompleteOrHasStateMachineError) {
                     stateMachineDeleter.delete(machineId);
                 } else {
                     stateMachinePersister.persist(stateMachine, machineId);
                 }
             }
+        }
+        return eventResult;
+    }
+
+    private static class TransitionListener<S, E> extends StateMachineListenerAdapter<S, E> {
+
+        private final StateMachine<S, E> stateMachine;
+
+        public TransitionListener(StateMachine<S, E> stateMachine) {
+            this.stateMachine = stateMachine;
+        }
+
+        @Override
+        public void transition(Transition<S, E> transition) {
+            log.debug("Transition triggered, clearing last output");
+            stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.LAST_OUTPUT_KEY);
         }
     }
 }

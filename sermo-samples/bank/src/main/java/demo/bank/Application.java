@@ -7,7 +7,9 @@ import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Application {
@@ -51,27 +53,19 @@ public class Application {
 
         String msisdn = "888888";
 
-        String result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("111", msisdn));
-        System.out.println(result);
-
-        result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("1", msisdn));
-        System.out.println(result);
-
-        result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("0", msisdn));
-        System.out.println(result);
-
-        result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("0", msisdn));
-        System.out.println(result);
-
-		result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("#", msisdn));
-		System.out.println(result);
-
-		result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("1", msisdn));
-		System.out.println(result);
-
-		result = ussdApplication.applyEvent(msisdn, new SubscriberEvent("1", msisdn));
-		System.out.println(result);
-
+        List<String> inputs = Arrays.asList("111", "1", "0", "0", "#", "1", "1");
+        for(int i=0; i<inputs.size(); ++i) {
+            EventResult result = ussdApplication.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
+            if(result.isApplicationError()) {
+                System.out.println("Internal error\n" + result.getOutput().orElse(""));
+                break;
+            } else {
+                System.out.println(result.getOutput());
+            }
+            if(result.isApplicationCompleted()) {
+                break;
+            }
+        }
 	}
 
     private static class Listener extends StateMachineListenerAdapter<States, SubscriberEvent> {
@@ -102,7 +96,7 @@ public class Application {
         }
 
         @Override
-        public void delete(String contextObj) throws Exception {
+        public void delete(String contextObj) {
             contexts.remove(contextObj);
         }
     }

@@ -2,6 +2,8 @@ package com.headstartech.sermo;
 
 import com.headstartech.sermo.MOInput;
 
+import java.util.StringJoiner;
+
 /**
  * @author Per Johansson
  */
@@ -20,5 +22,13 @@ public class SubscriberEvent extends MOInput {
 
     public String getMsisdn() {
         return msisdn;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", SubscriberEvent.class.getSimpleName() + "[", "]")
+                .add("msisdn='" + msisdn + "'")
+                .add("input='" + input + "'")
+                .toString();
     }
 }
