@@ -3,13 +3,10 @@ package demo.bank;
 import com.headstartech.sermo.*;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.StateMachineContext;
-import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 public class Application {
@@ -45,11 +42,9 @@ public class Application {
 
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
-        InMemoryStateMachinePersist<States, SubscriberEvent> inMemoryStateMachinePersist = new InMemoryStateMachinePersist<>();
-        StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist =  inMemoryStateMachinePersist;
-        StateMachineDeleter<String> stateMachineDeleter = inMemoryStateMachinePersist;
+        ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist = new InMemoryStateMachinePersist<>();
 
-        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(stateMachineFactoryBuilder.build(), stateMachinePersist, stateMachineDeleter);
+        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(stateMachineFactoryBuilder.build(), stateMachinePersist);
 
         String msisdn = "888888";
 

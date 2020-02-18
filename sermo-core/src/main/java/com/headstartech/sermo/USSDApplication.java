@@ -3,7 +3,6 @@ package com.headstartech.sermo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
@@ -21,17 +20,16 @@ public class USSDApplication<S, E> {
 
     private final StateMachineService<S, E> stateMachineService;
     private final StateMachinePersister<S, E, String> stateMachinePersister;
-    private final StateMachineDeleter<String> stateMachineDeleter;
+    private final ExtendedStateMachinePersist<S, E, String> stateMachinePersist;
 
-    public USSDApplication(StateMachineService<S, E> stateMachineService, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
+    public USSDApplication(StateMachineService<S, E> stateMachineService, StateMachinePersister<S, E, String> stateMachinePersister, ExtendedStateMachinePersist<S, E, String> stateMachinePersist) {
         this.stateMachineService = stateMachineService;
         this.stateMachinePersister = stateMachinePersister;
-        this.stateMachineDeleter = stateMachineDeleter;
+        this.stateMachinePersist = stateMachinePersist;
     }
 
-    public USSDApplication(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
-        this(new DefaultStateMachineService<>(stateMachineFactory, stateMachinePersist), new DefaultStateMachinePersister<>(stateMachinePersist),
-                stateMachineDeleter);
+    public USSDApplication(StateMachineFactory<S, E> stateMachineFactory, ExtendedStateMachinePersist<S, E, String> stateMachinePersist) {
+        this(new DefaultStateMachineService<>(stateMachineFactory, stateMachinePersist), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
     }
 
     public EventResult applyEvent(String machineId, E event) throws Exception {
@@ -68,7 +66,7 @@ public class USSDApplication<S, E> {
             stateMachineService.releaseStateMachine(machineId);
             if(stateMachine != null) {
                 if(isCompleteOrHasStateMachineError) {
-                    stateMachineDeleter.delete(machineId);
+                    stateMachinePersist.delete(machineId);
                 } else {
                     stateMachinePersister.persist(stateMachine, machineId);
                 }
