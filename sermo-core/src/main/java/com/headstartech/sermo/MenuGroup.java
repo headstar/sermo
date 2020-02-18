@@ -1,7 +1,9 @@
 package com.headstartech.sermo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Per Johansson
@@ -11,7 +13,8 @@ public class MenuGroup implements ScreenBlock {
     private final List<MenuItem> menuItems;
 
     public MenuGroup(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+        Objects.requireNonNull(menuItems, "menuItems must be non-null");
+        this.menuItems = Collections.unmodifiableList(menuItems);
     }
 
     public List<MenuItem> getMenuItems() {
@@ -21,6 +24,19 @@ public class MenuGroup implements ScreenBlock {
     @Override
     public void accept(ScreenBlockVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MenuGroup menuGroup = (MenuGroup) o;
+        return menuItems.equals(menuGroup.menuItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(menuItems);
     }
 
     public static Builder builder() {
