@@ -8,8 +8,8 @@ import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 public class Application {
@@ -45,7 +45,7 @@ public class Application {
 
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
-        InMemoryStateMachinePersist inMemoryStateMachinePersist = new InMemoryStateMachinePersist();
+        InMemoryStateMachinePersist<States, SubscriberEvent> inMemoryStateMachinePersist = new InMemoryStateMachinePersist<>();
         StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist =  inMemoryStateMachinePersist;
         StateMachineDeleter<String> stateMachineDeleter = inMemoryStateMachinePersist;
 
@@ -78,26 +78,6 @@ public class Application {
         @Override
         public void stateMachineError(StateMachine<States, SubscriberEvent> stateMachine, Exception exception) {
             System.out.println("Machine error");
-        }
-    }
-
-    static class InMemoryStateMachinePersist implements StateMachinePersist<States, SubscriberEvent, String>, StateMachineDeleter<String> {
-
-        private final HashMap<String, StateMachineContext<States, SubscriberEvent>> contexts = new HashMap<>();
-
-        @Override
-        public void write(StateMachineContext<States, SubscriberEvent> context, String contextObj) throws Exception {
-            contexts.put(contextObj, context);
-        }
-
-        @Override
-        public StateMachineContext<States, SubscriberEvent> read(String contextObj) throws Exception {
-            return contexts.get(contextObj);
-        }
-
-        @Override
-        public void delete(String contextObj) {
-            contexts.remove(contextObj);
         }
     }
 
