@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDAppSupport {
+public class USSDApplicationBuilder {
 
-    public static <S, E extends MOInput> USSDAppSupport.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDAppSupport.Builder<S, E>(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), (e) -> e.getInput(), clazz.newInstance());
+    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), (e) -> e.getInput(), clazz.newInstance());
     }
 
-    public static <S, E extends MOInput> USSDAppSupport.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDAppSupport.Builder<S, E>(stateConfigurer, transitionConfigurer, (e) -> e.getInput(), clazz.newInstance());
+    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+        return new USSDApplicationBuilder.Builder<S, E>(stateConfigurer, transitionConfigurer, (e) -> e.getInput(), clazz.newInstance());
     }
 
     public static class Builder<S, E> {
