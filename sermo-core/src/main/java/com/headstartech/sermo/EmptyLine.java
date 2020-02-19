@@ -5,7 +5,7 @@ package com.headstartech.sermo;
  */
 public class EmptyLine  implements ScreenBlock {
 
-    private EmptyLine INSTANCE = new EmptyLine();
+    public static final EmptyLine INSTANCE = new EmptyLine();
 
     private EmptyLine() {}
 

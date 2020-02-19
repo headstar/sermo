@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>USSD Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<div>
+    <textarea th:text="${screen}" rows="10" cols="15"/>
+</div>
+<form action="#" data-th-action="@{/input}" data-th-object="${model}" method="post">
+    <div>
+        <label th:text="MSISDN" for="msisdn"/>
+        <input id="msisdn" type="text" name="msisdn" th:value="${msisdn}"/>
+        <label th:text="Input" for="input"/>
+        <input id="input" type="text" name="input"/>
+    </div>
+
+    <button type="submit">Send</button>
+</form>
+</body>
+</html>

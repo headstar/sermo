@@ -14,17 +14,17 @@ public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, Subs
     @Override
     protected PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
         List<MenuItem> items = new ArrayList<>();
-        items.add(new MenuItem("Account A", Transitions.ACCOUNT_DETAIL, "a"));
-        items.add(new MenuItem("Account B", Transitions.ACCOUNT_DETAIL, "b"));
-        items.add(new MenuItem("Account C", Transitions.ACCOUNT_DETAIL, "c"));
-        items.add(new MenuItem("Account D", Transitions.ACCOUNT_DETAIL, "d"));
-        items.add(new MenuItem("Account E", Transitions.ACCOUNT_DETAIL, "e"));
+        items.add(new MenuItem("Account A", Transitions.ACCOUNT_DETAIL, AccountDetailsDTO.of("A", 7)));
+        items.add(new MenuItem("Account B", Transitions.ACCOUNT_DETAIL, AccountDetailsDTO.of("B", 17)));
+        items.add(new MenuItem("Account C", Transitions.ACCOUNT_DETAIL, AccountDetailsDTO.of("C", 15)));
+        items.add(new MenuItem("Account D", Transitions.ACCOUNT_DETAIL, AccountDetailsDTO.of("D", 21)));
+        items.add(new MenuItem("Account E", Transitions.ACCOUNT_DETAIL, AccountDetailsDTO.of("E", 25)));
         return new PagedScreenSetup(items, getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null, 2);
     }
 
 
     protected ScreenBlock getHeaderBlock() {
-        return new Text("Accounts for 1234");
+        return new Text("Accounts");
     }
 
     protected NextPageMenuItem getNextScreenItem() {

@@ -46,6 +46,8 @@ public class Application {
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
         builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
+        builder.withScreenTransition(States.ACCOUNT_DETAILS, States.ROOT, Transitions.ROOT);
+        builder.withScreenTransition(States.STATEMENT, States.ROOT, Transitions.ROOT);
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
