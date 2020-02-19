@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @SpringBootApplication
@@ -13,6 +15,9 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
+    private static final String mainMenuShortCode = "*8444#";
+    private static final String statementShortCode = "*8444*11#";
 
     @Bean
     public ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist() {
@@ -39,8 +44,8 @@ public class Application {
                 .withEndState(endScreen);
 
         builder.withInitialState(States.INITIAL);
-        builder.withShortCodeTransition(States.ROOT, Pattern.compile("111"));
-        builder.withShortCodeTransition(States.STATEMENT, Pattern.compile("222"));
+        builder.withShortCodeTransition(States.ROOT, Pattern.compile(Pattern.quote(mainMenuShortCode)));
+        builder.withShortCodeTransition(States.STATEMENT, Pattern.compile(Pattern.quote(statementShortCode)));
 
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
@@ -52,6 +57,16 @@ public class Application {
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
         return new USSDApplication<>(stateMachineFactoryBuilder.build(), extendedStateMachinePersist);
+    }
+
+    @Bean
+    public List<ShortCode> shortCodes() {
+        List<ShortCode> shortCodes = new ArrayList<>();
+
+        shortCodes.add(new ShortCode(mainMenuShortCode, "Main menu"));
+        shortCodes.add(new ShortCode(statementShortCode, "Statement"));
+
+        return shortCodes;
     }
 
 }

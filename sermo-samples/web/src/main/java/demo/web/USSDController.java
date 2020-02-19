@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * @author Per Johansson
  */
@@ -19,19 +21,16 @@ public class USSDController {
     @Autowired
     private USSDApplication<States, SubscriberEvent> ussdApplication;
 
+    @Autowired
+    private List<ShortCode> shortCodes;
 
     @GetMapping("/")
-    public String home() {
-        return "redirect:/input";
-    }
-
-    @GetMapping("/input")
-    public String input() {
+    public String input(Model model) {
+        model.addAttribute("shortCodes", shortCodes);
         return "ussdapp";
     }
 
-
-    @RequestMapping("/input")
+    @RequestMapping("/")
     public String input(@RequestParam("msisdn") String msisdn, @RequestParam("input") String input , Model model) throws Exception {
 
         EventResult eventResult = ussdApplication.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
@@ -44,9 +43,11 @@ public class USSDController {
             }
             model.addAttribute("msisdn", "");
         } else {
-            model.addAttribute("screen", eventResult.getOutput().orElse("ERROR"));
+            model.addAttribute("screen", eventResult.getOutput().orElse(""));
             model.addAttribute("msisdn",  msisdn);
         }
+
+        model.addAttribute("shortCodes", shortCodes);
 
         return "ussdapp";
     }

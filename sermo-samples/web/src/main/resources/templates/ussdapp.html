@@ -6,18 +6,34 @@
 </head>
 <body>
 
-<div>
-    <textarea th:text="${screen}" rows="10" cols="15"/>
-</div>
-<form action="#" data-th-action="@{/input}" data-th-object="${model}" method="post">
     <div>
-        <label th:text="MSISDN" for="msisdn"/>
-        <input id="msisdn" type="text" name="msisdn" th:value="${msisdn}"/>
-        <label th:text="Input" for="input"/>
-        <input id="input" type="text" name="input"/>
+        <textarea th:text="${screen}" rows="10" cols="15"/>
     </div>
-
-    <button type="submit">Send</button>
-</form>
+    <form action="#" data-th-action="@{/}" data-th-object="${model}" method="post">
+        <table>
+            <tbody>
+                <tr>
+                    <td><label th:text="MSISDN" for="msisdn"/></td>
+                    <td><input id="msisdn" type="text" name="msisdn" th:value="${msisdn}"/></td>
+                </tr>
+                <tr>
+                    <td><label th:text="Input" for="input"/></td>
+                    <td><input id="input" type="text" name="input"/></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit">Send</button>
+    </form>
+    <div>
+        <p th:text="'Short codes'"/>
+        <table>
+            <tbody>
+                <tr th:each="sc : ${shortCodes}">
+                    <td><label th:text="${sc.shortCode}"></label></td>
+                    <td><label th:text="${sc.description}"></label></td>
+                 </tr>
+            <tbody/>
+        </table>
+    </div>
 </body>
 </html>
