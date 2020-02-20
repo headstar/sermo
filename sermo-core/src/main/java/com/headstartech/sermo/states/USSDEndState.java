@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.states;
 
 import org.springframework.statemachine.action.Action;
 

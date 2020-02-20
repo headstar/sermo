@@ -1,5 +1,7 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.guards;
 
+import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.screen.InputMap;
 import org.springframework.statemachine.StateContext;
 
 import java.util.function.Function;

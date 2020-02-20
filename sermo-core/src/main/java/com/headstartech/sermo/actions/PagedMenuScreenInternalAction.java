@@ -1,5 +1,9 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.actions;
 
+import com.headstartech.sermo.DefaultScreenSupport;
+import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.ExtendedStateSupport;
+import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.ScreenSupport;
 import org.springframework.statemachine.StateContext;

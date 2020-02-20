@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.guards;
 
 import org.springframework.statemachine.StateContext;
 

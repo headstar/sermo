@@ -1,6 +1,10 @@
 package demo.bank;
 
 import com.headstartech.sermo.*;
+import com.headstartech.sermo.actions.SetFixedOutputOnError;
+import com.headstartech.sermo.states.PagedUSSDState;
+import com.headstartech.sermo.states.USSDEndState;
+import com.headstartech.sermo.states.USSDState;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;

@@ -1,5 +1,6 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.states;
 
+import com.headstartech.sermo.actions.MenuScreenExitAction;
 import org.springframework.statemachine.action.Action;
 
 import java.util.ArrayList;

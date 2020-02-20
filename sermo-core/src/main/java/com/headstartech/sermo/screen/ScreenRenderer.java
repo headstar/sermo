@@ -1,7 +1,5 @@
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.InputMap;
-
 /**
  * @author Per Johansson
  */

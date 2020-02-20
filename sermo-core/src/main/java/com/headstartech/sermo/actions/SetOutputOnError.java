@@ -1,5 +1,6 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.actions;
 
+import com.headstartech.sermo.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 

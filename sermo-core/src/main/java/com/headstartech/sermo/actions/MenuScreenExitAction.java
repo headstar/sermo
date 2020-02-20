@@ -1,5 +1,8 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.actions;
 
+import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.screen.InputMap;
+import com.headstartech.sermo.MOInput;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;

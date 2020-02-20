@@ -1,12 +1,9 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.states;
 
+import com.headstartech.sermo.actions.PagedMenuScreenInternalAction;
 import org.springframework.statemachine.action.Action;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Per Johansson

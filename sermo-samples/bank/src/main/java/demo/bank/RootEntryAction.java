@@ -1,6 +1,7 @@
 package demo.bank;
 
 import com.headstartech.sermo.*;
+import com.headstartech.sermo.actions.MenuScreenEntryAction;
 import com.headstartech.sermo.screen.MenuGroup;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.Text;

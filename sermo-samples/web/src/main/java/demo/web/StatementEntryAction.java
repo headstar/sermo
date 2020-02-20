@@ -1,6 +1,7 @@
 package demo.web;
 
 import com.headstartech.sermo.*;
+import com.headstartech.sermo.actions.MenuScreenEntryAction;
 import com.headstartech.sermo.screen.EmptyLine;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.StaticMenuItem;
@@ -10,7 +11,7 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public class StatementEntryAction extends MenuScreenEntryAction<States, SubscriberEvent>  {
+public class StatementEntryAction extends MenuScreenEntryAction<States, SubscriberEvent> {
 
     @Override
     public void execute(StateContext<States, SubscriberEvent> context) {

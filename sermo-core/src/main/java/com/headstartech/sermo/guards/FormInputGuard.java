@@ -1,5 +1,6 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.guards;
 
+import com.headstartech.sermo.guards.InputGuardBase;
 import org.springframework.statemachine.StateContext;
 
 import java.util.function.Function;

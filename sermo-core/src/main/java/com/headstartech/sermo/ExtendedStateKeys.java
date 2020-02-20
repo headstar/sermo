@@ -1,5 +1,6 @@
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.screen.InputMap;
 import org.springframework.statemachine.ExtendedState;
 
 /**
@@ -19,7 +20,7 @@ public class ExtendedStateKeys {
 
     public static final String PAGED_SCREEN_KEY = "pagedScreen";
 
-    static InputMap getInputMap(ExtendedState extendedState) {
+    public static InputMap getInputMap(ExtendedState extendedState) {
         return extendedState.get(INPUT_MAP_KEY, InputMap.class);
     }
 }

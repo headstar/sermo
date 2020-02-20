@@ -1,6 +1,7 @@
 package demo.bank;
 
 import com.headstartech.sermo.*;
+import com.headstartech.sermo.actions.PagedMenuScreenEntryAction;
 import com.headstartech.sermo.screen.*;
 import org.springframework.statemachine.StateContext;
 
