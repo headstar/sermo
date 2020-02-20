@@ -1,5 +1,6 @@
 package com.headstartech.sermo.states;
 
+import com.headstartech.sermo.MOInput;
 import org.springframework.statemachine.action.Action;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDEndState<S, E> {
+public class USSDEndState<S, E> extends MOInput {
 
     private final S id;
     private final List<Action<S, E>> entryActions;

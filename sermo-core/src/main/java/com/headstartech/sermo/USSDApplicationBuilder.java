@@ -18,7 +18,6 @@ import org.springframework.statemachine.guard.Guard;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,26 +28,23 @@ import java.util.stream.Collectors;
 public class USSDApplicationBuilder {
 
     public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), (e) -> e.getInput(), clazz.newInstance());
+        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
-
     public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDApplicationBuilder.Builder<S, E>(stateConfigurer, transitionConfigurer, (e) -> e.getInput(), clazz.newInstance());
+        return new USSDApplicationBuilder.Builder<S, E>(stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
-    public static class Builder<S, E> {
+    public static class Builder<S, E extends MOInput> {
 
         private final StateConfigurer<S, E> stateConfigurer;
         private final StateMachineTransitionConfigurer<S, E> transitionConfigurer;
         private S initialState;
-        private final Function<E, String> eventToInput;
         private final E eventToken;
         private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
 
-        public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Function<E, String> eventToInput, E eventToken) {
+        public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, E eventToken) {
             this.stateConfigurer = stateConfigurer;
             this.transitionConfigurer = transitionConfigurer;
-            this.eventToInput = eventToInput;
             this.eventToken = eventToken;
         }
 
@@ -80,7 +76,7 @@ public class USSDApplicationBuilder {
                     .source(initialState)
                     .target(to)
                     .event(eventToken)
-                    .guard(new InitialTransitionGuard<>(eventToInput, shortCode));
+                    .guard(new InitialTransitionGuard<>(shortCode));
 
             return this;
         }
@@ -91,14 +87,14 @@ public class USSDApplicationBuilder {
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(eventToInput, predicate));
+                    .guard(new FormInputGuard<>(predicate));
 
             transitionConfigurer
                     .withExternal()
                     .source(from)
                     .target(from)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(eventToInput, predicate.negate()));
+                    .guard(new FormInputGuard<>(predicate.negate()));
             return this;
         }
 
@@ -129,7 +125,7 @@ public class USSDApplicationBuilder {
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(eventToInput, transition));
+                    .guard(screenTransitionGuard(transition));
 
             return this;
         }
@@ -144,20 +140,20 @@ public class USSDApplicationBuilder {
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.NEXT_PAGE_KEY))
+                    .guard(screenTransitionGuard(ExtendedStateKeys.NEXT_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(eventToInput, ExtendedStateKeys.PREVIOUS_PAGE_KEY))
+                    .guard(screenTransitionGuard(ExtendedStateKeys.PREVIOUS_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
             return this;
         }
 
-        private Guard<S, E> screenTransitionGuard(Function<E, String> eventToInput, Object transition) {
-            return new ScreenTransitionGuard<>(eventToInput, transition);
+        private Guard<S, E> screenTransitionGuard(Object transition) {
+            return new ScreenTransitionGuard<>(transition);
         }
 
         private Collection<Action<S, E>> wrapWithErrorActions(Collection<Action<S, E>> actions) {

@@ -1,24 +1,21 @@
 package com.headstartech.sermo.guards;
 
+
+import com.headstartech.sermo.MOInput;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
-
-import java.util.function.Function;
 
 /**
  * @author Per Johansson
  */
-public abstract class InputGuardBase<S, E> implements Guard<S, E> {
-
-    private final Function<E, String> eventToInput;
-
-    public InputGuardBase(Function<E, String> eventToInput) {
-        this.eventToInput = eventToInput;
-    }
+public abstract class GuardBase<S, E extends MOInput> implements Guard<S, E> {
 
     @Override
     public boolean evaluate(StateContext<S, E> context) {
-        return doEvaluate(context, eventToInput.apply(context.getEvent()));
+        if(context.getEvent() != null && context.getEvent().getInput() != null) {
+            return doEvaluate(context,  context.getEvent().getInput());
+        }
+        return false;
     }
 
     protected abstract boolean doEvaluate(StateContext<S, E> context, String input);

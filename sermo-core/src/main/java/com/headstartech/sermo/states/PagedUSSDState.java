@@ -1,5 +1,6 @@
 package com.headstartech.sermo.states;
 
+import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.actions.PagedMenuScreenInternalAction;
 import org.springframework.statemachine.action.Action;
 
@@ -8,7 +9,7 @@ import java.util.Collection;
 /**
  * @author Per Johansson
  */
-public class PagedUSSDState<S, E> extends USSDState<S, E> {
+public class PagedUSSDState<S, E extends MOInput> extends USSDState<S, E> {
 
     public PagedUSSDState(S id, Action<S, E> entryAction) {
         super(id, entryAction);

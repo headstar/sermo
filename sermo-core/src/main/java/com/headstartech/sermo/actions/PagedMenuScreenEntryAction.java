@@ -2,6 +2,7 @@ package com.headstartech.sermo.actions;
 
 import com.headstartech.sermo.DefaultScreenSupport;
 import com.headstartech.sermo.ExtendedStateSupport;
+import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.PagedScreenSetup;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.ScreenSupport;
@@ -10,7 +11,7 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public abstract class PagedMenuScreenEntryAction<S, E> extends MenuScreenEntryAction<S, E> {
+public abstract class PagedMenuScreenEntryAction<S, E extends MOInput> extends MenuScreenEntryAction<S, E> {
 
     private final ScreenSupport screenSupport;
 

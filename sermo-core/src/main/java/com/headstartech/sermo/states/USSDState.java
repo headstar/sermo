@@ -1,5 +1,6 @@
 package com.headstartech.sermo.states;
 
+import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.actions.MenuScreenExitAction;
 import org.springframework.statemachine.action.Action;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDState<S, E> {
+public class USSDState<S, E extends MOInput> {
 
     private final S id;
     private final List<Action<S, E>> entryActions;
