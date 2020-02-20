@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.screen;
 
 import org.springframework.statemachine.ExtendedState;
 

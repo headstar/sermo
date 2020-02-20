@@ -1,6 +1,10 @@
 package demo.web;
 
 import com.headstartech.sermo.*;
+import com.headstartech.sermo.screen.EmptyLine;
+import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.screen.StaticMenuItem;
+import com.headstartech.sermo.screen.Text;
 import org.springframework.statemachine.StateContext;
 
 /**

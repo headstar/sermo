@@ -1,4 +1,7 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.screen;
+
+import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.screen.StaticMenuItem;
 
 /**
  * @author Per Johansson

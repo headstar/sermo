@@ -1,5 +1,8 @@
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.screen.PagedScreenSetup;
+import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.screen.ScreenSupport;
 import org.springframework.statemachine.StateContext;
 
 /**

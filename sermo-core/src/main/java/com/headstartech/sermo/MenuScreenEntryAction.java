@@ -1,5 +1,6 @@
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.screen.Screen;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.action.Action;
 

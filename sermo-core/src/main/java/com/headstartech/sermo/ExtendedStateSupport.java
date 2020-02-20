@@ -1,5 +1,6 @@
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.screen.PagedScreenSetup;
 import org.springframework.statemachine.ExtendedState;
 
 import java.util.Optional;

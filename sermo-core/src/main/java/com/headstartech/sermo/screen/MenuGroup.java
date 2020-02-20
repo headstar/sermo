@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.screen;
 
 import java.util.ArrayList;
 import java.util.Collections;

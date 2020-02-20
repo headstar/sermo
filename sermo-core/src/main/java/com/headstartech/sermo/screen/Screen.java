@@ -1,4 +1,7 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.screen;
+
+import com.headstartech.sermo.DefaultScreenRenderer;
+import com.headstartech.sermo.InputMap;
 
 import java.util.ArrayList;
 import java.util.List;
