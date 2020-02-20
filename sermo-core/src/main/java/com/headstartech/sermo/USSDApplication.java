@@ -37,6 +37,7 @@ public class USSDApplication<S, E> {
         EventResult eventResult = null;
         try {
             stateMachine = stateMachineService.acquireStateMachine(machineId);
+            // TODO: listener added multiple times to the state machine instance
             stateMachine.addStateListener(new TransitionListener<>(stateMachine));
             stateMachine.sendEvent(event);
             String output = stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
