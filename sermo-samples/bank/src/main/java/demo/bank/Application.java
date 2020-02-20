@@ -47,8 +47,10 @@ public class Application {
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
         ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist = new InMemoryStateMachinePersist<>();
+        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(stateMachineFactoryBuilder.build(),
+                new DefaultExtendedStateMachinePersister<>(stateMachinePersist));
 
-        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(stateMachineFactoryBuilder.build(), stateMachinePersist);
+        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);
 
         String msisdn = "888888";
 

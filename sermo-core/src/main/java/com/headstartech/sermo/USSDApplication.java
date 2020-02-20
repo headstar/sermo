@@ -3,40 +3,27 @@ package com.headstartech.sermo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
-import org.springframework.statemachine.persist.DefaultStateMachinePersister;
-import org.springframework.statemachine.persist.StateMachinePersister;
-import org.springframework.statemachine.service.DefaultStateMachineService;
-import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.statemachine.transition.Transition;
 
 /**
  * @author Per Johansson
  */
-public class USSDApplication<S, E> {
+public class USSDApplication<S, E extends MOInput> {
 
     private static final Log log = LogFactory.getLog(USSDApplication.class);
 
-    private final StateMachineService<S, E> stateMachineService;
-    private final StateMachinePersister<S, E, String> stateMachinePersister;
-    private final ExtendedStateMachinePersist<S, E, String> stateMachinePersist;
+    private final USSDStateMachineService<S, E> ussdStateMachineService;
 
-    public USSDApplication(StateMachineService<S, E> stateMachineService, StateMachinePersister<S, E, String> stateMachinePersister, ExtendedStateMachinePersist<S, E, String> stateMachinePersist) {
-        this.stateMachineService = stateMachineService;
-        this.stateMachinePersister = stateMachinePersister;
-        this.stateMachinePersist = stateMachinePersist;
+    public USSDApplication(USSDStateMachineService<S, E> ussdStateMachineService) {
+        this.ussdStateMachineService = ussdStateMachineService;
     }
 
-    public USSDApplication(StateMachineFactory<S, E> stateMachineFactory, ExtendedStateMachinePersist<S, E, String> stateMachinePersist) {
-        this(new DefaultStateMachineService<>(stateMachineFactory, stateMachinePersist), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
-    }
-
-    public EventResult applyEvent(String machineId, E event) throws Exception {
+    public EventResult applyEvent(String machineId, E event) {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult = null;
         try {
-            stateMachine = stateMachineService.acquireStateMachine(machineId);
+            stateMachine = ussdStateMachineService.acquireStateMachine(machineId);
             // TODO: listener added multiple times to the state machine instance
             stateMachine.addStateListener(new TransitionListener<>(stateMachine));
             stateMachine.sendEvent(event);
@@ -62,16 +49,7 @@ public class USSDApplication<S, E> {
                 eventResult = EventResult.ofApplicationError(output);
             }
         } finally {
-            // releaseStateMachine() call below stops machine -> stateMachine.isComplete() = true
-            boolean isCompleteOrHasStateMachineError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
-            stateMachineService.releaseStateMachine(machineId);
-            if(stateMachine != null) {
-                if(isCompleteOrHasStateMachineError) {
-                    stateMachinePersist.delete(machineId);
-                } else {
-                    stateMachinePersister.persist(stateMachine, machineId);
-                }
-            }
+            ussdStateMachineService.releaseStateMachine(machineId, stateMachine);
         }
         return eventResult;
     }
