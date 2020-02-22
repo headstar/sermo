@@ -130,6 +130,17 @@ public class USSDApplicationBuilder {
             return this;
         }
 
+        public Builder<S, E> withScreenTransition(S from, S to, Object transitionId, Action<S, E> action) throws Exception {
+            transitionConfigurer
+                    .withExternal()
+                    .source(from)
+                    .target(to)
+                    .event(eventToken)
+                    .guard(screenTransitionGuard(transitionId))
+                    .action(action);
+            return this;
+        }
+
         public Builder<S, E> withErrorAction(Action<S, E> action) {
             compositeAction.setErrorAction(action);
             return this;
