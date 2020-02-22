@@ -119,13 +119,13 @@ public class USSDApplicationBuilder {
             return this;
         }
 
-        public Builder<S, E> withScreenTransition(S from, S to, Object transition) throws Exception {
+        public Builder<S, E> withScreenTransition(S from, S to, Object transitionId) throws Exception {
             transitionConfigurer
                     .withExternal()
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(transition));
+                    .guard(screenTransitionGuard(transitionId));
 
             return this;
         }
@@ -152,8 +152,8 @@ public class USSDApplicationBuilder {
             return this;
         }
 
-        private Guard<S, E> screenTransitionGuard(Object transition) {
-            return new ScreenTransitionGuard<>(transition);
+        private Guard<S, E> screenTransitionGuard(Object transitionId) {
+            return new ScreenTransitionGuard<>(transitionId);
         }
 
         private Collection<Action<S, E>> wrapWithErrorActions(Collection<Action<S, E>> actions) {

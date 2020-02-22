@@ -10,17 +10,17 @@ import org.springframework.statemachine.StateContext;
  */
 public class ScreenTransitionGuard<S, E extends MOInput> extends GuardBase<S, E> {
 
-    private final Object transitionName;
+    private final Object transitionId;
 
-    public ScreenTransitionGuard(Object transitionName) {
-        this.transitionName = transitionName;
+    public ScreenTransitionGuard(Object transitionId) {
+        this.transitionId = transitionId;
     }
 
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
         boolean guard = false;
         if(input != null) {
             InputMap inputMap = ExtendedStateKeys.getInputMap(context.getExtendedState());
-            if(inputMap != null && inputMap.hasTransitionForInput(transitionName, input)) {
+            if(inputMap != null && inputMap.hasTransitionForInput(transitionId, input)) {
                 guard = true;
             }
         }

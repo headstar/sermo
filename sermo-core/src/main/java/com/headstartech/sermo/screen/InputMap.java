@@ -17,8 +17,8 @@ public class InputMap {
         inputItemDataMap = new HashMap<>();
     }
 
-    public void addMapping(String input, Object transition, Object itemData) {
-        inputTransitionMap.put(input, transition);
+    public void addMapping(String input, Object transitionId, Object itemData) {
+        inputTransitionMap.put(input, transitionId);
         inputItemDataMap.put(input, itemData);
     }
 
@@ -26,8 +26,8 @@ public class InputMap {
         return Optional.ofNullable(inputItemDataMap.get(input));
     }
 
-    public boolean hasTransitionForInput(Object transition, String input) {
-        return transition.equals(inputTransitionMap.get(input));
+    public boolean hasTransitionForInput(Object transitionId, String input) {
+        return transitionId.equals(inputTransitionMap.get(input));
     }
 
     public Optional<Object> getTransition(String input) {

@@ -8,23 +8,23 @@ import java.util.Objects;
 public class MenuItem {
 
     private final String label;
-    private final Object transition;
+    private final Object transitionId;
     private final Object itemData;
 
-    public MenuItem(String label, Object transition, Object itemData) {
+    public MenuItem(String label, Object transitionId, Object itemData) {
         Objects.requireNonNull(label, "label must be non-null");
-        Objects.requireNonNull(transition, "transition must be non-null");
-        this.transition = transition;
+        Objects.requireNonNull(transitionId, "transitionId must be non-null");
+        this.transitionId = transitionId;
         this.label = label;
         this.itemData = itemData;
     }
 
-    public MenuItem(String label, Object transition) {
-        this(label, transition, null);
+    public MenuItem(String label, Object transitionId) {
+        this(label, transitionId, null);
     }
 
     public Object getTransition() {
-        return transition;
+        return transitionId;
     }
 
     public String getLabel() {
@@ -41,12 +41,12 @@ public class MenuItem {
         if (o == null || getClass() != o.getClass()) return false;
         MenuItem menuItem = (MenuItem) o;
         return label.equals(menuItem.label) &&
-                transition.equals(menuItem.transition) &&
+                transitionId.equals(menuItem.transitionId) &&
                 Objects.equals(itemData, menuItem.itemData);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(label, transition, itemData);
+        return Objects.hash(label, transitionId, itemData);
     }
 }
