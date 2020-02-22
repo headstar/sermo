@@ -137,7 +137,7 @@ public class USSDApplicationBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(screenTransitionGuard(transitionId))
-                    .action(action);
+                    .action(wrapWithErrorActions(action));
             return this;
         }
 
