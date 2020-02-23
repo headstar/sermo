@@ -47,7 +47,7 @@ public class Application {
         stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
 
         ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist = new InMemoryStateMachinePersist<>();
-        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(stateMachineFactoryBuilder.build(),
+        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultExtendedStateMachinePersister<>(stateMachinePersist));
 
         USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);

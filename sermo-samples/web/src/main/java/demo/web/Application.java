@@ -60,7 +60,7 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(stateMachineFactoryBuilder.build(),
+        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultExtendedStateMachinePersister<>(extendedStateMachinePersist));
 
         return new USSDApplication<>(ussdStateMachineService);

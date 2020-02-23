@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineException;
-import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.service.DefaultStateMachineService;
 
 /**
@@ -14,24 +13,20 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
 
     private final static Log log = LogFactory.getLog(DefaultStateMachineService.class);
 
-    private final StateMachineFactory<S, E> stateMachineFactory;
+    private final StateMachinePool<S, E> stateMachinePool;
     private final ExtendedStateMachinePersister<S, E, String> stateMachinePersister;
 
-    public DefaultUssdStateMachineService(StateMachineFactory<S, E> stateMachineFactory, ExtendedStateMachinePersister<S, E, String> stateMachinePersister) {
-        this.stateMachineFactory = stateMachineFactory;
+    public DefaultUssdStateMachineService(StateMachinePool<S, E> stateMachinePool, ExtendedStateMachinePersister<S, E, String> stateMachinePersister) {
+        this.stateMachinePool = stateMachinePool;
         this.stateMachinePersister = stateMachinePersister;
     }
 
     @Override
     public StateMachine<S, E> acquireStateMachine(String machineId) {
-        log.info("Acquiring machine with id " + machineId);
-        StateMachine<S, E> stateMachine;
-
-        // TODO: how to handle concurrency?
-
-        log.info("Getting new machine from factory with id " + machineId);
-        stateMachine = stateMachineFactory.getStateMachine(machineId);
+        log.info("Acquiring state machine");
+        StateMachine<S, E> stateMachine = stateMachinePool.getStateMachine();
         try {
+            log.info("Restoring state machine machine state with machine id " + machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
             log.error("Error handling context", e);
@@ -53,6 +48,8 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
         } catch (Exception e) {
             log.error("Error handling context", e);
             throw new StateMachineException("Unable to persist context to store", e);
+        } finally {
+            stateMachinePool.returnStateMachine(stateMachine);
         }
     }
 
