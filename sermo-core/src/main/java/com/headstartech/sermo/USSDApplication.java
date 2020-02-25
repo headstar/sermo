@@ -3,6 +3,7 @@ package com.headstartech.sermo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.transition.Transition;
 
@@ -22,10 +23,11 @@ public class USSDApplication<S, E extends MOInput> {
     public EventResult applyEvent(String machineId, E event) {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult = null;
+        StateMachineListener<S, E> transitionListener = null;
         try {
             stateMachine = ussdStateMachineService.acquireStateMachine(machineId);
-            // TODO: listener added multiple times to the state machine instance
-            stateMachine.addStateListener(new TransitionListener<>(stateMachine));
+            transitionListener = new TransitionListener<>(stateMachine);
+            stateMachine.addStateListener(transitionListener);
             stateMachine.sendEvent(event);
             String output = stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
             if(!stateMachine.hasStateMachineError()) {
@@ -49,7 +51,12 @@ public class USSDApplication<S, E extends MOInput> {
                 eventResult = EventResult.ofApplicationError(output);
             }
         } finally {
-            ussdStateMachineService.releaseStateMachine(machineId, stateMachine);
+            if(stateMachine != null) {
+                if(transitionListener != null) {
+                    stateMachine.removeStateListener(transitionListener);
+                }
+                ussdStateMachineService.releaseStateMachine(machineId, stateMachine);
+            }
         }
         return eventResult;
     }
