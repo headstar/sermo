@@ -1,5 +1,7 @@
 package com.headstartech.sermo;
 
+import org.springframework.statemachine.trigger.TriggerContext;
+
 /**
  * @author Per Johansson
  */
@@ -26,10 +28,15 @@ public class MOInput {
         return 17;
     }
 
+    /**
+     * Sending any event extending this class to the state machine will result in {@link org.springframework.statemachine.trigger.EventTrigger#evaluate(TriggerContext)} returning true
+     * and configured {@link org.springframework.statemachine.guard.Guard}s will control if any transition will be executed.
+     *
+     */
     @Override
     public final boolean equals(Object o) {
         return MOInput.class.isAssignableFrom(o.getClass());
-    }  // rely on guards
+    }
 
     @Override
     public String toString() {
