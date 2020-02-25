@@ -1,26 +1,24 @@
 package demo.web;
 
-import com.headstartech.sermo.*;
+import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.actions.MenuScreenEntryAction;
-import com.headstartech.sermo.screen.*;
+import com.headstartech.sermo.screen.EmptyLine;
+import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.screen.StaticMenuItem;
+import com.headstartech.sermo.screen.Text;
 import org.springframework.statemachine.StateContext;
 
 /**
  * @author Per Johansson
  */
-public class StatementEntryAction extends MenuScreenEntryAction<States, SubscriberEvent> {
+public class StatementAnnualEntryAction extends MenuScreenEntryAction<States, SubscriberEvent> {
 
     @Override
     public void execute(StateContext<States, SubscriberEvent> context) {
         Screen.Builder screenBuilder =  Screen.builder();
 
-        screenBuilder.withScreenBlock(new Text("Statement"));
+        screenBuilder.withScreenBlock(new Text("Statement Annual"));
         screenBuilder.withScreenBlock(EmptyLine.INSTANCE);
-
-        MenuGroup statements = MenuGroup.builder()
-                .withMenuItem("Detail", Transitions.STATEMENT_CHOICE).build();
-
-        screenBuilder.withScreenBlock(statements);
 
         screenBuilder.withScreenBlock(new StaticMenuItem("#", "Main menu", Transitions.ROOT));
 

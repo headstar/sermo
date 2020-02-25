@@ -13,10 +13,12 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.config.configurers.ChoiceTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -69,6 +71,22 @@ public class USSDApplicationBuilder {
             stateConfigurer.end(state.getId());
             return this;
         }
+
+        public Builder<S, E> withChoice(S s, S defaultTarget, ChoiceOption<S, E>... options) throws Exception {
+            stateConfigurer.choice(s);
+            ChoiceTransitionConfigurer<S, E> choiceTransitionConfigurer = transitionConfigurer.withChoice();
+            choiceTransitionConfigurer.source(s);
+            Arrays.stream(options).forEach(e -> {
+                if(e.getAction() != null) {
+                    choiceTransitionConfigurer.then(e.getTarget(), e.getGuard(), wrapWithErrorActions(e.getAction()));
+                 } else {
+                    choiceTransitionConfigurer.then(e.getTarget(), e.getGuard());
+                }
+            });
+            choiceTransitionConfigurer.last(defaultTarget);
+            return this;
+        }
+
 
         public Builder<S, E> withShortCodeTransition(S to, Pattern shortCode) throws Exception {
             transitionConfigurer

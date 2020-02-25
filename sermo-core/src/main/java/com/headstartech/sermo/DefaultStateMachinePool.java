@@ -9,16 +9,14 @@ import org.springframework.statemachine.config.StateMachineFactory;
 public class DefaultStateMachinePool<S, E> implements StateMachinePool<S,E> {
 
     private final StateMachineFactory<S, E> stateMachineFactory;
-    private final StateMachine<S, E> stateMachine;
 
     public DefaultStateMachinePool(StateMachineFactory<S, E> stateMachineFactory) {
         this.stateMachineFactory = stateMachineFactory;
-        this.stateMachine = stateMachineFactory.getStateMachine();
     }
 
     @Override
     public StateMachine<S, E> getStateMachine() {
-        return stateMachine;
+        return stateMachineFactory.getStateMachine();
     }
 
     @Override

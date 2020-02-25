@@ -37,6 +37,9 @@ public class Application {
         USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
         USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
         USSDState<States, SubscriberEvent> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
+        USSDState<States, SubscriberEvent> statementMonthlyScreen = new USSDState<>(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
+        USSDState<States, SubscriberEvent> statementAnnualScreen = new USSDState<>(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
+
         USSDState<States, SubscriberEvent> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
         USSDEndState<States, SubscriberEvent> endScreen = new USSDEndState<>(States.END);
 
@@ -45,7 +48,10 @@ public class Application {
                 .withState(accountsScreen)
                 .withState(statementScreen)
                 .withState(accountDetailsScreen)
-                .withEndState(endScreen);
+                .withEndState(endScreen)
+                .withState(statementMonthlyScreen)
+                .withState(statementAnnualScreen);
+
 
         builder.withInitialState(States.INITIAL);
         builder.withShortCodeTransition(States.ROOT, Pattern.compile(Pattern.quote(mainMenuShortCode)));
@@ -57,6 +63,13 @@ public class Application {
         builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
         builder.withScreenTransition(States.ACCOUNT_DETAILS, States.ROOT, Transitions.ROOT);
         builder.withScreenTransition(States.STATEMENT, States.ROOT, Transitions.ROOT);
+        builder.withScreenTransition(States.STATEMENT, States.STATEMENT_CHOICE, Transitions.STATEMENT_CHOICE);
+        builder.withScreenTransition(States.STATEMENT, States.ROOT, Transitions.ROOT);
+        builder.withScreenTransition(States.STATEMENT_MONTHLY, States.ROOT, Transitions.ROOT);
+        builder.withScreenTransition(States.STATEMENT_ANNUAL, States.ROOT, Transitions.ROOT);
+
+
+        builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false));
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
