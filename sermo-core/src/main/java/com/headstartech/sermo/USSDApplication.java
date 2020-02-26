@@ -28,28 +28,7 @@ public class USSDApplication<S, E extends MOInput> {
             stateMachine = ussdStateMachineService.acquireStateMachine(machineId);
             transitionListener = new TransitionListener<>(stateMachine);
             stateMachine.addStateListener(transitionListener);
-            stateMachine.sendEvent(event);
-            String output = stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
-            if(!stateMachine.hasStateMachineError()) {
-                if (output != null) {
-                    stateMachine.getExtendedState().getVariables().put(ExtendedStateKeys.LAST_OUTPUT_KEY, output);
-                } else {
-                    String lastOutput = stateMachine.getExtendedState().get(ExtendedStateKeys.LAST_OUTPUT_KEY, String.class);
-                    if (lastOutput != null) {
-                        log.debug("No output set for event, using last output: machineId={}, lastOutput=\n{}", machineId, lastOutput);
-                        output = lastOutput;
-                    }
-                }
-                stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
-
-                if(stateMachine.isComplete()) {
-                    eventResult = EventResult.ofApplicationCompleted(output);
-                } else {
-                    eventResult = EventResult.ofOutput(output);
-                }
-            } else {
-                eventResult = EventResult.ofApplicationError(output);
-            }
+            eventResult = handleEvent(stateMachine, machineId, event);
         } finally {
             if(stateMachine != null) {
                 if(transitionListener != null) {
@@ -59,6 +38,42 @@ public class USSDApplication<S, E extends MOInput> {
             }
         }
         return eventResult;
+    }
+
+    protected EventResult handleEvent(StateMachine<S, E> stateMachine, String machineId, E event) {
+        EventResult eventResult;
+
+        stateMachine.sendEvent(event);
+        if(!stateMachine.hasStateMachineError()) {
+            String output = handleOutputWhenNoStateMachineError(stateMachine, machineId);
+            if(stateMachine.isComplete()) {
+                eventResult = EventResult.ofApplicationCompleted(output);
+            } else {
+                eventResult = EventResult.ofOutput(output);
+            }
+        } else {
+            eventResult = EventResult.ofApplicationError(getOutput(stateMachine));
+        }
+        return eventResult;
+    }
+
+    protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine, String machineId) {
+        String output = getOutput(stateMachine);
+        if (output != null) {
+            stateMachine.getExtendedState().getVariables().put(ExtendedStateKeys.LAST_OUTPUT_KEY, output);
+        } else {
+            String lastOutput = stateMachine.getExtendedState().get(ExtendedStateKeys.LAST_OUTPUT_KEY, String.class);
+            if (lastOutput != null) {
+                log.debug("No output set for event, using last output: machineId={}, lastOutput=\n{}", machineId, lastOutput);
+                output = lastOutput;
+            }
+        }
+        stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
+        return output;
+    }
+
+    protected String getOutput(StateMachine<S, E> stateMachine) {
+        return stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
     }
 
     private static class TransitionListener<S, E> extends StateMachineListenerAdapter<S, E> {
