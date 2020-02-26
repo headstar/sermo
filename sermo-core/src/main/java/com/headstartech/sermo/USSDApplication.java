@@ -1,7 +1,7 @@
 package com.headstartech.sermo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
@@ -12,7 +12,7 @@ import org.springframework.statemachine.transition.Transition;
  */
 public class USSDApplication<S, E extends MOInput> {
 
-    private static final Log log = LogFactory.getLog(USSDApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(USSDApplication.class);
 
     private final USSDStateMachineService<S, E> ussdStateMachineService;
 
@@ -36,7 +36,7 @@ public class USSDApplication<S, E extends MOInput> {
                 } else {
                     String lastOutput = stateMachine.getExtendedState().get(ExtendedStateKeys.LAST_OUTPUT_KEY, String.class);
                     if (lastOutput != null) {
-                        log.debug("No output set for event, using last output: machineId=" + machineId + ", lastOutput=\n" + lastOutput);
+                        log.debug("No output set for event, using last output: machineId={}, lastOutput=\n{}", machineId, lastOutput);
                         output = lastOutput;
                     }
                 }

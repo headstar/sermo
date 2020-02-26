@@ -1,17 +1,16 @@
 package com.headstartech.sermo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineException;
-import org.springframework.statemachine.service.DefaultStateMachineService;
 
 /**
  * @author Per Johansson
  */
 public class DefaultUssdStateMachineService<S, E extends MOInput> implements USSDStateMachineService<S, E> {
 
-    private final static Log log = LogFactory.getLog(DefaultStateMachineService.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultUssdStateMachineService.class);
 
     private final StateMachinePool<S, E> stateMachinePool;
     private final ExtendedStateMachinePersister<S, E, String> stateMachinePersister;
@@ -26,7 +25,7 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
         log.info("Acquiring state machine");
         StateMachine<S, E> stateMachine = stateMachinePool.getStateMachine();
         try {
-            log.info("Restoring state machine machine state with machine id " + machineId);
+            log.info("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
             log.error("Error handling context", e);

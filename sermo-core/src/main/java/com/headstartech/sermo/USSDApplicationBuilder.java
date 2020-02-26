@@ -7,8 +7,8 @@ import com.headstartech.sermo.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
@@ -199,7 +199,7 @@ public class USSDApplicationBuilder {
 
     private static class CompositeAction<S, E> implements Action<S, E> {
 
-        private static final Log log = LogFactory.getLog(CompositeAction.class);
+        private static final Logger log = LoggerFactory.getLogger(CompositeAction.class);
 
         private final Action<S, E> setMachineOnErrorAction;
         private Action<S, E> errorAction;
