@@ -39,6 +39,7 @@ public class Screen {
     public static class Builder {
 
         private List<ScreenBlock> screenBlocks = new ArrayList<>();
+        private ScreenRenderer screenRenderer;
 
         public Builder withScreenBlock(ScreenBlock screenBlock) {
             if(screenBlock != null) {
@@ -47,8 +48,13 @@ public class Screen {
             return this;
         }
 
+        public Builder withScreenRenderer(ScreenRenderer screenRenderer) {
+            this.screenRenderer = screenRenderer;
+            return this;
+        }
+
         public Screen build() {
-            ScreenRenderer renderer = new DefaultScreenRenderer();
+            ScreenRenderer renderer = screenRenderer == null ? new DefaultScreenRenderer() : screenRenderer;
             ScreenBlocksContainer screenBlocksContainer = new ScreenBlocksContainer(screenBlocks);
             screenBlocksContainer.accept(renderer);
             return new Screen(renderer.getInputMap(), renderer.getScreenOutput(), screenBlocksContainer);
