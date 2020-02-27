@@ -72,11 +72,11 @@ public class USSDApplicationBuilder {
             return this;
         }
 
-        public Builder<S, E> withChoice(S s, S defaultTarget, ChoiceOption<S, E>... options) throws Exception {
+        public Builder<S, E> withChoice(S s, S defaultTarget, Collection<ChoiceOption<S, E>> options) throws Exception {
             stateConfigurer.choice(s);
             ChoiceTransitionConfigurer<S, E> choiceTransitionConfigurer = transitionConfigurer.withChoice();
             choiceTransitionConfigurer.source(s);
-            Arrays.stream(options).forEach(e -> {
+            options.forEach(e -> {
                 if(e.getAction() != null) {
                     choiceTransitionConfigurer.then(e.getTarget(), e.getGuard(), wrapWithErrorActions(e.getAction()));
                  } else {
