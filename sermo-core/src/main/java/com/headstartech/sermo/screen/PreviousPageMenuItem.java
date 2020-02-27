@@ -1,7 +1,6 @@
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.ExtendedStateKeys;
-import com.headstartech.sermo.screen.StaticMenuItem;
+import com.headstartech.sermo.USSDSystemConstants;
 
 /**
  * @author Per Johansson
@@ -9,6 +8,6 @@ import com.headstartech.sermo.screen.StaticMenuItem;
 public class PreviousPageMenuItem extends StaticMenuItem {
 
     public PreviousPageMenuItem(String input, String label) {
-        super(input, label, ExtendedStateKeys.PREVIOUS_PAGE_KEY);
+        super(input, label, USSDSystemConstants.PREVIOUS_PAGE_KEY);
     }
 }

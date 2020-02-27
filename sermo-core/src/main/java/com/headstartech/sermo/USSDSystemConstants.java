@@ -6,7 +6,9 @@ import org.springframework.statemachine.ExtendedState;
 /**
  * @author Per Johansson
  */
-public class ExtendedStateKeys {
+public class USSDSystemConstants {
+
+    private USSDSystemConstants() {}
 
     public static final Object INPUT_ITEM_DATA_KEY = new Object();
 
@@ -22,7 +24,4 @@ public class ExtendedStateKeys {
 
     public static final String MDC_MACHINE_ID_KEY = "machineId";
 
-    public static InputMap getInputMap(ExtendedState extendedState) {
-        return extendedState.get(INPUT_MAP_KEY, InputMap.class);
-    }
 }

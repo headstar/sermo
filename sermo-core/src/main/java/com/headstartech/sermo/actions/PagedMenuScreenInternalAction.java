@@ -1,7 +1,7 @@
 package com.headstartech.sermo.actions;
 
 import com.headstartech.sermo.DefaultScreenSupport;
-import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.Screen;
@@ -29,9 +29,9 @@ public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScr
     public void execute(StateContext<S, E> context) {
 
         Optional<Object> transitionNameOpt = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput());
-        if(transitionNameOpt.get().equals(ExtendedStateKeys.NEXT_PAGE_KEY)) {
+        if(transitionNameOpt.get().equals(USSDSystemConstants.NEXT_PAGE_KEY)) {
             screenSupport.incrementPage(context.getExtendedState());
-        } else if(transitionNameOpt.get().equals(ExtendedStateKeys.PREVIOUS_PAGE_KEY)) {
+        } else if(transitionNameOpt.get().equals(USSDSystemConstants.PREVIOUS_PAGE_KEY)) {
             screenSupport.decrementPage(context.getExtendedState());
         } else {
             throw new IllegalStateException("Should never happen!");

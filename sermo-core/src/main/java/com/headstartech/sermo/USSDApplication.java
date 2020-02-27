@@ -8,7 +8,7 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.transition.Transition;
 
-import static com.headstartech.sermo.ExtendedStateKeys.MDC_MACHINE_ID_KEY;
+import static com.headstartech.sermo.USSDSystemConstants.MDC_MACHINE_ID_KEY;
 
 /**
  * @author Per Johansson
@@ -73,20 +73,20 @@ public class USSDApplication<S, E extends MOInput> {
     protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine, String machineId) {
         String output = getOutput(stateMachine);
         if (output != null) {
-            stateMachine.getExtendedState().getVariables().put(ExtendedStateKeys.LAST_OUTPUT_KEY, output);
+            stateMachine.getExtendedState().getVariables().put(USSDSystemConstants.LAST_OUTPUT_KEY, output);
         } else {
-            String lastOutput = stateMachine.getExtendedState().get(ExtendedStateKeys.LAST_OUTPUT_KEY, String.class);
+            String lastOutput = stateMachine.getExtendedState().get(USSDSystemConstants.LAST_OUTPUT_KEY, String.class);
             if (lastOutput != null) {
                 log.debug("No output set for event, using last output: machineId={}, lastOutput=\n{}", machineId, lastOutput);
                 output = lastOutput;
             }
         }
-        stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.OUTPUT_KEY);
+        stateMachine.getExtendedState().getVariables().remove(USSDSystemConstants.OUTPUT_KEY);
         return output;
     }
 
     protected String getOutput(StateMachine<S, E> stateMachine) {
-        return stateMachine.getExtendedState().get(ExtendedStateKeys.OUTPUT_KEY, String.class);
+        return stateMachine.getExtendedState().get(USSDSystemConstants.OUTPUT_KEY, String.class);
     }
 
     private static class TransitionListener<S, E> extends StateMachineListenerAdapter<S, E> {
@@ -100,7 +100,7 @@ public class USSDApplication<S, E extends MOInput> {
         @Override
         public void transition(Transition<S, E> transition) {
             log.debug("Transition triggered, clearing last output");
-            stateMachine.getExtendedState().getVariables().remove(ExtendedStateKeys.LAST_OUTPUT_KEY);
+            stateMachine.getExtendedState().getVariables().remove(USSDSystemConstants.LAST_OUTPUT_KEY);
         }
     }
 }

@@ -169,14 +169,14 @@ public class USSDApplicationBuilder {
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(ExtendedStateKeys.NEXT_PAGE_KEY))
+                    .guard(screenTransitionGuard(USSDSystemConstants.NEXT_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(ExtendedStateKeys.PREVIOUS_PAGE_KEY))
+                    .guard(screenTransitionGuard(USSDSystemConstants.PREVIOUS_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
             return this;
         }

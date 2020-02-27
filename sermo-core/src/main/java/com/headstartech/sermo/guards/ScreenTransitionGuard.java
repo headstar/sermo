@@ -1,6 +1,6 @@
 package com.headstartech.sermo.guards;
 
-import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.InputMap;
 import org.springframework.statemachine.StateContext;
@@ -19,7 +19,7 @@ public class ScreenTransitionGuard<S, E extends MOInput> extends GuardBase<S, E>
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
         boolean guard = false;
         if(input != null) {
-            InputMap inputMap = ExtendedStateKeys.getInputMap(context.getExtendedState());
+            InputMap inputMap = ExtendedStateSupport.getInputMap(context.getExtendedState());
             if(inputMap != null && inputMap.hasTransitionForInput(transitionId, input)) {
                 guard = true;
             }

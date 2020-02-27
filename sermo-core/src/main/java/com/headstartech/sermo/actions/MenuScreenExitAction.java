@@ -1,6 +1,6 @@
 package com.headstartech.sermo.actions;
 
-import com.headstartech.sermo.ExtendedStateKeys;
+import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.InputMap;
 import org.springframework.statemachine.ExtendedState;
@@ -9,7 +9,7 @@ import org.springframework.statemachine.action.Action;
 
 import java.util.Optional;
 
-import static com.headstartech.sermo.ExtendedStateKeys.INPUT_ITEM_DATA_KEY;
+import static com.headstartech.sermo.USSDSystemConstants.INPUT_ITEM_DATA_KEY;
 
 /**
  * @author Per Johansson
@@ -23,12 +23,12 @@ public class MenuScreenExitAction<S, E extends MOInput> implements Action<S, E> 
     }
 
     protected void clearMenu(ExtendedState extendedState) {
-        extendedState.getVariables().remove(ExtendedStateKeys.INPUT_MAP_KEY);
+        extendedState.getVariables().remove(USSDSystemConstants.INPUT_MAP_KEY);
     }
 
     protected void transferItemKey(ExtendedState extendedState, MOInput event) {
         @SuppressWarnings("unchecked")
-        InputMap inputMap = (InputMap) extendedState.getVariables().get(ExtendedStateKeys.INPUT_MAP_KEY);
+        InputMap inputMap = (InputMap) extendedState.getVariables().get(USSDSystemConstants.INPUT_MAP_KEY);
         if (inputMap != null) {
             Optional<Object> itemData = inputMap.getItemDataForInput(event.getInput());
             if(itemData.isPresent()) {
