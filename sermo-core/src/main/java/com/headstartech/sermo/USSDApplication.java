@@ -54,30 +54,29 @@ public class USSDApplication<S, E extends MOInput> {
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, String machineId, E event) {
-        EventResult eventResult;
 
         stateMachine.sendEvent(event);
-        if(!stateMachine.hasStateMachineError()) {
-            String output = handleOutputWhenNoStateMachineError(stateMachine, machineId);
-            if(stateMachine.isComplete()) {
-                eventResult = EventResult.ofApplicationCompleted(output);
-            } else {
-                eventResult = EventResult.ofOutput(output);
-            }
-        } else {
+
+        EventResult eventResult;
+        if(stateMachine.hasStateMachineError()) {
             eventResult = EventResult.ofApplicationError(getOutput(stateMachine));
+        } else if(stateMachine.isComplete()) {
+            eventResult = EventResult.ofApplicationCompleted(getOutput(stateMachine));
+        } else {
+            String output = handleOutputWhenNoStateMachineError(stateMachine);
+            eventResult = EventResult.ofOutput(output);
         }
         return eventResult;
     }
 
-    protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine, String machineId) {
+    protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine) {
         String output = getOutput(stateMachine);
         if (output != null) {
             stateMachine.getExtendedState().getVariables().put(USSDSystemConstants.LAST_OUTPUT_KEY, output);
         } else {
             String lastOutput = stateMachine.getExtendedState().get(USSDSystemConstants.LAST_OUTPUT_KEY, String.class);
             if (lastOutput != null) {
-                log.debug("No output set for event, using last output: machineId={}, lastOutput=\n{}", machineId, lastOutput);
+                log.debug("No output set for event, using last output: lastOutput=\n{}", lastOutput);
                 output = lastOutput;
             }
         }
