@@ -1,0 +1,18 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %X{machineId} %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.headstartech.sermo" level="debug"/>
+
+    <logger name="org.springframework.statemachine" level="warn"/>
+
+
+    <root level="warn">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

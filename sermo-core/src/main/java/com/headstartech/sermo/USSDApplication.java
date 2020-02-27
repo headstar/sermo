@@ -2,10 +2,13 @@ package com.headstartech.sermo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.transition.Transition;
+
+import static com.headstartech.sermo.ExtendedStateKeys.MDC_MACHINE_ID_KEY;
 
 /**
  * @author Per Johansson
@@ -25,11 +28,13 @@ public class USSDApplication<S, E extends MOInput> {
         EventResult eventResult = null;
         StateMachineListener<S, E> transitionListener = null;
         try {
+            setMDC(machineId);
             stateMachine = ussdStateMachineService.acquireStateMachine(machineId);
             transitionListener = new TransitionListener<>(stateMachine);
             stateMachine.addStateListener(transitionListener);
             eventResult = handleEvent(stateMachine, machineId, event);
         } finally {
+            clearMDC();
             if(stateMachine != null) {
                 if(transitionListener != null) {
                     stateMachine.removeStateListener(transitionListener);
@@ -38,6 +43,14 @@ public class USSDApplication<S, E extends MOInput> {
             }
         }
         return eventResult;
+    }
+
+    protected void setMDC(String machineId) {
+        MDC.put(MDC_MACHINE_ID_KEY, machineId);
+    }
+
+    protected void clearMDC() {
+        MDC.clear();
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, String machineId, E event) {

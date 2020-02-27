@@ -20,6 +20,8 @@ public class ExtendedStateKeys {
 
     public static final String PAGED_SCREEN_KEY = "pagedScreen";
 
+    public static final String MDC_MACHINE_ID_KEY = "machineId";
+
     public static InputMap getInputMap(ExtendedState extendedState) {
         return extendedState.get(INPUT_MAP_KEY, InputMap.class);
     }
