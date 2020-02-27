@@ -54,7 +54,6 @@ public class USSDApplication<S, E extends MOInput> {
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, String machineId, E event) {
-
         stateMachine.sendEvent(event);
 
         EventResult eventResult;
