@@ -11,7 +11,7 @@ import org.springframework.statemachine.action.Action;
  */
 public abstract class MenuScreenEntryAction<S, E extends MOInput> implements Action<S, E> {
 
-    protected void setScreenMenu(ExtendedState extendedState, Screen screen) {
+    protected void setScreen(ExtendedState extendedState, Screen screen) {
         ExtendedStateSupport.setScreenMenuInputMap(extendedState, screen.getInputMap());
         ExtendedStateSupport.setOutput(extendedState, screen.getOutput());
     }

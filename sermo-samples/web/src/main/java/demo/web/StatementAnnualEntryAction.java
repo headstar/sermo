@@ -23,6 +23,6 @@ public class StatementAnnualEntryAction extends MenuScreenEntryAction<States, Su
         screenBuilder.withScreenBlock(new StaticMenuItem("#", "Main menu", Transitions.ROOT));
 
         Screen screen = screenBuilder.build();
-        setScreenMenu(context.getExtendedState(), screen);
+        setScreen(context.getExtendedState(), screen);
     }
 }

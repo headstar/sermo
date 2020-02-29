@@ -27,7 +27,7 @@ public class RootEntryAction extends MenuScreenEntryAction<States, SubscriberEve
 
         Screen screen = screenBuilder.build();
 
-        setScreenMenu(context.getExtendedState(), screen);
+        setScreen(context.getExtendedState(), screen);
     }
 
 }

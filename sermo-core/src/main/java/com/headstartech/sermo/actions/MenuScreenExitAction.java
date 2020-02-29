@@ -1,7 +1,7 @@
 package com.headstartech.sermo.actions;
 
-import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.screen.InputMap;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
@@ -19,10 +19,10 @@ public class MenuScreenExitAction<S, E extends MOInput> implements Action<S, E> 
     @Override
     public void execute(StateContext<S, E> context) {
         transferItemKey(context.getExtendedState(), context.getEvent());
-        clearMenu(context.getExtendedState());
+        clearScreen(context.getExtendedState());
     }
 
-    protected void clearMenu(ExtendedState extendedState) {
+    protected void clearScreen(ExtendedState extendedState) {
         extendedState.getVariables().remove(USSDSystemConstants.INPUT_MAP_KEY);
     }
 

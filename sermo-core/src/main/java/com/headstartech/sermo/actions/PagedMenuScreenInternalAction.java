@@ -1,9 +1,9 @@
 package com.headstartech.sermo.actions;
 
 import com.headstartech.sermo.DefaultScreenSupport;
-import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.ScreenSupport;
 import org.springframework.statemachine.StateContext;
@@ -38,8 +38,7 @@ public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScr
         }
 
         Screen screen = screenSupport.createScreen(context.getExtendedState());
-        ExtendedStateSupport.setScreenMenuInputMap(context.getExtendedState(), screen.getInputMap());
-        ExtendedStateSupport.setOutput(context.getExtendedState(), screen.getOutput());
+        setScreen(context.getExtendedState(), screen);
     }
 
 }

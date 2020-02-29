@@ -1,7 +1,6 @@
 package com.headstartech.sermo.actions;
 
 import com.headstartech.sermo.DefaultScreenSupport;
-import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.PagedScreenSetup;
 import com.headstartech.sermo.screen.Screen;
@@ -28,8 +27,7 @@ public abstract class PagedMenuScreenEntryAction<S, E extends MOInput> extends M
         screenSupport.initializePagedScreen(context.getExtendedState(), getPagedScreenSetup(context));
         Screen screen = screenSupport.createScreen(context.getExtendedState());
 
-        ExtendedStateSupport.setScreenMenuInputMap(context.getExtendedState(), screen.getInputMap());
-        ExtendedStateSupport.setOutput(context.getExtendedState(), screen.getOutput());
+        setScreen(context.getExtendedState(), screen);
     }
 
     protected abstract PagedScreenSetup getPagedScreenSetup(StateContext<S, E> context);
