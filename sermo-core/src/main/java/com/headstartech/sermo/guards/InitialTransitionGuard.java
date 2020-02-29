@@ -22,11 +22,8 @@ public class InitialTransitionGuard<S, E extends MOInput> extends GuardBase<S, E
     }
 
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
-        boolean res = false;
-        if(input != null) {
-            Matcher m = pattern.matcher(input);
-            res = m.matches();
-        }
+        Matcher m = pattern.matcher(input);
+        boolean res = m.matches();
         log.debug("Initial transition guard evaluation: result={}, input={}, pattern={}", res, input, pattern.pattern());
         return res;
     }

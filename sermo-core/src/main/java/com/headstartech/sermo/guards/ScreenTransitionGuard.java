@@ -21,14 +21,12 @@ public class ScreenTransitionGuard<S, E extends MOInput> extends GuardBase<S, E>
     }
 
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
-        boolean guard = false;
-        if(input != null) {
-            InputMap inputMap = ExtendedStateSupport.getInputMap(context.getExtendedState());
-            if(inputMap != null && inputMap.hasTransitionForInput(transitionId, input)) {
-                guard = true;
-            }
+        boolean res = false;
+        InputMap inputMap = ExtendedStateSupport.getInputMap(context.getExtendedState());
+        if(inputMap != null && inputMap.hasTransitionForInput(transitionId, input)) {
+            res = true;
         }
-        log.debug("Screen transition guard evaluation: result={}, input={}, transitionId={}", guard, input, transitionId);
-        return guard;
+        log.debug("Screen transition guard evaluation: result={}, input={}, transitionId={}", res, input, transitionId);
+        return res;
     }
 }

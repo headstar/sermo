@@ -97,7 +97,7 @@ public class USSDApplication<S, E extends MOInput> {
 
         @Override
         public void transition(Transition<S, E> transition) {
-            log.debug("Transition triggered, clearing last output");
+            log.trace("Transition triggered, clearing last output");
             stateMachine.getExtendedState().getVariables().remove(USSDSystemConstants.LAST_OUTPUT_KEY);
         }
     }
