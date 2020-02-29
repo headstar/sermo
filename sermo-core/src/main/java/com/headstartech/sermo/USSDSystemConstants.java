@@ -22,6 +22,6 @@ public class USSDSystemConstants {
 
     public static final String PAGED_SCREEN_KEY = "__paged_screen__";
 
-    public static final String MDC_MACHINE_ID_KEY = "machineId";
+    public static final String MDC_SESSION_ID_KEY = "sessionId";
 
 }

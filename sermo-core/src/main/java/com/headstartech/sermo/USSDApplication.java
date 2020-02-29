@@ -8,7 +8,7 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.transition.Transition;
 
-import static com.headstartech.sermo.USSDSystemConstants.MDC_MACHINE_ID_KEY;
+import static com.headstartech.sermo.USSDSystemConstants.MDC_SESSION_ID_KEY;
 
 /**
  * @author Per Johansson
@@ -23,30 +23,30 @@ public class USSDApplication<S, E extends MOInput> {
         this.ussdStateMachineService = ussdStateMachineService;
     }
 
-    public EventResult applyEvent(String machineId, E event) {
+    public EventResult applyEvent(String sessionId, E event) {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult = null;
         StateMachineListener<S, E> transitionListener = null;
         try {
-            setMDC(machineId);
-            stateMachine = ussdStateMachineService.acquireStateMachine(machineId);
+            setMDC(sessionId);
+            stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
             transitionListener = new TransitionListener<>(stateMachine);
             stateMachine.addStateListener(transitionListener);
-            eventResult = handleEvent(stateMachine, machineId, event);
+            eventResult = handleEvent(stateMachine, sessionId, event);
         } finally {
             clearMDC();
             if(stateMachine != null) {
                 if(transitionListener != null) {
                     stateMachine.removeStateListener(transitionListener);
                 }
-                ussdStateMachineService.releaseStateMachine(machineId, stateMachine);
+                ussdStateMachineService.releaseStateMachine(sessionId, stateMachine);
             }
         }
         return eventResult;
     }
 
     protected void setMDC(String machineId) {
-        MDC.put(MDC_MACHINE_ID_KEY, machineId);
+        MDC.put(MDC_SESSION_ID_KEY, machineId);
     }
 
     protected void clearMDC() {

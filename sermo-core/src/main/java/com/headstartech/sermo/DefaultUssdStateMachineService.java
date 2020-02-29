@@ -22,10 +22,10 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
 
     @Override
     public StateMachine<S, E> acquireStateMachine(String machineId) {
-        log.info("Acquiring state machine");
+        log.debug("Acquiring state machine");
         StateMachine<S, E> stateMachine = stateMachinePool.getStateMachine();
         try {
-            log.info("Restoring state machine machine state: machineId={}", machineId);
+            log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
             log.error("Error handling context", e);
