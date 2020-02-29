@@ -1,5 +1,7 @@
 package com.headstartech.sermo.screen;
 
+import java.util.StringJoiner;
+
 /**
  * @author Per Johansson
  */
@@ -14,5 +16,9 @@ public class EmptyLine  implements ScreenBlock {
         visitor.visit(this);
     }
 
-
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", EmptyLine.class.getSimpleName() + "[", "]")
+                .toString();
+    }
 }

@@ -1,6 +1,7 @@
 package com.headstartech.sermo.screen;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
@@ -48,5 +49,14 @@ public class MenuItem {
     @Override
     public int hashCode() {
         return Objects.hash(label, transitionId, itemData);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", MenuItem.class.getSimpleName() + "[", "]")
+                .add("label='" + label + "'")
+                .add("transitionId=" + transitionId)
+                .add("itemData=" + itemData)
+                .toString();
     }
 }

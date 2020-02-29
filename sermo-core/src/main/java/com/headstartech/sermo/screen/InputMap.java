@@ -1,8 +1,6 @@
 package com.headstartech.sermo.screen;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Per Johansson
@@ -32,5 +30,27 @@ public class InputMap {
 
     public Optional<Object> getTransition(String input) {
         return Optional.ofNullable(inputTransitionMap.get(input));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InputMap inputMap = (InputMap) o;
+        return inputTransitionMap.equals(inputMap.inputTransitionMap) &&
+                inputItemDataMap.equals(inputMap.inputItemDataMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inputTransitionMap, inputItemDataMap);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", InputMap.class.getSimpleName() + "[", "]")
+                .add("inputTransitionMap=" + inputTransitionMap)
+                .add("inputItemDataMap=" + inputItemDataMap)
+                .toString();
     }
 }

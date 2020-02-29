@@ -1,6 +1,7 @@
 package com.headstartech.sermo.screen;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
@@ -37,5 +38,12 @@ public class StaticMenuItem extends MenuItem implements ScreenBlock {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), input);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", StaticMenuItem.class.getSimpleName() + "[", "]")
+                .add("input='" + input + "'")
+                .toString();
     }
 }

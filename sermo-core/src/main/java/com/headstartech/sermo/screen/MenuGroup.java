@@ -1,9 +1,6 @@
 package com.headstartech.sermo.screen;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Per Johansson
@@ -37,6 +34,13 @@ public class MenuGroup implements ScreenBlock {
     @Override
     public int hashCode() {
         return Objects.hash(menuItems);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", MenuGroup.class.getSimpleName() + "[", "]")
+                .add("menuItems=" + menuItems)
+                .toString();
     }
 
     public static Builder builder() {

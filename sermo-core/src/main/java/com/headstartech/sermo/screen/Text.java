@@ -1,6 +1,7 @@
 package com.headstartech.sermo.screen;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
@@ -33,5 +34,12 @@ public class Text implements ScreenBlock {
     @Override
     public int hashCode() {
         return Objects.hash(text);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Text.class.getSimpleName() + "[", "]")
+                .add("text='" + text + "'")
+                .toString();
     }
 }

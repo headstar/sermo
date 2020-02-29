@@ -3,6 +3,7 @@ package com.headstartech.sermo.screen;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
@@ -36,5 +37,12 @@ public class ScreenBlocksContainer implements ScreenBlock {
     @Override
     public int hashCode() {
         return Objects.hash(screenBlocks);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ScreenBlocksContainer.class.getSimpleName() + "[", "]")
+                .add("screenBlocks=" + screenBlocks)
+                .toString();
     }
 }
