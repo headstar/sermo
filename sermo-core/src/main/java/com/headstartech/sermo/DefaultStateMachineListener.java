@@ -1,0 +1,64 @@
+package com.headstartech.sermo;
+
+import com.headstartech.sermo.guards.ScreenTransitionGuard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.messaging.Message;
+import org.springframework.statemachine.listener.StateMachineListenerAdapter;
+import org.springframework.statemachine.state.State;
+import org.springframework.statemachine.transition.Transition;
+
+/**
+ * @author Per Johansson
+ */
+public class DefaultStateMachineListener<S, E extends MOInput> extends StateMachineListenerAdapter<S, E> {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultStateMachineListener.class);
+
+    @Override
+    public void stateChanged(State<S, E> from, State<S, E> to) {
+        log.debug("State changed: from={}, to={}", from.getId(), to.getId());
+    }
+
+    @Override
+    public void stateEntered(State<S, E> state) {
+        log.debug("State entered: state={}", state.getId());
+    }
+
+    @Override
+    public void stateExited(State<S, E> state) {
+        log.debug("State exited: state={}", state.getId());
+    }
+
+    @Override
+    public void transition(Transition<S, E> transition) {
+        if(hasScreenTransitionGuard(transition)) {
+            log.debug("Screen transition: transitionId={}, source={}, target={}", getTransitionId(transition), transition.getSource().getId(), transition.getTarget().getId());
+        } else {
+            log.debug("Transition: source={}, target={}", transition.getSource().getId(), transition.getTarget().getId());
+        }
+    }
+
+    @Override
+    public void extendedStateChanged(Object key, Object value) {
+        log.trace("Extended state changed: key={}, value={}", key, value);
+    }
+
+    @Override
+    public void eventNotAccepted(Message<E> event) {
+        log.warn("Event not accepted: event={}", event);
+    }
+
+    private Object getTransitionId(Transition<S, E> transition) {
+        if(hasScreenTransitionGuard(transition)) {
+            return ((ScreenTransitionGuard<S, E>) transition.getGuard()).getTransitionId();
+        } else {
+            return null;
+        }
+    }
+
+    private boolean hasScreenTransitionGuard(Transition<S,E> transition) {
+        return transition.getGuard() instanceof ScreenTransitionGuard;
+    }
+
+}

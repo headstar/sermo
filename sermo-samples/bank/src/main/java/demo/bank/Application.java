@@ -5,15 +5,21 @@ import com.headstartech.sermo.actions.SetFixedOutputOnError;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
+import org.springframework.statemachine.state.State;
+import org.springframework.statemachine.transition.Transition;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class Application {
+
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) throws Exception {
 
@@ -44,8 +50,6 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        stateMachineFactoryBuilder.configureConfiguration().withConfiguration().listener(new Listener());
-
         ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist = new InMemoryStateMachinePersist<>();
         USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultExtendedStateMachinePersister<>(stateMachinePersist));
@@ -68,19 +72,6 @@ public class Application {
             }
         }
 	}
-
-    private static class Listener extends StateMachineListenerAdapter<States, SubscriberEvent> {
-
-        @Override
-        public void eventNotAccepted(Message<SubscriberEvent> event) {
-            System.out.println("Event not accepted " + event);
-        }
-
-        @Override
-        public void stateMachineError(StateMachine<States, SubscriberEvent> stateMachine, Exception exception) {
-            System.out.println("Machine error");
-        }
-    }
 
 }
 

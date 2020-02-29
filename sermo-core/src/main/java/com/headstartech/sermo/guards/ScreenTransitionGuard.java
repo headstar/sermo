@@ -20,6 +20,10 @@ public class ScreenTransitionGuard<S, E extends MOInput> extends GuardBase<S, E>
         this.transitionId = transitionId;
     }
 
+    public Object getTransitionId() {
+        return transitionId;
+    }
+
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
         boolean res = false;
         InputMap inputMap = ExtendedStateSupport.getInputMap(context.getExtendedState());

@@ -14,11 +14,12 @@ import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ChoiceTransitionConfigurer;
+import org.springframework.statemachine.config.configurers.ConfigurationConfigurer;
 import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
+import org.springframework.statemachine.listener.StateMachineListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -30,25 +31,38 @@ import java.util.stream.Collectors;
 public class USSDApplicationBuilder {
 
     public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
+        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
-    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDApplicationBuilder.Builder<S, E>(stateConfigurer, transitionConfigurer, clazz.newInstance());
+    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+        return new USSDApplicationBuilder.Builder<S, E>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
     public static class Builder<S, E extends MOInput> {
 
         private final StateConfigurer<S, E> stateConfigurer;
         private final StateMachineTransitionConfigurer<S, E> transitionConfigurer;
+        private final ConfigurationConfigurer<S, E> configurationConfigurer;
         private S initialState;
         private final E eventToken;
         private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
 
-        public Builder(StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, E eventToken) {
+        public Builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, E eventToken) {
+            this.configurationConfigurer = configurationConfigurer;
             this.stateConfigurer = stateConfigurer;
             this.transitionConfigurer = transitionConfigurer;
             this.eventToken = eventToken;
         }
+
+        public Builder<S, E> withListener(StateMachineListener<S, E> stateMachineListener) {
+            configurationConfigurer.listener(stateMachineListener);
+            return this;
+        }
+
+        public Builder<S, E> withDefaultListener() {
+            configurationConfigurer.listener(new DefaultStateMachineListener<>());
+            return this;
+        }
+
 
         public Builder<S, E> withInitialState(S state) {
             stateConfigurer.state(state);
