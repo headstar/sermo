@@ -1,6 +1,7 @@
 package com.headstartech.sermo;
 
 import java.util.Optional;
+import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
@@ -45,4 +46,12 @@ public class EventResult {
         return new EventResult(output, true, false);
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", EventResult.class.getSimpleName() + "[", "]")
+                .add("output='" + output + "'")
+                .add("applicationError=" + applicationError)
+                .add("applicationCompleted=" + applicationCompleted)
+                .toString();
+    }
 }

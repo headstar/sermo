@@ -65,6 +65,7 @@ public class USSDApplication<S, E extends MOInput> {
             String output = handleOutputWhenNoStateMachineError(stateMachine);
             eventResult = EventResult.ofOutput(output);
         }
+        log.debug("Event result: {}", eventResult);
         return eventResult;
     }
 
