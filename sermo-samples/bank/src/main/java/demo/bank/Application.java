@@ -61,13 +61,13 @@ public class Application {
         List<String> inputs = Arrays.asList("111", "1", "0", "0", "#", "1", "1");
         for(int i=0; i<inputs.size(); ++i) {
             EventResult result = ussdApplication.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
-            if(result.isApplicationError()) {
+            if(EventResult.ApplicationState.ERROR.equals(result.getApplicationState())) {
                 System.out.println("Internal error\n" + result.getOutput().orElse(""));
                 break;
             } else {
                 System.out.println(result.getOutput());
             }
-            if(result.isApplicationCompleted()) {
+            if(EventResult.ApplicationState.ERROR.equals(result.getApplicationState())) {
                 break;
             }
         }
