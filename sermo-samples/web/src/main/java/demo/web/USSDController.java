@@ -35,8 +35,9 @@ public class USSDController {
 
         EventResult eventResult = ussdApplication.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
 
-        if(eventResult.isApplicationCompleted() || eventResult.isApplicationError()) {
-            if(eventResult.isApplicationCompleted()) {
+        EventResult.ApplicationState applicationState = eventResult.getApplicationState();
+        if(EventResult.ApplicationState.COMPLETE.equals(applicationState) || EventResult.ApplicationState.ERROR.equals(applicationState)) {
+            if(EventResult.ApplicationState.COMPLETE.equals(applicationState)) {
                 model.addAttribute("screen", eventResult.getOutput().orElse("(completed)"));
             } else {
                 model.addAttribute("screen", eventResult.getOutput().orElse("(internal error)"));

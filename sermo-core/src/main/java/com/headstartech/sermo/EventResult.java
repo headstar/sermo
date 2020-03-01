@@ -9,49 +9,43 @@ import java.util.StringJoiner;
 public class EventResult {
 
     private final String output;
-    private final boolean applicationError;
-    private final boolean applicationCompleted;
+    private final ApplicationState applicationState;
 
-    private EventResult(String output, boolean applicationError, boolean applicationCompleted) {
+    private EventResult(String output, ApplicationState applicationState) {
         this.output = output;
-        this.applicationError = applicationError;
-        this.applicationCompleted = applicationCompleted;
+        this.applicationState = applicationState;
     }
 
     public Optional<String> getOutput() {
         return Optional.ofNullable(output);
     }
 
-    public boolean isApplicationError() {
-        return applicationError;
-    }
-
-    public boolean isApplicationCompleted() {
-        return applicationCompleted;
+    public ApplicationState getApplicationState() {
+        return applicationState;
     }
 
     static EventResult ofOutput(String output) {
-        return new EventResult(output, false, false);
+        return new EventResult(output, ApplicationState.IN_PROGRESS);
     }
 
     static EventResult ofApplicationCompleted(String output) {
-        return new EventResult(output, false, true);
-    }
-
-    static EventResult ofApplicationError() {
-        return new EventResult(null, true, false);
+        return new EventResult(output, ApplicationState.COMPLETE);
     }
 
     static EventResult ofApplicationError(String output) {
-        return new EventResult(output, true, false);
+        return new EventResult(output, ApplicationState.ERROR);
     }
+
 
     @Override
     public String toString() {
         return new StringJoiner(", ", EventResult.class.getSimpleName() + "[", "]")
                 .add("output='" + output + "'")
-                .add("applicationError=" + applicationError)
-                .add("applicationCompleted=" + applicationCompleted)
+                .add("applicationState=" + applicationState)
                 .toString();
+    }
+
+    public enum ApplicationState {
+        IN_PROGRESS, COMPLETE, ERROR
     }
 }
