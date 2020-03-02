@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class DefaultScreenSupport implements ScreenSupport {
+public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
     @Override
     public void initializePagedScreen(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {

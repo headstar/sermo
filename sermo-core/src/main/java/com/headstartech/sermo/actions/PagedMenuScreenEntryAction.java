@@ -16,11 +16,11 @@
 
 package com.headstartech.sermo.actions;
 
-import com.headstartech.sermo.DefaultScreenSupport;
+import com.headstartech.sermo.DefaultPagedScreenSupport;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.screen.PagedScreenSetup;
 import com.headstartech.sermo.screen.Screen;
-import com.headstartech.sermo.screen.ScreenSupport;
+import com.headstartech.sermo.screen.PagedScreenSupport;
 import org.springframework.statemachine.StateContext;
 
 /**
@@ -28,20 +28,20 @@ import org.springframework.statemachine.StateContext;
  */
 public abstract class PagedMenuScreenEntryAction<S, E extends MOInput> extends MenuScreenEntryAction<S, E> {
 
-    private final ScreenSupport screenSupport;
+    private final PagedScreenSupport pagedScreenSupport;
 
-    public PagedMenuScreenEntryAction(ScreenSupport screenSupport) {
-        this.screenSupport = screenSupport;
+    public PagedMenuScreenEntryAction(PagedScreenSupport pagedScreenSupport) {
+        this.pagedScreenSupport = pagedScreenSupport;
     }
 
     public PagedMenuScreenEntryAction() {
-        this(new DefaultScreenSupport());
+        this(new DefaultPagedScreenSupport());
     }
 
     @Override
     public void execute(StateContext<S, E> context) {
-        screenSupport.initializePagedScreen(context.getExtendedState(), getPagedScreenSetup(context));
-        Screen screen = screenSupport.createScreen(context.getExtendedState());
+        pagedScreenSupport.initializePagedScreen(context.getExtendedState(), getPagedScreenSetup(context));
+        Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
 
         setScreen(context.getExtendedState(), screen);
     }

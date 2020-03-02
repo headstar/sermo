@@ -16,12 +16,12 @@
 
 package com.headstartech.sermo.actions;
 
-import com.headstartech.sermo.DefaultScreenSupport;
+import com.headstartech.sermo.DefaultPagedScreenSupport;
 import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
 import com.headstartech.sermo.USSDSystemConstants;
 import com.headstartech.sermo.screen.Screen;
-import com.headstartech.sermo.screen.ScreenSupport;
+import com.headstartech.sermo.screen.PagedScreenSupport;
 import org.springframework.statemachine.StateContext;
 
 import java.util.Optional;
@@ -31,14 +31,14 @@ import java.util.Optional;
  */
 public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScreenEntryAction<S, E> {
 
-    private final ScreenSupport screenSupport;
+    private final PagedScreenSupport pagedScreenSupport;
 
-    public PagedMenuScreenInternalAction(ScreenSupport screenSupport) {
-        this.screenSupport = screenSupport;
+    public PagedMenuScreenInternalAction(PagedScreenSupport pagedScreenSupport) {
+        this.pagedScreenSupport = pagedScreenSupport;
     }
 
     public PagedMenuScreenInternalAction() {
-        this(new DefaultScreenSupport());
+        this(new DefaultPagedScreenSupport());
     }
 
     @Override
@@ -46,14 +46,14 @@ public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScr
 
         Optional<Object> transitionNameOpt = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput());
         if(transitionNameOpt.get().equals(USSDSystemConstants.NEXT_PAGE_KEY)) {
-            screenSupport.incrementPage(context.getExtendedState());
+            pagedScreenSupport.incrementPage(context.getExtendedState());
         } else if(transitionNameOpt.get().equals(USSDSystemConstants.PREVIOUS_PAGE_KEY)) {
-            screenSupport.decrementPage(context.getExtendedState());
+            pagedScreenSupport.decrementPage(context.getExtendedState());
         } else {
             throw new IllegalStateException("Should never happen!");
         }
 
-        Screen screen = screenSupport.createScreen(context.getExtendedState());
+        Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
         setScreen(context.getExtendedState(), screen);
     }
 
