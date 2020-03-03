@@ -70,6 +70,7 @@ public class USSDApplication<S, E extends MOInput> {
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {
+        log.debug("Handling event: event={}", event);
         stateMachine.sendEvent(event);
 
         EventResult eventResult;
@@ -81,7 +82,7 @@ public class USSDApplication<S, E extends MOInput> {
             String output = handleOutputWhenNoStateMachineError(stateMachine);
             eventResult = EventResult.ofOutput(output);
         }
-        log.debug("Event result: {}", eventResult);
+        log.debug("Result of handling event: eventResult={}", eventResult);
         return eventResult;
     }
 
