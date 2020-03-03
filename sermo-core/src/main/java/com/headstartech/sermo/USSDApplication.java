@@ -48,7 +48,7 @@ public class USSDApplication<S, E extends MOInput> {
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
             transitionListener = new TransitionListener<>(stateMachine);
             stateMachine.addStateListener(transitionListener);
-            eventResult = handleEvent(stateMachine, sessionId, event);
+            eventResult = handleEvent(stateMachine, event);
         } finally {
             clearMDC();
             if(stateMachine != null) {
@@ -69,7 +69,7 @@ public class USSDApplication<S, E extends MOInput> {
         MDC.clear();
     }
 
-    protected EventResult handleEvent(StateMachine<S, E> stateMachine, String machineId, E event) {
+    protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {
         stateMachine.sendEvent(event);
 
         EventResult eventResult;
