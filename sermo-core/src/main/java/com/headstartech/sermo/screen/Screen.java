@@ -28,12 +28,10 @@ public class Screen {
 
     private final InputMap inputMap;
     private final String output;
-    private final ScreenBlocksContainer screenBlocksContainer;
 
-    private Screen(InputMap inputMap, String output, ScreenBlocksContainer screenBlocksContainer) {
+    private Screen(InputMap inputMap, String output) {
         this.inputMap = inputMap;
         this.output = output;
-        this.screenBlocksContainer = screenBlocksContainer;
     }
 
     public InputMap getInputMap() {
@@ -42,10 +40,6 @@ public class Screen {
 
     public String getOutput() {
         return output;
-    }
-
-    public ScreenBlocksContainer getScreenBlocksContainer() {
-        return screenBlocksContainer;
     }
 
     public static Builder builder() {
@@ -73,7 +67,7 @@ public class Screen {
             ScreenRenderer renderer = screenRenderer == null ? new DefaultScreenRenderer() : screenRenderer;
             ScreenBlocksContainer screenBlocksContainer = new ScreenBlocksContainer(screenBlocks);
             screenBlocksContainer.accept(renderer);
-            return new Screen(renderer.getInputMap(), renderer.getScreenOutput(), screenBlocksContainer);
+            return new Screen(renderer.getInputMap(), renderer.getScreenOutput());
         }
     }
 
