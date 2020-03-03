@@ -26,6 +26,16 @@ import java.util.List;
  */
 public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
+    private final ScreenRenderer screenRenderer;
+
+    public DefaultPagedScreenSupport(ScreenRenderer screenRenderer) {
+        this.screenRenderer = screenRenderer;
+    }
+
+    public DefaultPagedScreenSupport() {
+        this(new DefaultScreenRenderer());
+    }
+
     @Override
     public void initializePagedScreen(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
         ExtendedStateSupport.setPagedScreenSetup(extendedState, pagedScreenSetup);
@@ -36,6 +46,8 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
         PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
 
         Screen.Builder screenBuilder =  Screen.builder();
+
+        screenBuilder.withScreenRenderer(screenRenderer);
         screenBuilder.withScreenBlock(pagedScreenSetup.getHeaderBlock());
 
         List<MenuItem> allMenuItems = pagedScreenSetup.getAllMenuItems();
