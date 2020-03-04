@@ -40,7 +40,6 @@ public class USSDApplication<S, E extends MOInput> {
     public EventResult applyEvent(String sessionId, E event) {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult = null;
-        StateMachineListener<S, E> transitionListener = null;
         try {
             setMDC(sessionId);
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
