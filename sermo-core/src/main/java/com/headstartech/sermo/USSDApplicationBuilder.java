@@ -31,6 +31,7 @@ import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ChoiceTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ConfigurationConfigurer;
+import org.springframework.statemachine.config.configurers.ExternalTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.statemachine.listener.StateMachineListener;
@@ -129,20 +130,33 @@ public class USSDApplicationBuilder {
             return this;
         }
 
-        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> predicate) throws Exception {
-            transitionConfigurer
+        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid) throws Exception {
+            withFormInputTransition(from, to, inputValid, null, null);
+            return this;
+        }
+
+        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
+            ExternalTransitionConfigurer<S, E> externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(predicate));
+                    .guard(new FormInputGuard<>(inputValid));
 
-            transitionConfigurer
+            if(inputValidAction != null) {
+                externalTransitionConfigurer.action(wrapWithErrorActions(inputValidAction));
+            }
+
+            externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(from)
-                    .target(from)
+                    .target(to)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(predicate.negate()));
+                    .guard(new FormInputGuard<>(inputValid.negate()));
+
+            if(inputInvalidAction != null) {
+                externalTransitionConfigurer.action(wrapWithErrorActions(inputInvalidAction));
+            }
             return this;
         }
 
