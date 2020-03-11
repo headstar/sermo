@@ -16,9 +16,6 @@
 
 package com.headstartech.sermo;
 
-import com.headstartech.sermo.screen.InputMap;
-import org.springframework.statemachine.ExtendedState;
-
 /**
  * @author Per Johansson
  */

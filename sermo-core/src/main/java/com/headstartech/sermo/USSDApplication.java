@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.listener.StateMachineListener;
 
 import static com.headstartech.sermo.USSDSystemConstants.MDC_SESSION_ID_KEY;
 
@@ -39,7 +38,7 @@ public class USSDApplication<S, E extends MOInput> {
 
     public EventResult applyEvent(String sessionId, E event) {
         StateMachine<S, E> stateMachine = null;
-        EventResult eventResult = null;
+        EventResult eventResult;
         try {
             setMDC(sessionId);
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);

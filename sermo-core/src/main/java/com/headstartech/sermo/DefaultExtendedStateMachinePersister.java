@@ -31,7 +31,7 @@ public class DefaultExtendedStateMachinePersister<S, E extends MOInput, String> 
     }
 
     @Override
-    public void delete(String contextObj) throws Exception {
+    public void delete(String contextObj) {
         stateMachinePersist.delete(contextObj);
     }
 

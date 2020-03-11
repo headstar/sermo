@@ -44,13 +44,15 @@ public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScr
     @Override
     public void execute(StateContext<S, E> context) {
 
-        Optional<Object> transitionNameOpt = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput());
-        if(transitionNameOpt.get().equals(USSDSystemConstants.NEXT_PAGE_KEY)) {
+        Object transitionId = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput())
+                .orElseThrow(() -> new IllegalStateException("PagedMenuScreenInternalAction executed with no transition id set"));
+
+        if(USSDSystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
             pagedScreenSupport.incrementPage(context.getExtendedState());
-        } else if(transitionNameOpt.get().equals(USSDSystemConstants.PREVIOUS_PAGE_KEY)) {
+        } else if(USSDSystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
             pagedScreenSupport.decrementPage(context.getExtendedState());
         } else {
-            throw new IllegalStateException("Should never happen!");
+            throw new IllegalStateException(String.format("PagedMenuScreenInternalAction executed with unknown transition id: transitionId=%s", transitionId));
         }
 
         Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());

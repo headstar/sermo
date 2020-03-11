@@ -43,7 +43,6 @@ public class MenuScreenExitAction<S, E extends MOInput> implements Action<S, E> 
     }
 
     protected void transferItemKey(ExtendedState extendedState, MOInput event) {
-        @SuppressWarnings("unchecked")
         InputMap inputMap = (InputMap) extendedState.getVariables().get(USSDSystemConstants.INPUT_MAP_KEY);
         if (inputMap != null) {
             Optional<Object> itemData = inputMap.getItemDataForInput(event.getInput());

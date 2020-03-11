@@ -49,7 +49,7 @@ public class StateMachineFactoryBuilder {
      * @return the builder
      */
     public static <S, E> Builder<S, E> builder() {
-        return new StateMachineFactoryBuilder.Builder<S, E>();
+        return new StateMachineFactoryBuilder.Builder<>();
     }
 
     /**
@@ -68,8 +68,8 @@ public class StateMachineFactoryBuilder {
          * Instantiates a new builder.
          */
         public Builder() {
-            adapter = new BuilderStateMachineConfigurerAdapter<S, E>();
-            builder = new StateMachineConfigBuilder<S, E>();
+            adapter = new BuilderStateMachineConfigurerAdapter<>();
+            builder = new StateMachineConfigBuilder<>();
         }
 
         /**
@@ -122,13 +122,13 @@ public class StateMachineFactoryBuilder {
                 StatesData<S, E> stateMachineStates = stateMachineConfig.getStates();
                 ConfigurationData<S, E> stateMachineConfigurationConfig = stateMachineConfig.getStateMachineConfigurationConfig();
 
-                ObjectStateMachineFactory<S, E> stateMachineFactory = null;
+                ObjectStateMachineFactory<S, E> stateMachineFactory;
                 if (stateMachineConfig.getModel() != null && stateMachineConfig.getModel().getFactory() != null) {
-                    stateMachineFactory = new ObjectStateMachineFactory<S, E>(
-                            new DefaultStateMachineModel<S, E>(stateMachineConfigurationConfig, null, null),
+                    stateMachineFactory = new ObjectStateMachineFactory<>(
+                            new DefaultStateMachineModel<>(stateMachineConfigurationConfig, null, null),
                             stateMachineConfig.getModel().getFactory());
                 } else {
-                    stateMachineFactory = new ObjectStateMachineFactory<S, E>(new DefaultStateMachineModel<S, E>(
+                    stateMachineFactory = new ObjectStateMachineFactory<>(new DefaultStateMachineModel<>(
                             stateMachineConfigurationConfig, stateMachineStates, stateMachineTransitions), null);
                 }
 
@@ -183,7 +183,7 @@ public class StateMachineFactoryBuilder {
         }
 
         @Override
-        public void configure(StateMachineConfigBuilder<S, E> builder) throws Exception {
+        public void configure(StateMachineConfigBuilder<S, E> builder) {
         }
 
         @Override
@@ -192,51 +192,51 @@ public class StateMachineFactoryBuilder {
         }
 
         @Override
-        public void configure(StateMachineModelConfigurer<S, E> model) throws Exception {
+        public void configure(StateMachineModelConfigurer<S, E> model) {
         }
 
         @Override
-        public void configure(StateMachineConfigurationConfigurer<S, E> config) throws Exception {
+        public void configure(StateMachineConfigurationConfigurer<S, E> config) {
         }
 
         @Override
-        public void configure(StateMachineStateConfigurer<S, E> states) throws Exception {
+        public void configure(StateMachineStateConfigurer<S, E> states) {
         }
 
         @Override
-        public void configure(StateMachineTransitionConfigurer<S, E> transitions) throws Exception {
+        public void configure(StateMachineTransitionConfigurer<S, E> transitions) {
         }
 
         protected final StateMachineModelBuilder<S, E> getStateMachineModelBuilder() throws Exception {
             if (modelBuilder != null) {
                 return modelBuilder;
             }
-            modelBuilder = new StateMachineModelBuilder<S, E>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
+            modelBuilder = new StateMachineModelBuilder<>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
             configure(modelBuilder);
             return modelBuilder;
         }
 
-        protected final StateMachineTransitionBuilder<S, E> getStateMachineTransitionBuilder() throws Exception {
+        protected final StateMachineTransitionBuilder<S, E> getStateMachineTransitionBuilder() {
             if (transitionBuilder != null) {
                 return transitionBuilder;
             }
-            transitionBuilder = new StateMachineTransitionBuilder<S, E>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
+            transitionBuilder = new StateMachineTransitionBuilder<>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
             return transitionBuilder;
         }
 
-        protected final StateMachineStateBuilder<S, E> getStateMachineStateBuilder() throws Exception {
+        protected final StateMachineStateBuilder<S, E> getStateMachineStateBuilder() {
             if (stateBuilder != null) {
                 return stateBuilder;
             }
-            stateBuilder = new StateMachineStateBuilder<S, E>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
+            stateBuilder = new StateMachineStateBuilder<>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
             return stateBuilder;
         }
 
-        protected final StateMachineConfigurationBuilder<S, E> getStateMachineConfigurationBuilder() throws Exception {
+        protected final StateMachineConfigurationBuilder<S, E> getStateMachineConfigurationBuilder() {
             if (configurationBuilder != null) {
                 return configurationBuilder;
             }
-            configurationBuilder = new StateMachineConfigurationBuilder<S, E>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
+            configurationBuilder = new StateMachineConfigurationBuilder<>(ObjectPostProcessor.QUIESCENT_POSTPROCESSOR, true);
             return configurationBuilder;
         }
     }

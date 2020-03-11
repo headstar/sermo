@@ -28,12 +28,12 @@ public class InMemoryStateMachinePersist<S, E> implements ExtendedStateMachinePe
     private final ConcurrentHashMap<String, StateMachineContext<S, E>> contexts = new ConcurrentHashMap<>();
 
     @Override
-    public void write(StateMachineContext<S, E> context, String contextObj) throws Exception {
+    public void write(StateMachineContext<S, E> context, String contextObj) {
         contexts.put(contextObj, context);
     }
 
     @Override
-    public StateMachineContext<S, E> read(String contextObj) throws Exception {
+    public StateMachineContext<S, E> read(String contextObj) {
         return contexts.get(contextObj);
     }
 

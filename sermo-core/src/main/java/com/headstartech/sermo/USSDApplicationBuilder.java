@@ -48,10 +48,10 @@ import java.util.stream.Collectors;
 public class USSDApplicationBuilder {
 
     public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDApplicationBuilder.Builder<S, E>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
+        return new USSDApplicationBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
     public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDApplicationBuilder.Builder<S, E>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
+        return new USSDApplicationBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
     public static class Builder<S, E extends MOInput> {
@@ -97,7 +97,7 @@ public class USSDApplicationBuilder {
             return this;
         }
 
-        public Builder<S, E> withEndState(USSDEndState<S, E> state) throws Exception {
+        public Builder<S, E> withEndState(USSDEndState<S, E> state) {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()));
             stateConfigurer.end(state.getId());
             return this;
@@ -230,7 +230,7 @@ public class USSDApplicationBuilder {
         }
 
         private Collection<Action<S, E>> wrapWithErrorActions(Collection<Action<S, E>> actions) {
-            return actions.stream().map(e -> wrapWithErrorActions(e)).collect(Collectors.toCollection(ArrayList::new));
+            return actions.stream().map(this::wrapWithErrorActions).collect(Collectors.toCollection(ArrayList::new));
         }
 
 

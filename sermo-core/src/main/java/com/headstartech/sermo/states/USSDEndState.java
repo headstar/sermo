@@ -34,12 +34,12 @@ public class USSDEndState<S, E> extends MOInput {
     public USSDEndState(S id) { this(id, Collections.emptyList());}
 
     public USSDEndState(S id, Action<S, E> entryAction) {
-        this(id,  Arrays.asList(entryAction));
+        this(id, Collections.singletonList(entryAction));
     }
 
     public USSDEndState(S id, Collection<Action<S, E>> entryActions) {
         this.id = id;
-        this.entryActions = new ArrayList<>(entryActions.stream().filter(e -> e != null).collect(Collectors.toCollection(ArrayList::new)));
+        this.entryActions = new ArrayList<>(entryActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
     }
 
     public S getId() {
