@@ -28,11 +28,6 @@ public class EmptyLine  implements ScreenBlock {
     private EmptyLine() {}
 
     @Override
-    public void accept(ScreenBlockVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
     public String toString() {
         return new StringJoiner(", ", EmptyLine.class.getSimpleName() + "[", "]")
                 .toString();

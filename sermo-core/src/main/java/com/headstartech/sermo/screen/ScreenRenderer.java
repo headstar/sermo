@@ -19,10 +19,8 @@ package com.headstartech.sermo.screen;
 /**
  * @author Per Johansson
  */
-public interface ScreenRenderer extends ScreenBlockVisitor {
+public interface ScreenRenderer {
 
-    InputMap getInputMap();
-
-    String getScreenOutput();
+    ScreenRenderResult renderScreen(ScreenBlocksContainer screenBlocksContainer);
 
 }

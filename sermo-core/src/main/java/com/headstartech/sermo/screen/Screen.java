@@ -66,8 +66,8 @@ public class Screen {
         public Screen build() {
             ScreenRenderer renderer = screenRenderer == null ? new DefaultScreenRenderer() : screenRenderer;
             ScreenBlocksContainer screenBlocksContainer = new ScreenBlocksContainer(screenBlocks);
-            screenBlocksContainer.accept(renderer);
-            return new Screen(renderer.getInputMap(), renderer.getScreenOutput());
+            ScreenRenderResult screenRenderResult = renderer.renderScreen(screenBlocksContainer);
+            return new Screen(screenRenderResult.getInputMap(), screenRenderResult.getOutput());
         }
     }
 

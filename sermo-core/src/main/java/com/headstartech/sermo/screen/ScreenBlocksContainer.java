@@ -38,11 +38,6 @@ public class ScreenBlocksContainer implements ScreenBlock {
     }
 
     @Override
-    public void accept(ScreenBlockVisitor visitor) {
-        screenBlocks.forEach(e -> e.accept(visitor));
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

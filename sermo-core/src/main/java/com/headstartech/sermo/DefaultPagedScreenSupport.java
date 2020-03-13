@@ -20,21 +20,20 @@ import com.headstartech.sermo.screen.*;
 import org.springframework.statemachine.ExtendedState;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @author Per Johansson
  */
 public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
-    private final Supplier<ScreenRenderer> screenRendererSupplier;
+    private final ScreenRenderer screenRenderer;
 
-    public DefaultPagedScreenSupport(Supplier<ScreenRenderer> screenRendererSupplier) {
-        this.screenRendererSupplier = screenRendererSupplier;
+    public DefaultPagedScreenSupport(ScreenRenderer screenRenderer) {
+        this.screenRenderer = screenRenderer;
     }
 
     public DefaultPagedScreenSupport() {
-        this( () -> new DefaultScreenRenderer());
+        this(new DefaultScreenRenderer());
     }
 
     @Override
@@ -48,7 +47,7 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
         Screen.Builder screenBuilder =  Screen.builder();
 
-        screenBuilder.withScreenRenderer(screenRendererSupplier.get());
+        screenBuilder.withScreenRenderer(screenRenderer);
         screenBuilder.withScreenBlock(pagedScreenSetup.getHeaderBlock());
 
         List<MenuItem> allMenuItems = pagedScreenSetup.getAllMenuItems();

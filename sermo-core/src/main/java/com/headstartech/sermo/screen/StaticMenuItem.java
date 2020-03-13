@@ -37,12 +37,6 @@ public class StaticMenuItem extends MenuItem implements ScreenBlock {
     }
 
     @Override
-    public void accept(ScreenBlockVisitor visitor) {
-        visitor.visit(this);
-    }
-
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

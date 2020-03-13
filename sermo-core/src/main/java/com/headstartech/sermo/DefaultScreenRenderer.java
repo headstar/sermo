@@ -23,32 +23,42 @@ import com.headstartech.sermo.screen.*;
  */
 public class DefaultScreenRenderer implements ScreenRenderer {
 
-    private InputMap inputMap = new InputMap();
-    private StringBuilder sb = new StringBuilder();
 
     @Override
-    public InputMap getInputMap() {
-        return inputMap;
+    public ScreenRenderResult renderScreen(ScreenBlocksContainer screenBlocksContainer) {
+        InputMap inputMap = new InputMap();
+        StringBuilder sb = new StringBuilder();
+
+        screenBlocksContainer.getScreenBlocks().forEach(e -> renderBlock(e, sb, inputMap));
+        return new ScreenRenderResult(inputMap, sb.toString());
     }
 
-    @Override
-    public String getScreenOutput() {
-        return sb.toString();
+    protected void renderBlock(ScreenBlock screenBlock, StringBuilder sb, InputMap inputMap) {
+        if(screenBlock instanceof EmptyLine) {
+            renderEmptyLine(sb);
+        } else if(screenBlock instanceof Text) {
+            renderText(sb, (Text) screenBlock);
+        } else if(screenBlock instanceof MenuGroup) {
+            renderMenuGroup(sb, inputMap, (MenuGroup) screenBlock);
+        } else if(screenBlock instanceof StaticMenuItem) {
+            renderStaticMenuItem(sb, inputMap, (StaticMenuItem) screenBlock);
+        } else {
+            throw new IllegalStateException(String.format("unknown ScreenBlock type %s", screenBlock.getClass().getName()));
+        }
+
     }
 
-    @Override
-    public void visit(EmptyLine emptyLine) {
+    protected void renderEmptyLine(StringBuilder sb) {
         sb.append("\n");
     }
 
-    @Override
-    public void visit(Text text) {
+    protected void renderText(StringBuilder sb, Text text) {
         sb.append(text.getText())
                 .append("\n");
+
     }
 
-    @Override
-    public void visit(MenuGroup menuGroup) {
+    protected void renderMenuGroup(StringBuilder sb, InputMap inputMap, MenuGroup menuGroup) {
         int i = 1;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
             String input = String.format("%d", i);
@@ -58,9 +68,10 @@ public class DefaultScreenRenderer implements ScreenRenderer {
         }
     }
 
-    @Override
-    public void visit(StaticMenuItem staticMenuItem) {
+    protected void renderStaticMenuItem(StringBuilder sb, InputMap inputMap, StaticMenuItem staticMenuItem) {
         sb.append(String.format("%s %s\n", staticMenuItem.getInput(), staticMenuItem.getLabel()));
         inputMap.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemData());
+
     }
+
 }

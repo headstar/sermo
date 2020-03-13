@@ -30,11 +30,6 @@ public class Text implements ScreenBlock {
         this.text = text;
     }
 
-    @Override
-    public void accept(ScreenBlockVisitor visitor) {
-        visitor.visit(this);
-    }
-
     public String getText() {
         return text;
     }

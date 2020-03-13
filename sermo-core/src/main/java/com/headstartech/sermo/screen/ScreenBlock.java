@@ -21,5 +21,4 @@ package com.headstartech.sermo.screen;
  */
 public interface ScreenBlock {
 
-    void accept(ScreenBlockVisitor visitor);
 }

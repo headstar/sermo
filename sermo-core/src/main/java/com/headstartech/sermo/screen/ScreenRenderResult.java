@@ -19,13 +19,21 @@ package com.headstartech.sermo.screen;
 /**
  * @author Per Johansson
  */
-public interface ScreenBlockVisitor {
+public class ScreenRenderResult {
 
-    void visit(EmptyLine emptyLine);
+    private final InputMap inputMap;
+    private final String output;
 
-    void visit(Text text);
+    public ScreenRenderResult(InputMap inputMap, String output) {
+        this.inputMap = inputMap;
+        this.output = output;
+    }
 
-    void visit(MenuGroup menuGroup);
+    public InputMap getInputMap() {
+        return inputMap;
+    }
 
-    void visit(StaticMenuItem staticMenuItem);
+    public String getOutput() {
+        return output;
+    }
 }
