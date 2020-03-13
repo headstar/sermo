@@ -61,7 +61,7 @@ public class USSDApplication<S, E extends MOInput> {
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {
-        log.debug("Handling event: event={}", event);
+        log.debug("Handling event: event={}, state={}", event, stateMachine.getState().getId());
         stateMachine.sendEvent(event);
 
         EventResult eventResult;
