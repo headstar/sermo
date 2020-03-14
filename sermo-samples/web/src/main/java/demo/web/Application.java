@@ -51,7 +51,7 @@ public class Application {
                 .withState(accountsScreen)
                 .withState(statementScreen)
                 .withState(accountDetailsScreen)
-                .withEndState(endScreen)
+                .withState(endScreen)
                 .withState(statementMonthlyScreen)
                 .withState(statementAnnualScreen);
 

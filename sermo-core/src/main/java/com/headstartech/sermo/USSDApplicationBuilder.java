@@ -94,12 +94,10 @@ public class USSDApplicationBuilder {
             if (state instanceof PagedUSSDState) {
                 withPagedScreenTransitions(state.getId(), ((PagedUSSDState<S, E>) state).toNextOrToPreviousPageAction());
             }
-            return this;
-        }
 
-        public Builder<S, E> withEndState(USSDEndState<S, E> state) {
-            stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()));
-            stateConfigurer.end(state.getId());
+            if(state instanceof USSDEndState) {
+                stateConfigurer.end(state.getId());
+            }
             return this;
         }
 

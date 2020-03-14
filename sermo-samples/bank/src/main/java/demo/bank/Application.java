@@ -33,7 +33,7 @@ public class Application {
                 .withState(accountsScreen)
                 .withState(statementScreen)
                 .withState(accountDetailsScreen)
-                .withEndState(endScreen);
+                .withState(endScreen);
 
         builder.withInitialState(States.INITIAL);
         builder.withShortCodeTransition(States.ROOT, Pattern.compile("111"));

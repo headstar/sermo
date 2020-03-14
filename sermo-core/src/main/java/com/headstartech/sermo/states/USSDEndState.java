@@ -19,17 +19,13 @@ package com.headstartech.sermo.states;
 import com.headstartech.sermo.MOInput;
 import org.springframework.statemachine.action.Action;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Per Johansson
  */
-public class USSDEndState<S, E> extends MOInput {
-
-    private final S id;
-    private final List<Action<S, E>> entryActions;
-
+public class USSDEndState<S, E extends MOInput> extends USSDState<S, E> {
 
     public USSDEndState(S id) { this(id, Collections.emptyList());}
 
@@ -38,16 +34,7 @@ public class USSDEndState<S, E> extends MOInput {
     }
 
     public USSDEndState(S id, Collection<Action<S, E>> entryActions) {
-        this.id = id;
-        this.entryActions = new ArrayList<>(entryActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
-    }
-
-    public S getId() {
-        return id;
-    }
-
-    public Collection<Action<S, E>> getEntryActions() {
-        return entryActions;
+        super(id, entryActions, Collections.emptyList());
     }
 
 }
