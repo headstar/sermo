@@ -13,6 +13,7 @@ import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -32,29 +33,48 @@ public class Application {
     }
 
     @Bean
-    public USSDApplication<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) throws Exception {
+    public USSDState<States, SubscriberEvent> rootMenu() {
+        return new USSDState<>(States.ROOT, new RootEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> accountsMenu() {
+        return new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> statementsMenu() {
+        return new USSDState<>(States.STATEMENT, new StatementEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> statementsMonthlyMenu() {
+        return new USSDState<>(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> statementsAnnualMenu() {
+        return new USSDState<>(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> accountsDetailMenu() {
+        return new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> endMenu() {
+        return new USSDEndState<>(States.END);
+    }
+
+    @Bean
+    public USSDApplication<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter,
+                                                                    Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
         USSDApplicationBuilder.Builder<States, SubscriberEvent> builder = USSDApplicationBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
-
-        USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
-        USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
-        USSDState<States, SubscriberEvent> statementScreen = new USSDState<>(States.STATEMENT, new StatementEntryAction());
-        USSDState<States, SubscriberEvent> statementMonthlyScreen = new USSDState<>(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
-        USSDState<States, SubscriberEvent> statementAnnualScreen = new USSDState<>(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
-
-        USSDState<States, SubscriberEvent> accountDetailsScreen = new USSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
-        USSDEndState<States, SubscriberEvent> endScreen = new USSDEndState<>(States.END);
-
-        builder
-                .withState(rootMenuScreen)
-                .withState(accountsScreen)
-                .withState(statementScreen)
-                .withState(accountDetailsScreen)
-                .withState(endScreen)
-                .withState(statementMonthlyScreen)
-                .withState(statementAnnualScreen);
-
+        
+        builder.withStates(states);
 
         builder.withInitialState(States.INITIAL);
         builder.withShortCodeTransition(States.ROOT, Pattern.compile(Pattern.quote(mainMenuShortCode)));

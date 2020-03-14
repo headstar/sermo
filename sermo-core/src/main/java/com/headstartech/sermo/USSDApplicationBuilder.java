@@ -88,6 +88,13 @@ public class USSDApplicationBuilder {
             return this;
         }
 
+        public Builder<S, E> withStates(Collection<USSDState<S, E>> states) throws Exception {
+            for (USSDState<S, E> state : states) {
+                withState(state);
+            }
+            return this;
+        }
+
         public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
