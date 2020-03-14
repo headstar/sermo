@@ -7,11 +7,7 @@ import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.Message;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.listener.StateMachineListenerAdapter;
-import org.springframework.statemachine.state.State;
-import org.springframework.statemachine.transition.Transition;
+import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,9 +46,9 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist = new InMemoryStateMachinePersist<>();
+        ConcurrentHashMapPersist<States, SubscriberEvent> stateMachinePersist = new ConcurrentHashMapPersist<>();
         USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
-                new DefaultExtendedStateMachinePersister<>(stateMachinePersist));
+                new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
 
         USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);
 

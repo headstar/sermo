@@ -8,6 +8,8 @@ import com.headstartech.sermo.states.USSDState;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.statemachine.StateMachinePersist;
+import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,12 +27,12 @@ public class Application {
     private static final String statementShortCode = "*8444*11#";
 
     @Bean
-    public ExtendedStateMachinePersist<States, SubscriberEvent, String> stateMachinePersist() {
-        return new InMemoryStateMachinePersist<>();
+    public ConcurrentHashMapPersist<States, SubscriberEvent> stateMachinePersist() {
+        return new ConcurrentHashMapPersist<>();
     }
 
     @Bean
-    public USSDApplication<States, SubscriberEvent> ussdApplication(ExtendedStateMachinePersist<States, SubscriberEvent, String> extendedStateMachinePersist) throws Exception {
+    public USSDApplication<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
         USSDApplicationBuilder.Builder<States, SubscriberEvent> builder = USSDApplicationBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
@@ -77,7 +79,7 @@ public class Application {
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
         USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
-                new DefaultExtendedStateMachinePersister<>(extendedStateMachinePersist));
+                new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
 
         return new USSDApplication<>(ussdStateMachineService);
     }

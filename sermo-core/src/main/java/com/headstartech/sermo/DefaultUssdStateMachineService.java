@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineException;
+import org.springframework.statemachine.persist.StateMachinePersister;
 
 /**
  * @author Per Johansson
@@ -29,11 +30,13 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
     private static final Logger log = LoggerFactory.getLogger(DefaultUssdStateMachineService.class);
 
     private final StateMachinePool<S, E> stateMachinePool;
-    private final ExtendedStateMachinePersister<S, E, String> stateMachinePersister;
+    private final StateMachinePersister<S, E, String> stateMachinePersister;
+    private StateMachineDeleter<String> stateMachineDeleter;
 
-    public DefaultUssdStateMachineService(StateMachinePool<S, E> stateMachinePool, ExtendedStateMachinePersister<S, E, String> stateMachinePersister) {
+    public DefaultUssdStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
         this.stateMachinePool = stateMachinePool;
         this.stateMachinePersister = stateMachinePersister;
+        this.stateMachineDeleter = stateMachineDeleter;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
         try {
             boolean isCompleteOrHasStateMachineError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
             if(isCompleteOrHasStateMachineError) {
-                stateMachinePersister.delete(machineId);
+                stateMachineDeleter.delete(machineId);
             } else {
                 stateMachinePersister.persist(stateMachine, machineId);
             }
