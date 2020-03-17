@@ -6,7 +6,7 @@
         </layout>
     </appender>
 
-    <logger name="com.headstartech.sermo" level="debug"/>
+    <logger name="com.headstartech.sermo" level="trace"/>
 
     <logger name="org.springframework.statemachine" level="warn"/>
 

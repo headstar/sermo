@@ -44,9 +44,12 @@ public class USSDApplication<S, E extends MOInput> {
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
             eventResult = handleEvent(stateMachine, event);
         } finally {
-            clearMDC();
-            if(stateMachine != null) {
-                ussdStateMachineService.releaseStateMachine(sessionId, stateMachine);
+            try {
+                if (stateMachine != null) {
+                    ussdStateMachineService.releaseStateMachine(sessionId, stateMachine);
+                }
+            } finally {
+                clearMDC();
             }
         }
         return eventResult;

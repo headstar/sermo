@@ -2,11 +2,13 @@ package demo.web;
 
 import com.headstartech.sermo.*;
 import com.headstartech.sermo.actions.SetFixedOutputOnError;
+import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
@@ -28,8 +30,8 @@ public class Application {
     private static final String statementShortCode = "*8444*11#";
 
     @Bean
-    public ConcurrentHashMapPersist<States, SubscriberEvent> stateMachinePersist() {
-        return new ConcurrentHashMapPersist<>();
+    public CachePersist<States, SubscriberEvent> stateMachinePersist() {
+        return new CachePersist<>(new ConcurrentMapCache("bank"));
     }
 
     @Bean

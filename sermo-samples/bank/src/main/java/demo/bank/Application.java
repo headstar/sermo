@@ -2,11 +2,13 @@ package demo.bank;
 
 import com.headstartech.sermo.*;
 import com.headstartech.sermo.actions.SetFixedOutputOnError;
+import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 
 import java.util.Arrays;
@@ -46,7 +48,7 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        ConcurrentHashMapPersist<States, SubscriberEvent> stateMachinePersist = new ConcurrentHashMapPersist<>();
+        CachePersist<States, SubscriberEvent> stateMachinePersist = new CachePersist<>(new ConcurrentMapCache("bank"));
         USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
 
