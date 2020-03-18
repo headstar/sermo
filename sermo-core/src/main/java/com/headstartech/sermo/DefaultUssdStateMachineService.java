@@ -19,7 +19,6 @@ package com.headstartech.sermo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.StateMachineException;
 import org.springframework.statemachine.persist.StateMachinePersister;
 
 /**
@@ -46,14 +45,14 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
         try {
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
-            if(stateMachineIsCompleteOrHasError(stateMachine)) {
-                // might happen if StateMachineDeleter is asynchronous
-                log.debug("Restored state machine completed or in error, resetting state machine: machineId={}", machineId);
-                resetStateMachine(stateMachine);
-            }
         } catch (Exception e) {
-            log.error("Error handling context", e);
-            throw new StateMachineException("Unable to read context from store", e);
+            throw new USSDException(String.format("Unable to restore state machine: %s", machineId), e);
+        }
+
+        if(stateMachineIsCompleteOrHasError(stateMachine)) {
+            // might happen if StateMachineDeleter is asynchronous
+            log.debug("Restored state machine completed or in error, resetting state machine: machineId={}", machineId);
+            resetStateMachine(stateMachine);
         }
 
         return stateMachine;
@@ -61,18 +60,32 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
 
     @Override
     public void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine) {
+        boolean exceptionOnPersist = false;
         try {
             stateMachinePersister.persist(stateMachine, machineId);
-
-            if(stateMachineIsCompleteOrHasError(stateMachine)) {
-                stateMachineDeleter.delete(machineId);
-            }
         } catch (Exception e) {
-            log.error("Error handling context", e);
-            throw new StateMachineException("Unable to persist context to store", e);
+            exceptionOnPersist = true;
+            throw new USSDException(String.format("Unable to persist context to store: %s", machineId), e);
         } finally {
+            if(exceptionOnPersist || stateMachineIsCompleteOrHasError(stateMachine)) {
+                try {
+                    stateMachineDeleter.delete(machineId);
+                } catch(RuntimeException e) {
+                    log.warn(String.format("Error when deleting state machine: %s", machineId), e);
+                }
+            }
             stateMachinePool.returnStateMachine(stateMachine);
         }
+    }
+
+    @Override
+    public void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine) {
+        try {
+            stateMachineDeleter.delete(machineId);
+        } catch(RuntimeException e) {
+            log.warn(String.format("Error when deleting state machine: %s", machineId), e);
+        }
+        stateMachinePool.returnStateMachine(stateMachine);
     }
 
     protected boolean stateMachineIsCompleteOrHasError(StateMachine<S, E> stateMachine) {

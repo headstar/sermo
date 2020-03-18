@@ -16,17 +16,29 @@
 
 package com.headstartech.sermo;
 
-import org.springframework.statemachine.StateMachine;
-
 /**
  * @author Per Johansson
  */
-public interface USSDStateMachineService<S, E extends MOInput> {
+public class USSDException extends RuntimeException {
 
-    StateMachine<S, E> acquireStateMachine(String machineId);
+    private static final long serialVersionUID = -1479930274584977818L;
 
-    void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine);
+    public USSDException() {
+    }
 
-    void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine);
+    public USSDException(String message) {
+        super(message);
+    }
 
+    public USSDException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public USSDException(Throwable cause) {
+        super(cause);
+    }
+
+    public USSDException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
