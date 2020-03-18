@@ -46,6 +46,11 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
         try {
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
+            if(stateMachineIsCompleteOrHasError(stateMachine)) {
+                // might happen if StateMachineDeleter is asynchronous
+                log.debug("Restored state machine completed or in error, resetting state machine: machineId={}", machineId);
+                resetStateMachine(stateMachine);
+            }
         } catch (Exception e) {
             log.error("Error handling context", e);
             throw new StateMachineException("Unable to read context from store", e);
@@ -57,11 +62,10 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
     @Override
     public void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine) {
         try {
-            boolean isCompleteOrHasStateMachineError = stateMachine.isComplete() || stateMachine.hasStateMachineError();
-            if(isCompleteOrHasStateMachineError) {
+            stateMachinePersister.persist(stateMachine, machineId);
+
+            if(stateMachineIsCompleteOrHasError(stateMachine)) {
                 stateMachineDeleter.delete(machineId);
-            } else {
-                stateMachinePersister.persist(stateMachine, machineId);
             }
         } catch (Exception e) {
             log.error("Error handling context", e);
@@ -70,5 +74,16 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
             stateMachinePool.returnStateMachine(stateMachine);
         }
     }
+
+    protected boolean stateMachineIsCompleteOrHasError(StateMachine<S, E> stateMachine) {
+        return stateMachine.isComplete() || stateMachine.hasStateMachineError();
+    }
+
+    protected void resetStateMachine(StateMachine<S,E> stateMachine) {
+        stateMachine.stop();
+        stateMachine.getStateMachineAccessor().doWithAllRegions(function -> function.resetStateMachine(null));
+        stateMachine.start();
+    }
+
 
 }
