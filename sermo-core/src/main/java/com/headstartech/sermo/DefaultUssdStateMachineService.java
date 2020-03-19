@@ -19,6 +19,9 @@ package com.headstartech.sermo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.StateMachinePersist;
+import org.springframework.statemachine.config.StateMachineFactory;
+import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
 
 /**
@@ -31,6 +34,11 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
     private final StateMachinePool<S, E> stateMachinePool;
     private final StateMachinePersister<S, E, String> stateMachinePersister;
     private StateMachineDeleter<String> stateMachineDeleter;
+
+
+    public DefaultUssdStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
+        this(new DefaultStateMachinePool<>(stateMachineFactory), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
+    }
 
     public DefaultUssdStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
         this.stateMachinePool = stateMachinePool;

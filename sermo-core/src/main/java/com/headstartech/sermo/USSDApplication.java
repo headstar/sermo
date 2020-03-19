@@ -28,7 +28,7 @@ public class USSDApplication<S, E extends MOInput> {
     private static final Logger log = LoggerFactory.getLogger(USSDApplication.class);
 
     private final USSDStateMachineService<S, E> ussdStateMachineService;
-    private final USSDApplicationListener<E> ussdApplicationListener;
+    private final CompositeUSSDApplicationListener<E> ussdApplicationListener;
 
     public USSDApplication(USSDStateMachineService<S, E> ussdStateMachineService) {
         this.ussdStateMachineService = ussdStateMachineService;
@@ -64,6 +64,14 @@ public class USSDApplication<S, E extends MOInput> {
             }
         }
         return eventResult;
+    }
+
+    public void register(USSDApplicationListener<E> listener) {
+        ussdApplicationListener.register(listener);
+    }
+
+    public void unregister(USSDApplicationListener<E> listener) {
+        ussdApplicationListener.unregister(listener);
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {

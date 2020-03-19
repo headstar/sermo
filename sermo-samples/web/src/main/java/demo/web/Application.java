@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.statemachine.StateMachinePersist;
-import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,10 +99,12 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
-                new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
+        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(stateMachineFactoryBuilder.build(), stateMachinePersist,
+                stateMachineDeleter);
 
-        return new USSDApplication<>(ussdStateMachineService);
+        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);
+        ussdApplication.register(new DefaultMDCApplicationListener<>());
+        return ussdApplication;
     }
 
     @Bean
