@@ -39,13 +39,13 @@ public class USSDApplication<S, E extends MOInput> {
     public EventResult applyEvent(String sessionId, E event) throws USSDException {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult;
-        boolean exception = false;
+        boolean exceptionThrown = false;
         try {
             setMDC(sessionId);
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
             eventResult = handleEvent(stateMachine, event);
-        } catch(Exception e) {
-            exception = true;
+        } catch(RuntimeException e) {
+            exceptionThrown = true;
             if(e instanceof USSDException) {
                 throw e;
             } else {
@@ -54,7 +54,7 @@ public class USSDApplication<S, E extends MOInput> {
         } finally {
             try {
                 if (stateMachine != null) {
-                    if(exception) {
+                    if(exceptionThrown) {
                         ussdStateMachineService.releaseStateMachineOnException(sessionId, stateMachine);
                     } else {
                         ussdStateMachineService.releaseStateMachine(sessionId, stateMachine);
