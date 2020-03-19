@@ -18,10 +18,7 @@ package com.headstartech.sermo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.statemachine.StateMachine;
-
-import static com.headstartech.sermo.USSDSystemConstants.MDC_SESSION_ID_KEY;
 
 /**
  * @author Per Johansson
@@ -31,17 +28,19 @@ public class USSDApplication<S, E extends MOInput> {
     private static final Logger log = LoggerFactory.getLogger(USSDApplication.class);
 
     private final USSDStateMachineService<S, E> ussdStateMachineService;
+    private final USSDApplicationListener<E> ussdApplicationListener;
 
     public USSDApplication(USSDStateMachineService<S, E> ussdStateMachineService) {
         this.ussdStateMachineService = ussdStateMachineService;
+        this.ussdApplicationListener = new CompositeUSSDApplicationListener<>();
     }
 
     public EventResult applyEvent(String sessionId, E event) throws USSDException {
         StateMachine<S, E> stateMachine = null;
-        EventResult eventResult;
+        EventResult eventResult = null;
         boolean exceptionThrown = false;
         try {
-            setMDC(sessionId);
+            ussdApplicationListener.preEventHandled(sessionId, event);
             stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
             eventResult = handleEvent(stateMachine, event);
         } catch(RuntimeException e) {
@@ -61,18 +60,10 @@ public class USSDApplication<S, E extends MOInput> {
                     }
                 }
             } finally {
-                clearMDC();
+                ussdApplicationListener.postEventHandled(sessionId, event, eventResult);
             }
         }
         return eventResult;
-    }
-
-    protected void setMDC(String machineId) {
-        MDC.put(MDC_SESSION_ID_KEY, machineId);
-    }
-
-    protected void clearMDC() {
-        MDC.clear();
     }
 
     protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {

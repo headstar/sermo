@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDApplicationBuilder {
+public class USSDStateMachineBuilder {
 
-    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDApplicationBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
+    public static <S, E extends MOInput> USSDStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+        return new USSDStateMachineBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
-    public static <S, E extends MOInput> USSDApplicationBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDApplicationBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
+    public static <S, E extends MOInput> USSDStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+        return new USSDStateMachineBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
     public static class Builder<S, E extends MOInput> {

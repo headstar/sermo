@@ -74,7 +74,7 @@ public class Application {
                                                                     Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        USSDApplicationBuilder.Builder<States, SubscriberEvent> builder = USSDApplicationBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
+        USSDStateMachineBuilder.Builder<States, SubscriberEvent> builder = USSDStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
         
         builder.withStates(states);
 
