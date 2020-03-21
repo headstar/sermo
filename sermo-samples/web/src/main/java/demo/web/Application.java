@@ -88,7 +88,7 @@ public class Application {
         builder.withShortCodeTransition(States.ROOT, Pattern.compile(Pattern.quote(mainMenuShortCode)));
         builder.withShortCodeTransition(States.STATEMENT, Pattern.compile(Pattern.quote(statementShortCode)));
 
-        builder.withDefaultListener();
+        builder.withLoggingListener();
 
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);

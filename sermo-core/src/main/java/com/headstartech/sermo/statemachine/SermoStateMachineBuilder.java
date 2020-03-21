@@ -77,9 +77,8 @@ public class SermoStateMachineBuilder {
             return this;
         }
 
-        public Builder<S, E> withDefaultListener() {
-            configurationConfigurer.listener(new LoggingStateMachineListener<>());
-            return this;
+        public Builder<S, E> withLoggingListener() {
+            return withListener(new LoggingStateMachineListener<>());
         }
 
 
