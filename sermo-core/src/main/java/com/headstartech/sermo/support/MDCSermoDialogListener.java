@@ -14,29 +14,27 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.config.StateMachineFactory;
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.SermoDialogListener;
+import org.slf4j.MDC;
+
+import static com.headstartech.sermo.SermoSystemConstants.MDC_SESSION_ID_KEY;
 
 /**
  * @author Per Johansson
  */
-public class DefaultStateMachinePool<S, E> implements StateMachinePool<S,E> {
+public class MDCSermoDialogListener<E extends DialogEvent> implements SermoDialogListener<E> {
 
-    private final StateMachineFactory<S, E> stateMachineFactory;
-
-    public DefaultStateMachinePool(StateMachineFactory<S, E> stateMachineFactory) {
-        this.stateMachineFactory = stateMachineFactory;
+    @Override
+    public void preEventHandled(String sessionId, E event) {
+        MDC.put(MDC_SESSION_ID_KEY, sessionId);
     }
 
     @Override
-    public StateMachine<S, E> getStateMachine() {
-        return stateMachineFactory.getStateMachine();
-    }
-
-    @Override
-    public void returnStateMachine(StateMachine<S, E> stateMachine) {
-        // do nothing
+    public void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult) {
+        MDC.clear();
     }
 }

@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.guards;
+package com.headstartech.sermo.statemachine.guards;
 
 
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 
 /**
  * @author Per Johansson
  */
-public abstract class GuardBase<S, E extends MOInput> implements Guard<S, E> {
+public abstract class GuardBase<S, E extends DialogEvent> implements Guard<S, E> {
 
     @Override
     public boolean evaluate(StateContext<S, E> context) {

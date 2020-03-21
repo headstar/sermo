@@ -1,11 +1,16 @@
 package demo.bank;
 
 import com.headstartech.sermo.*;
-import com.headstartech.sermo.actions.SetFixedOutputOnError;
+import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
+import com.headstartech.sermo.statemachine.SermoStateMachineBuilder;
+import com.headstartech.sermo.statemachine.StateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
+import com.headstartech.sermo.support.DefaultSermoStateMachineService;
+import com.headstartech.sermo.support.SermoStateMachineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -58,14 +63,14 @@ public class Application {
 
         List<String> inputs = Arrays.asList("111", "1", "0", "0", "#", "1", "1");
         for(int i=0; i<inputs.size(); ++i) {
-            EventResult result = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
-            if(EventResult.ApplicationState.ERROR.equals(result.getApplicationState())) {
+            DialogEventResult result = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
+            if(DialogEventResult.DialogState.ERROR.equals(result.getDialogState())) {
                 System.out.println("Internal error\n" + result.getOutput().orElse(""));
                 break;
             } else {
                 System.out.println(result.getOutput());
             }
-            if(EventResult.ApplicationState.ERROR.equals(result.getApplicationState())) {
+            if(DialogEventResult.DialogState.ERROR.equals(result.getDialogState())) {
                 break;
             }
         }

@@ -22,46 +22,46 @@ import java.util.StringJoiner;
 /**
  * @author Per Johansson
  */
-public class EventResult {
+public class DialogEventResult {
 
     private final String output;
-    private final ApplicationState applicationState;
+    private final DialogState dialogState;
 
-    private EventResult(String output, ApplicationState applicationState) {
+    private DialogEventResult(String output, DialogState dialogState) {
         this.output = output;
-        this.applicationState = applicationState;
+        this.dialogState = dialogState;
     }
 
     public Optional<String> getOutput() {
         return Optional.ofNullable(output);
     }
 
-    public ApplicationState getApplicationState() {
-        return applicationState;
+    public DialogState getDialogState() {
+        return dialogState;
     }
 
-    static EventResult ofOutput(String output) {
-        return new EventResult(output, ApplicationState.IN_PROGRESS);
+    static DialogEventResult ofOutput(String output) {
+        return new DialogEventResult(output, DialogState.IN_PROGRESS);
     }
 
-    static EventResult ofApplicationCompleted(String output) {
-        return new EventResult(output, ApplicationState.COMPLETE);
+    static DialogEventResult ofApplicationCompleted(String output) {
+        return new DialogEventResult(output, DialogState.COMPLETE);
     }
 
-    static EventResult ofApplicationError(String output) {
-        return new EventResult(output, ApplicationState.ERROR);
+    static DialogEventResult ofApplicationError(String output) {
+        return new DialogEventResult(output, DialogState.ERROR);
     }
 
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", EventResult.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", DialogEventResult.class.getSimpleName() + "[", "]")
                 .add("output='" + output + "'")
-                .add("applicationState=" + applicationState)
+                .add("applicationState=" + dialogState)
                 .toString();
     }
 
-    public enum ApplicationState {
+    public enum DialogState {
         IN_PROGRESS, COMPLETE, ERROR
     }
 }

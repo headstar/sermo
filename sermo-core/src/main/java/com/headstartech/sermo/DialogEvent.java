@@ -21,17 +21,17 @@ import org.springframework.statemachine.trigger.TriggerContext;
 /**
  * @author Per Johansson
  */
-public class MOInput {
+public class DialogEvent {
 
-    public static final MOInput INSTANCE = new MOInput();
+    public static final DialogEvent INSTANCE = new DialogEvent();
 
     protected final String input;
 
-    public MOInput() {
+    public DialogEvent() {
         input = null;
     }
 
-    public MOInput(String input) {
+    public DialogEvent(String input) {
         this.input = input;
     }
 
@@ -51,11 +51,11 @@ public class MOInput {
      */
     @Override
     public final boolean equals(Object o) {
-        return MOInput.class.isAssignableFrom(o.getClass());
+        return DialogEvent.class.isAssignableFrom(o.getClass());
     }
 
     @Override
     public String toString() {
-        return "MOInput [input=" + input + "]";
+        return "DiaglogEvent [input=" + input + "]";
     }
 }

@@ -14,36 +14,29 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.config.StateMachineFactory;
 
 /**
  * @author Per Johansson
  */
-public class AbstractCompositeListener<T> {
+public class DefaultStateMachinePool<S, E> implements StateMachinePool<S,E> {
 
-    private List<T> listeners;
+    private final StateMachineFactory<S, E> stateMachineFactory;
 
-    public AbstractCompositeListener() {
-        listeners = new ArrayList<>();
+    public DefaultStateMachinePool(StateMachineFactory<S, E> stateMachineFactory) {
+        this.stateMachineFactory = stateMachineFactory;
     }
 
-    public void setListeners(List<? extends T> listeners) {
-        this.listeners.clear();
-        this.listeners.addAll(listeners);
+    @Override
+    public StateMachine<S, E> getStateMachine() {
+        return stateMachineFactory.getStateMachine();
     }
 
-    public void register(T listener) {
-        listeners.add(listener);
-    }
-
-    public void unregister(T listener) {
-        listeners.remove(listener);
-    }
-
-    public List<T> getListeners() {
-        return listeners;
+    @Override
+    public void returnStateMachine(StateMachine<S, E> stateMachine) {
+        // do nothing
     }
 }

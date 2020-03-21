@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.screen;
 
 import com.headstartech.sermo.screen.*;
 

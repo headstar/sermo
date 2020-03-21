@@ -14,22 +14,12 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.actions;
-
-import org.springframework.statemachine.StateContext;
+package com.headstartech.sermo.statemachine;
 
 /**
  * @author Per Johansson
  */
-public class SetFixedOutputOnError<S,E> extends SetOutputOnError<S, E> {
+public interface StateMachineDeleter<T> {
 
-    private final String output;
-
-    public SetFixedOutputOnError(String output) {
-        this.output = output;
-    }
-
-    protected String getOutput(StateContext<S, E> context) {
-        return output;
-    }
+    void delete(T contextObj);
 }

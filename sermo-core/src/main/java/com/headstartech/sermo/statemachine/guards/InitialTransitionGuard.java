@@ -14,34 +14,34 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.guards;
+package com.headstartech.sermo.statemachine.guards;
 
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.DialogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
 
-import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Per Johansson
  */
-public class FormInputGuard<S, E extends MOInput> extends GuardBase<S, E> {
+public class InitialTransitionGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(FormInputGuard.class);
+    private static final Logger log = LoggerFactory.getLogger(InitialTransitionGuard.class);
 
-    private final Predicate<String> predicate;
+    private final Pattern pattern;
 
-    public FormInputGuard(Predicate<String> predicate) {
-        this.predicate = predicate;
+    public InitialTransitionGuard(Pattern pattern) {
+        this.pattern = pattern;
     }
 
-    @Override
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
-        boolean result = predicate.test(input);
-        log.debug("Form input guard evaluation: result={}, input={}, predicate={}", result, input, predicate);
-        return result;
+        Matcher m = pattern.matcher(input);
+        boolean res = m.matches();
+        log.debug("Initial transition guard evaluation: result={}, input={}, pattern={}", res, input, pattern.pattern());
+        return res;
     }
-
 
 }

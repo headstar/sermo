@@ -16,8 +16,8 @@
 
 package com.headstartech.sermo.states;
 
-import com.headstartech.sermo.MOInput;
-import com.headstartech.sermo.actions.MenuScreenExitAction;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.statemachine.actions.MenuScreenExitAction;
 import org.springframework.statemachine.action.Action;
 
 import java.util.*;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDState<S, E extends MOInput> {
+public class USSDState<S, E extends DialogEvent> {
 
     private final S id;
     private final List<Action<S, E>> entryActions;

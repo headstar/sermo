@@ -14,8 +14,13 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.SermoException;
+import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
+import com.headstartech.sermo.statemachine.StateMachineDeleter;
+import com.headstartech.sermo.statemachine.StateMachinePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
@@ -27,7 +32,7 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 /**
  * @author Per Johansson
  */
-public class DefaultSermoStateMachineService<S, E extends MOInput> implements SermoStateMachineService<S, E> {
+public class DefaultSermoStateMachineService<S, E extends DialogEvent> implements SermoStateMachineService<S, E> {
 
     private static final Logger log = LoggerFactory.getLogger(DefaultSermoStateMachineService.class);
 

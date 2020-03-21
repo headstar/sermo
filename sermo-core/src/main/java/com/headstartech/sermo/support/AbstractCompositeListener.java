@@ -14,18 +14,36 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.actions;
+package com.headstartech.sermo.support;
 
-import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.action.Action;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Per Johansson
  */
-public class SetStateMachineErrorOnExceptionAction<S, E> implements Action<S, E> {
+public class AbstractCompositeListener<T> {
 
-    @Override
-    public void execute(StateContext<S, E> context) {
-        context.getStateMachine().setStateMachineError(context.getException());
+    private List<T> listeners;
+
+    public AbstractCompositeListener() {
+        listeners = new ArrayList<>();
+    }
+
+    public void setListeners(List<? extends T> listeners) {
+        this.listeners.clear();
+        this.listeners.addAll(listeners);
+    }
+
+    public void register(T listener) {
+        listeners.add(listener);
+    }
+
+    public void unregister(T listener) {
+        listeners.remove(listener);
+    }
+
+    public List<T> getListeners() {
+        return listeners;
     }
 }

@@ -14,8 +14,9 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
+import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.InputMap;
 import com.headstartech.sermo.screen.PagedScreenSetup;
 import org.springframework.statemachine.ExtendedState;

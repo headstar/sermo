@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.actions;
+package com.headstartech.sermo.statemachine.actions;
 
-import com.headstartech.sermo.DefaultPagedScreenSupport;
-import com.headstartech.sermo.ExtendedStateSupport;
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
+import com.headstartech.sermo.support.ExtendedStateSupport;
+import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.PagedScreenSupport;
@@ -27,7 +27,7 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScreenEntryAction<S, E> {
+public class PagedMenuScreenInternalAction<S, E extends DialogEvent> extends MenuScreenEntryAction<S, E> {
 
     private final PagedScreenSupport pagedScreenSupport;
 

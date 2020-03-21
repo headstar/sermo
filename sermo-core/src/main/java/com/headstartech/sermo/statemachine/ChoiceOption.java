@@ -14,21 +14,39 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.actions;
+package com.headstartech.sermo.statemachine;
 
-import com.headstartech.sermo.ExtendedStateSupport;
-import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
+import org.springframework.statemachine.guard.Guard;
 
 /**
  * @author Per Johansson
  */
-public abstract class SetOutputOnError<S,E> implements Action<S, E> {
+public class ChoiceOption<S, E> {
 
-    @Override
-    public final void execute(StateContext<S, E> context) {
-        ExtendedStateSupport.setOutput(context.getExtendedState(), getOutput(context));
+    private final S target;
+    private final Guard<S, E> guard;
+    private final Action<S, E> action;
+
+    public ChoiceOption(S target, Guard<S, E> guard) {
+        this(target, guard, null);
     }
 
-    protected abstract String getOutput(StateContext<S, E> context);
+    public ChoiceOption(S target, Guard<S, E> guard, Action<S, E> action) {
+        this.target = target;
+        this.guard = guard;
+        this.action = action;
+    }
+
+    public S getTarget() {
+        return target;
+    }
+
+    public Guard<S, E> getGuard() {
+        return guard;
+    }
+
+    public Action<S, E> getAction() {
+        return action;
+    }
 }

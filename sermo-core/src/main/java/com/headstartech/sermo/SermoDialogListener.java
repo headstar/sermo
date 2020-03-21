@@ -19,10 +19,10 @@ package com.headstartech.sermo;
 /**
  * @author Per Johansson
  */
-public interface SermoDialogListener< E extends MOInput> {
+public interface SermoDialogListener< E extends DialogEvent> {
 
     void preEventHandled(String sessionId, E event);
 
-    void postEventHandled(String sessionId, E event, EventResult eventResult);
+    void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult);
 
 }

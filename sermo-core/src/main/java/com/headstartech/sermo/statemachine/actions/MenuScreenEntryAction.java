@@ -14,16 +14,21 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine.actions;
 
-import org.springframework.statemachine.StateMachine;
+import com.headstartech.sermo.support.ExtendedStateSupport;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.screen.Screen;
+import org.springframework.statemachine.ExtendedState;
+import org.springframework.statemachine.action.Action;
 
 /**
  * @author Per Johansson
  */
-public interface StateMachinePool<S, E> {
+public abstract class MenuScreenEntryAction<S, E extends DialogEvent> implements Action<S, E> {
 
-    StateMachine<S, E> getStateMachine();
-
-    void returnStateMachine(StateMachine<S,E> stateMachine);
+    protected void setScreen(ExtendedState extendedState, Screen screen) {
+        ExtendedStateSupport.setScreenMenuInputMap(extendedState, screen.getInputMap());
+        ExtendedStateSupport.setOutput(extendedState, screen.getOutput());
+    }
 }

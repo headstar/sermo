@@ -14,39 +14,18 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine.actions;
 
+import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
-import org.springframework.statemachine.guard.Guard;
 
 /**
  * @author Per Johansson
  */
-public class ChoiceOption<S, E> {
+public class SetStateMachineErrorOnExceptionAction<S, E> implements Action<S, E> {
 
-    private final S target;
-    private final Guard<S, E> guard;
-    private final Action<S, E> action;
-
-    public ChoiceOption(S target, Guard<S, E> guard) {
-        this(target, guard, null);
-    }
-
-    public ChoiceOption(S target, Guard<S, E> guard, Action<S, E> action) {
-        this.target = target;
-        this.guard = guard;
-        this.action = action;
-    }
-
-    public S getTarget() {
-        return target;
-    }
-
-    public Guard<S, E> getGuard() {
-        return guard;
-    }
-
-    public Action<S, E> getAction() {
-        return action;
+    @Override
+    public void execute(StateContext<S, E> context) {
+        context.getStateMachine().setStateMachineError(context.getException());
     }
 }

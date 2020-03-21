@@ -16,6 +16,8 @@
 
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.support.CompositeSermoDialogListener;
+import com.headstartech.sermo.support.SermoStateMachineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
@@ -23,26 +25,26 @@ import org.springframework.statemachine.StateMachine;
 /**
  * @author Per Johansson
  */
-public class SermoDialogExecutor<S, E extends MOInput> {
+public class SermoDialogExecutor<S, E extends DialogEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
 
     private final SermoStateMachineService<S, E> sermoStateMachineService;
-    private final CompositeSermoDialogListener<E> ussdApplicationListener;
+    private final CompositeSermoDialogListener<E> compositeListener;
 
     public SermoDialogExecutor(SermoStateMachineService<S, E> sermoStateMachineService) {
         this.sermoStateMachineService = sermoStateMachineService;
-        this.ussdApplicationListener = new CompositeSermoDialogListener<>();
+        this.compositeListener = new CompositeSermoDialogListener<>();
     }
 
-    public EventResult applyEvent(String sessionId, E event) throws SermoException {
+    public DialogEventResult applyEvent(String sessionId, E event) throws SermoException {
         StateMachine<S, E> stateMachine = null;
-        EventResult eventResult = null;
+        DialogEventResult dialogEventResult = null;
         boolean exceptionThrown = false;
         try {
-            ussdApplicationListener.preEventHandled(sessionId, event);
+            compositeListener.preEventHandled(sessionId, event);
             stateMachine = sermoStateMachineService.acquireStateMachine(sessionId);
-            eventResult = handleEvent(stateMachine, event);
+            dialogEventResult = handleEvent(stateMachine, event);
         } catch(RuntimeException e) {
             exceptionThrown = true;
             if(e instanceof SermoException) {
@@ -60,35 +62,35 @@ public class SermoDialogExecutor<S, E extends MOInput> {
                     }
                 }
             } finally {
-                ussdApplicationListener.postEventHandled(sessionId, event, eventResult);
+                compositeListener.postEventHandled(sessionId, event, dialogEventResult);
             }
         }
-        return eventResult;
+        return dialogEventResult;
     }
 
     public void register(SermoDialogListener<E> listener) {
-        ussdApplicationListener.register(listener);
+        compositeListener.register(listener);
     }
 
     public void unregister(SermoDialogListener<E> listener) {
-        ussdApplicationListener.unregister(listener);
+        compositeListener.unregister(listener);
     }
 
-    protected EventResult handleEvent(StateMachine<S, E> stateMachine, E event) {
+    protected DialogEventResult handleEvent(StateMachine<S, E> stateMachine, E event) {
         log.debug("Handling event: event={}, state={}", event, stateMachine.getState().getId());
         stateMachine.sendEvent(event);
 
-        EventResult eventResult;
+        DialogEventResult dialogEventResult;
         if(stateMachine.hasStateMachineError()) {
-            eventResult = EventResult.ofApplicationError(getOutput(stateMachine));
+            dialogEventResult = DialogEventResult.ofApplicationError(getOutput(stateMachine));
         } else if(stateMachine.isComplete()) {
-            eventResult = EventResult.ofApplicationCompleted(getOutput(stateMachine));
+            dialogEventResult = DialogEventResult.ofApplicationCompleted(getOutput(stateMachine));
         } else {
             String output = handleOutputWhenNoStateMachineError(stateMachine);
-            eventResult = EventResult.ofOutput(output);
+            dialogEventResult = DialogEventResult.ofOutput(output);
         }
-        log.debug("Result of handling event: eventResult={}", eventResult);
-        return eventResult;
+        log.debug("Result of handling event: eventResult={}", dialogEventResult);
+        return dialogEventResult;
     }
 
     protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine) {

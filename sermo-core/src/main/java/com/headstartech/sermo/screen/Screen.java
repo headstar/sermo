@@ -16,8 +16,6 @@
 
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.DefaultScreenRenderer;
-
 import java.util.ArrayList;
 import java.util.List;
 

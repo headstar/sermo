@@ -1,7 +1,7 @@
 package demo.web;
 
 import com.headstartech.sermo.*;
-import com.headstartech.sermo.actions.MenuScreenEntryAction;
+import com.headstartech.sermo.statemachine.actions.MenuScreenEntryAction;
 import com.headstartech.sermo.screen.*;
 import org.springframework.statemachine.StateContext;
 

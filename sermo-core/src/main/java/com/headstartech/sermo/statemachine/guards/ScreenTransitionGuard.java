@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.guards;
+package com.headstartech.sermo.statemachine.guards;
 
-import com.headstartech.sermo.ExtendedStateSupport;
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.support.ExtendedStateSupport;
+import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.screen.InputMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public class ScreenTransitionGuard<S, E extends MOInput> extends GuardBase<S, E> {
+public class ScreenTransitionGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
 
     private static final Logger log = LoggerFactory.getLogger(ScreenTransitionGuard.class);
 

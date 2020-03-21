@@ -14,12 +14,14 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine;
 
-import com.headstartech.sermo.actions.SetStateMachineErrorOnExceptionAction;
-import com.headstartech.sermo.guards.FormInputGuard;
-import com.headstartech.sermo.guards.InitialTransitionGuard;
-import com.headstartech.sermo.guards.ScreenTransitionGuard;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.statemachine.actions.SetStateMachineErrorOnExceptionAction;
+import com.headstartech.sermo.statemachine.guards.FormInputGuard;
+import com.headstartech.sermo.statemachine.guards.InitialTransitionGuard;
+import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
@@ -47,14 +49,14 @@ import java.util.stream.Collectors;
  */
 public class SermoStateMachineBuilder {
 
-    public static <S, E extends MOInput> SermoStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+    public static <S, E extends DialogEvent> SermoStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
         return new SermoStateMachineBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
-    public static <S, E extends MOInput> SermoStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+    public static <S, E extends DialogEvent> SermoStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
         return new SermoStateMachineBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
-    public static class Builder<S, E extends MOInput> {
+    public static class Builder<S, E extends DialogEvent> {
 
         private final StateConfigurer<S, E> stateConfigurer;
         private final StateMachineTransitionConfigurer<S, E> transitionConfigurer;

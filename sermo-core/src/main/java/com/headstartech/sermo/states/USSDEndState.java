@@ -16,7 +16,7 @@
 
 package com.headstartech.sermo.states;
 
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.action.Action;
 
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.Collections;
 /**
  * @author Per Johansson
  */
-public class USSDEndState<S, E extends MOInput> extends USSDState<S, E> {
+public class USSDEndState<S, E extends DialogEvent> extends USSDState<S, E> {
 
     public USSDEndState(S id) { this(id, Collections.emptyList());}
 

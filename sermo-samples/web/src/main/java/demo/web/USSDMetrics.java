@@ -16,8 +16,8 @@
 
 package demo.web;
 
-import com.headstartech.sermo.EventResult;
-import com.headstartech.sermo.MOInput;
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoDialogExecutor;
 import com.headstartech.sermo.SermoDialogListener;
 import io.micrometer.core.instrument.FunctionCounter;
@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author Per Johansson
  */
-public class USSDMetrics<S,E extends MOInput> implements MeterBinder {
+public class USSDMetrics<S,E extends DialogEvent> implements MeterBinder {
 
     private final SermoDialogExecutor<S, E> sermoDialogExecutor;
 
@@ -49,7 +49,7 @@ public class USSDMetrics<S,E extends MOInput> implements MeterBinder {
               .register(registry);
     }
 
-    static class MetricsListener<E extends MOInput> implements SermoDialogListener<E> {
+    static class MetricsListener<E extends DialogEvent> implements SermoDialogListener<E> {
 
         private AtomicLong dialogErrorCounter = new AtomicLong();
         private final MeterRegistry meterRegistry;
@@ -70,12 +70,12 @@ public class USSDMetrics<S,E extends MOInput> implements MeterBinder {
         }
 
         @Override
-        public void postEventHandled(String sessionId, E event, EventResult eventResult) {
+        public void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult) {
             Timer.Sample sample = sessionTimerSamples.remove(sessionId);
             sample.stop(meterRegistry.timer("sermo.dialog.event"));
 
-            if (eventResult != null) {
-                if (EventResult.ApplicationState.ERROR.equals(eventResult.getApplicationState())) {
+            if (dialogEventResult != null) {
+                if (DialogEventResult.DialogState.ERROR.equals(dialogEventResult.getDialogState())) {
                     dialogErrorCounter.incrementAndGet();
                 }
             }

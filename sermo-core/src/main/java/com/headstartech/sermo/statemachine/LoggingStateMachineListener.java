@@ -14,9 +14,10 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine;
 
-import com.headstartech.sermo.guards.ScreenTransitionGuard;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -27,7 +28,7 @@ import org.springframework.statemachine.transition.Transition;
 /**
  * @author Per Johansson
  */
-public class LoggingStateMachineListener<S, E extends MOInput> extends StateMachineListenerAdapter<S, E> {
+public class LoggingStateMachineListener<S, E extends DialogEvent> extends StateMachineListenerAdapter<S, E> {
 
     private static final Logger log = LoggerFactory.getLogger(LoggingStateMachineListener.class);
 

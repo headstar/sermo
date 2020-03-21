@@ -14,14 +14,15 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
+import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.StateMachine;
 
 /**
  * @author Per Johansson
  */
-public interface SermoStateMachineService<S, E extends MOInput> {
+public interface SermoStateMachineService<S, E extends DialogEvent> {
 
     StateMachine<S, E> acquireStateMachine(String machineId);
 

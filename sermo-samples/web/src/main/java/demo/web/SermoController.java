@@ -1,6 +1,6 @@
 package demo.web;
 
-import com.headstartech.sermo.EventResult;
+import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.SermoDialogExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +33,18 @@ public class SermoController {
     @RequestMapping("/")
     public String input(@RequestParam("msisdn") String msisdn, @RequestParam("input") String input , Model model) throws Exception {
 
-        EventResult eventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
+        DialogEventResult dialogEventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
 
-        EventResult.ApplicationState applicationState = eventResult.getApplicationState();
-        if(EventResult.ApplicationState.COMPLETE.equals(applicationState) || EventResult.ApplicationState.ERROR.equals(applicationState)) {
-            if(EventResult.ApplicationState.COMPLETE.equals(applicationState)) {
-                model.addAttribute("screen", eventResult.getOutput().orElse("(completed)"));
+        DialogEventResult.DialogState dialogState = dialogEventResult.getDialogState();
+        if(DialogEventResult.DialogState.COMPLETE.equals(dialogState) || DialogEventResult.DialogState.ERROR.equals(dialogState)) {
+            if(DialogEventResult.DialogState.COMPLETE.equals(dialogState)) {
+                model.addAttribute("screen", dialogEventResult.getOutput().orElse("(completed)"));
             } else {
-                model.addAttribute("screen", eventResult.getOutput().orElse("(internal error)"));
+                model.addAttribute("screen", dialogEventResult.getOutput().orElse("(internal error)"));
             }
             model.addAttribute("msisdn", "");
         } else {
-            model.addAttribute("screen", eventResult.getOutput().orElse(""));
+            model.addAttribute("screen", dialogEventResult.getOutput().orElse(""));
             model.addAttribute("msisdn",  msisdn);
         }
 

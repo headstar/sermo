@@ -16,14 +16,12 @@
 
 package com.headstartech.sermo;
 
-import com.headstartech.sermo.MOInput;
-
 import java.util.StringJoiner;
 
 /**
  * @author Per Johansson
  */
-public class SubscriberEvent extends MOInput {
+public class SubscriberEvent extends DialogEvent {
 
     private final String msisdn;
 

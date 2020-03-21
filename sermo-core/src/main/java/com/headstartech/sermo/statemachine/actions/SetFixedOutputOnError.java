@@ -14,24 +14,22 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.statemachine.actions;
 
-import org.slf4j.MDC;
-
-import static com.headstartech.sermo.SermoSystemConstants.MDC_SESSION_ID_KEY;
+import org.springframework.statemachine.StateContext;
 
 /**
  * @author Per Johansson
  */
-public class MDCSermoDialogListener<E extends MOInput> implements SermoDialogListener<E> {
+public class SetFixedOutputOnError<S,E> extends SetOutputOnError<S, E> {
 
-    @Override
-    public void preEventHandled(String sessionId, E event) {
-        MDC.put(MDC_SESSION_ID_KEY, sessionId);
+    private final String output;
+
+    public SetFixedOutputOnError(String output) {
+        this.output = output;
     }
 
-    @Override
-    public void postEventHandled(String sessionId, E event, EventResult eventResult) {
-        MDC.clear();
+    protected String getOutput(StateContext<S, E> context) {
+        return output;
     }
 }

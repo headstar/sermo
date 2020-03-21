@@ -14,15 +14,19 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SermoDialogListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Per Johansson
  */
-public class CompositeSermoDialogListener<E extends MOInput> extends AbstractCompositeListener<SermoDialogListener<E>> implements SermoDialogListener<E> {
+public class CompositeSermoDialogListener<E extends DialogEvent> extends AbstractCompositeListener<SermoDialogListener<E>> implements SermoDialogListener<E> {
 
     private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
 
@@ -40,11 +44,11 @@ public class CompositeSermoDialogListener<E extends MOInput> extends AbstractCom
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, EventResult eventResult) {
+    public void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult) {
         getListeners().stream().forEach(e ->
                 {
                     try {
-                        e.postEventHandled(sessionId, event, eventResult);
+                        e.postEventHandled(sessionId, event, dialogEventResult);
                     } catch(Throwable ex) {
                         log.warn("Error during postEventHandled", ex);
                     }
