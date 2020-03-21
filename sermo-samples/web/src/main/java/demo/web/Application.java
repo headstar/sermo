@@ -1,18 +1,16 @@
 package demo.web;
 
-import com.headstartech.sermo.*;
-import com.headstartech.sermo.statemachine.ChoiceOption;
-import com.headstartech.sermo.statemachine.SermoStateMachineBuilder;
-import com.headstartech.sermo.statemachine.StateMachineDeleter;
-import com.headstartech.sermo.statemachine.StateMachineFactoryBuilder;
-import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
+import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.persist.CachePersist;
+import com.headstartech.sermo.statemachine.ChoiceOption;
+import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.StateMachineDeleter;
+import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
-import com.headstartech.sermo.support.DefaultSermoStateMachineService;
 import com.headstartech.sermo.support.MDCSermoDialogListener;
-import com.headstartech.sermo.support.SermoStateMachineService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -76,11 +74,10 @@ public class Application {
     }
 
     @Bean
-    public SermoDialogExecutor<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter,
-                                                                        Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
+    public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter,
+                                                                       Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
-        StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        SermoStateMachineBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
+        SermoStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineFactoryBuilder.builder(SubscriberEvent.class);
         
         builder.withStates(states);
 
@@ -105,11 +102,8 @@ public class Application {
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, Arrays.asList(new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false)));
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
-
-        SermoStateMachineService<States, SubscriberEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactoryBuilder.build(), stateMachinePersist,
-                stateMachineDeleter);
-
-        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(sermoStateMachineService);
+        
+        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), stateMachinePersist, stateMachineDeleter);
         sermoDialogExecutor.register(new MDCSermoDialogListener<>());
         return sermoDialogExecutor;
     }

@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
+import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ChoiceTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ConfigurationConfigurer;
@@ -47,17 +48,19 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class SermoStateMachineBuilder {
+public class SermoStateMachineFactoryBuilder {
 
-    public static <S, E extends DialogEvent> SermoStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new SermoStateMachineBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
+    public static <S, E extends DialogEvent> SermoStateMachineFactoryBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+        return new SermoStateMachineFactoryBuilder.Builder<>(stateMachineFactoryBuilder, clazz.newInstance());
     }
-    public static <S, E extends DialogEvent> SermoStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new SermoStateMachineBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
+
+    public static <S, E extends DialogEvent> SermoStateMachineFactoryBuilder.Builder<S, E> builder(Class<E> clazz) throws Exception {
+        return new SermoStateMachineFactoryBuilder.Builder<>(StateMachineFactoryBuilder.builder(), clazz.newInstance());
     }
 
     public static class Builder<S, E extends DialogEvent> {
 
+        private final StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder;
         private final StateConfigurer<S, E> stateConfigurer;
         private final StateMachineTransitionConfigurer<S, E> transitionConfigurer;
         private final ConfigurationConfigurer<S, E> configurationConfigurer;
@@ -65,10 +68,11 @@ public class SermoStateMachineBuilder {
         private final E eventToken;
         private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
 
-        public Builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, E eventToken) {
-            this.configurationConfigurer = configurationConfigurer;
-            this.stateConfigurer = stateConfigurer;
-            this.transitionConfigurer = transitionConfigurer;
+        public Builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, E eventToken) throws Exception {
+            this.stateMachineFactoryBuilder = stateMachineFactoryBuilder;
+            this.configurationConfigurer = stateMachineFactoryBuilder.configureConfiguration().withConfiguration();
+            this.stateConfigurer = stateMachineFactoryBuilder.configureStates().withStates();
+            this.transitionConfigurer = stateMachineFactoryBuilder.configureTransitions();
             this.eventToken = eventToken;
         }
 
@@ -212,6 +216,10 @@ public class SermoStateMachineBuilder {
         public Builder<S, E> withErrorAction(Action<S, E> action) {
             compositeAction.setErrorAction(action);
             return this;
+        }
+
+        public StateMachineFactory<S, E> build() {
+            return stateMachineFactoryBuilder.build();
         }
 
         private Builder<S, E> withPagedScreenTransitions(S state, Action<S, E> nextPreviousPageAction) throws Exception {

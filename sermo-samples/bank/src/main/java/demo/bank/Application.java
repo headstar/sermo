@@ -2,7 +2,7 @@ package demo.bank;
 
 import com.headstartech.sermo.*;
 import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
-import com.headstartech.sermo.statemachine.SermoStateMachineBuilder;
+import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.StateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
 import com.headstartech.sermo.persist.CachePersist;
@@ -27,7 +27,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        SermoStateMachineBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
+        SermoStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineFactoryBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
 
         USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
         USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());

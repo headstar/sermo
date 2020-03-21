@@ -16,11 +16,15 @@
 
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.support.CompositeSermoDialogListener;
+import com.headstartech.sermo.support.DefaultSermoStateMachineService;
 import com.headstartech.sermo.support.SermoStateMachineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.StateMachinePersist;
+import org.springframework.statemachine.config.StateMachineFactory;
 
 /**
  * @author Per Johansson
@@ -31,6 +35,10 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
 
     private final SermoStateMachineService<S, E> sermoStateMachineService;
     private final CompositeSermoDialogListener<E> compositeListener;
+
+    public SermoDialogExecutor(StateMachineFactory stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
+        this(new DefaultSermoStateMachineService<S, E>(stateMachineFactory, stateMachinePersist, stateMachineDeleter));
+    }
 
     public SermoDialogExecutor(SermoStateMachineService<S, E> sermoStateMachineService) {
         this.sermoStateMachineService = sermoStateMachineService;
