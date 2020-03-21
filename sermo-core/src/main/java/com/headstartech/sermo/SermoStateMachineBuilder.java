@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDStateMachineBuilder {
+public class SermoStateMachineBuilder {
 
-    public static <S, E extends MOInput> USSDStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new USSDStateMachineBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
+    public static <S, E extends MOInput> SermoStateMachineBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+        return new SermoStateMachineBuilder.Builder<>(stateMachineFactoryBuilder.configureConfiguration().withConfiguration(), stateMachineFactoryBuilder.configureStates().withStates(), stateMachineFactoryBuilder.configureTransitions(), clazz.newInstance());
     }
-    public static <S, E extends MOInput> USSDStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return new USSDStateMachineBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
+    public static <S, E extends MOInput> SermoStateMachineBuilder.Builder<S, E> builder(ConfigurationConfigurer<S, E> configurationConfigurer, StateConfigurer<S, E> stateConfigurer, StateMachineTransitionConfigurer<S, E> transitionConfigurer, Class<E> clazz) throws IllegalAccessException, InstantiationException {
+        return new SermoStateMachineBuilder.Builder<>(configurationConfigurer, stateConfigurer, transitionConfigurer, clazz.newInstance());
     }
 
     public static class Builder<S, E extends MOInput> {
@@ -76,7 +76,7 @@ public class USSDStateMachineBuilder {
         }
 
         public Builder<S, E> withDefaultListener() {
-            configurationConfigurer.listener(new DefaultStateMachineListener<>());
+            configurationConfigurer.listener(new LoggingStateMachineListener<>());
             return this;
         }
 
@@ -218,14 +218,14 @@ public class USSDStateMachineBuilder {
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(USSDSystemConstants.NEXT_PAGE_KEY))
+                    .guard(screenTransitionGuard(SermoSystemConstants.NEXT_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(USSDSystemConstants.PREVIOUS_PAGE_KEY))
+                    .guard(screenTransitionGuard(SermoSystemConstants.PREVIOUS_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
             return this;
         }

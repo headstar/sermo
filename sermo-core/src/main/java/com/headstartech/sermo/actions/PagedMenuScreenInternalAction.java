@@ -19,12 +19,10 @@ package com.headstartech.sermo.actions;
 import com.headstartech.sermo.DefaultPagedScreenSupport;
 import com.headstartech.sermo.ExtendedStateSupport;
 import com.headstartech.sermo.MOInput;
-import com.headstartech.sermo.USSDSystemConstants;
+import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.PagedScreenSupport;
 import org.springframework.statemachine.StateContext;
-
-import java.util.Optional;
 
 /**
  * @author Per Johansson
@@ -47,9 +45,9 @@ public class PagedMenuScreenInternalAction<S, E extends MOInput> extends MenuScr
         Object transitionId = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput())
                 .orElseThrow(() -> new IllegalStateException("PagedMenuScreenInternalAction executed with no transition id set"));
 
-        if(USSDSystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
+        if(SermoSystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
             pagedScreenSupport.incrementPage(context.getExtendedState());
-        } else if(USSDSystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
+        } else if(SermoSystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
             pagedScreenSupport.decrementPage(context.getExtendedState());
         } else {
             throw new IllegalStateException(String.format("PagedMenuScreenInternalAction executed with unknown transition id: transitionId=%s", transitionId));

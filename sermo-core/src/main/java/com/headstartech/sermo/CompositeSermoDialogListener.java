@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Per Johansson
  */
-public class CompositeUSSDApplicationListener<E extends MOInput> extends AbstractCompositeListener<USSDApplicationListener<E>> implements  USSDApplicationListener<E> {
+public class CompositeSermoDialogListener<E extends MOInput> extends AbstractCompositeListener<SermoDialogListener<E>> implements SermoDialogListener<E> {
 
-    private static final Logger log = LoggerFactory.getLogger(USSDApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
 
     @Override
     public void preEventHandled(String sessionId, E event) {

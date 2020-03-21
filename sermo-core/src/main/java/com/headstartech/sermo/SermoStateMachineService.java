@@ -16,25 +16,17 @@
 
 package com.headstartech.sermo;
 
+import org.springframework.statemachine.StateMachine;
+
 /**
  * @author Per Johansson
  */
-public class USSDSystemConstants {
+public interface SermoStateMachineService<S, E extends MOInput> {
 
-    private USSDSystemConstants() {}
+    StateMachine<S, E> acquireStateMachine(String machineId);
 
-    public static final String INPUT_ITEM_DATA_KEY = "__input_item_data__";
+    void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine);
 
-    public static final String INPUT_MAP_KEY = "__input_map__";
-
-    public static final String OUTPUT_KEY = "__output__";
-    public static final String LAST_OUTPUT_KEY = "__last_output__";
-
-    public static final String NEXT_PAGE_KEY = "__next_page__";
-    public static final String PREVIOUS_PAGE_KEY = "__previous_page__";
-
-    public static final String PAGED_SCREEN_KEY = "__paged_screen__";
-
-    public static final String MDC_SESSION_ID_KEY = "sessionId";
+    void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine);
 
 }

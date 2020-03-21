@@ -22,7 +22,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        USSDStateMachineBuilder.Builder<States, SubscriberEvent> builder = USSDStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
+        SermoStateMachineBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
 
         USSDState<States, SubscriberEvent> rootMenuScreen = new USSDState<>(States.ROOT, new RootEntryAction());
         USSDState<States, SubscriberEvent> accountsScreen = new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
@@ -49,16 +49,16 @@ public class Application {
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
         CachePersist<States, SubscriberEvent> stateMachinePersist = new CachePersist<>(new ConcurrentMapCache("bank"));
-        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
+        SermoStateMachineService<States, SubscriberEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
 
-        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);
+        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(sermoStateMachineService);
 
         String msisdn = "888888";
 
         List<String> inputs = Arrays.asList("111", "1", "0", "0", "#", "1", "1");
         for(int i=0; i<inputs.size(); ++i) {
-            EventResult result = ussdApplication.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
+            EventResult result = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
             if(EventResult.ApplicationState.ERROR.equals(result.getApplicationState())) {
                 System.out.println("Internal error\n" + result.getOutput().orElse(""));
                 break;

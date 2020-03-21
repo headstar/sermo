@@ -16,17 +16,13 @@
 
 package com.headstartech.sermo;
 
-import org.springframework.statemachine.StateMachine;
-
 /**
  * @author Per Johansson
  */
-public interface USSDStateMachineService<S, E extends MOInput> {
+public interface SermoDialogListener< E extends MOInput> {
 
-    StateMachine<S, E> acquireStateMachine(String machineId);
+    void preEventHandled(String sessionId, E event);
 
-    void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine);
-
-    void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine);
+    void postEventHandled(String sessionId, E event, EventResult eventResult);
 
 }

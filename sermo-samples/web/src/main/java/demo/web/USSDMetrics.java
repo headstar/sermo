@@ -18,8 +18,8 @@ package demo.web;
 
 import com.headstartech.sermo.EventResult;
 import com.headstartech.sermo.MOInput;
-import com.headstartech.sermo.USSDApplication;
-import com.headstartech.sermo.USSDApplicationListener;
+import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SermoDialogListener;
 import io.micrometer.core.instrument.FunctionCounter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -33,23 +33,23 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class USSDMetrics<S,E extends MOInput> implements MeterBinder {
 
-    private final USSDApplication<S, E> ussdApplication;
+    private final SermoDialogExecutor<S, E> sermoDialogExecutor;
 
-    public USSDMetrics(USSDApplication<S, E> ussdApplication) {
-        this.ussdApplication = ussdApplication;
+    public USSDMetrics(SermoDialogExecutor<S, E> sermoDialogExecutor) {
+        this.sermoDialogExecutor = sermoDialogExecutor;
     }
 
     @Override
     public void bindTo(MeterRegistry registry) {
         MetricsListener<E> metricsListener = new MetricsListener<>(registry);
-        ussdApplication.register(metricsListener);
+        sermoDialogExecutor.register(metricsListener);
 
         FunctionCounter.builder("sermo.dialog.error", metricsListener,
                 s -> s.getDialogErrorCount())
               .register(registry);
     }
 
-    static class MetricsListener<E extends MOInput> implements USSDApplicationListener<E> {
+    static class MetricsListener<E extends MOInput> implements SermoDialogListener<E> {
 
         private AtomicLong dialogErrorCounter = new AtomicLong();
         private final MeterRegistry meterRegistry;

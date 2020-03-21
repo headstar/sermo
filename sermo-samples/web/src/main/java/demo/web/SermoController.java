@@ -2,7 +2,7 @@ package demo.web;
 
 import com.headstartech.sermo.EventResult;
 import com.headstartech.sermo.SubscriberEvent;
-import com.headstartech.sermo.USSDApplication;
+import com.headstartech.sermo.SermoDialogExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +16,10 @@ import java.util.List;
  * @author Per Johansson
  */
 @Controller
-public class USSDController {
+public class SermoController {
 
     @Autowired
-    private USSDApplication<States, SubscriberEvent> ussdApplication;
+    private SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor;
 
     @Autowired
     private List<ShortCode> shortCodes;
@@ -33,7 +33,7 @@ public class USSDController {
     @RequestMapping("/")
     public String input(@RequestParam("msisdn") String msisdn, @RequestParam("input") String input , Model model) throws Exception {
 
-        EventResult eventResult = ussdApplication.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
+        EventResult eventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
 
         EventResult.ApplicationState applicationState = eventResult.getApplicationState();
         if(EventResult.ApplicationState.COMPLETE.equals(applicationState) || EventResult.ApplicationState.ERROR.equals(applicationState)) {

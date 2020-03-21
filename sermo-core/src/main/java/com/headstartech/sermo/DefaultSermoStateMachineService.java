@@ -27,20 +27,20 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 /**
  * @author Per Johansson
  */
-public class DefaultUssdStateMachineService<S, E extends MOInput> implements USSDStateMachineService<S, E> {
+public class DefaultSermoStateMachineService<S, E extends MOInput> implements SermoStateMachineService<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultUssdStateMachineService.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultSermoStateMachineService.class);
 
     private final StateMachinePool<S, E> stateMachinePool;
     private final StateMachinePersister<S, E, String> stateMachinePersister;
     private StateMachineDeleter<String> stateMachineDeleter;
 
 
-    public DefaultUssdStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
+    public DefaultSermoStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
         this(new DefaultStateMachinePool<>(stateMachineFactory), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
     }
 
-    public DefaultUssdStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
+    public DefaultSermoStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
         this.stateMachinePool = stateMachinePool;
         this.stateMachinePersister = stateMachinePersister;
         this.stateMachineDeleter = stateMachineDeleter;
@@ -54,7 +54,7 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
-            throw new USSDException(String.format("Unable to restore state machine: %s", machineId), e);
+            throw new SermoException(String.format("Unable to restore state machine: %s", machineId), e);
         }
 
         if(stateMachineIsCompleteOrHasError(stateMachine)) {
@@ -73,7 +73,7 @@ public class DefaultUssdStateMachineService<S, E extends MOInput> implements USS
             stateMachinePersister.persist(stateMachine, machineId);
         } catch (Exception e) {
             exceptionOnPersist = true;
-            throw new USSDException(String.format("Unable to persist context to store: %s", machineId), e);
+            throw new SermoException(String.format("Unable to persist context to store: %s", machineId), e);
         } finally {
             if(exceptionOnPersist || stateMachineIsCompleteOrHasError(stateMachine)) {
                 try {

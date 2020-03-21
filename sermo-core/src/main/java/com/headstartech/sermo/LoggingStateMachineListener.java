@@ -27,9 +27,9 @@ import org.springframework.statemachine.transition.Transition;
 /**
  * @author Per Johansson
  */
-public class DefaultStateMachineListener<S, E extends MOInput> extends StateMachineListenerAdapter<S, E> {
+public class LoggingStateMachineListener<S, E extends MOInput> extends StateMachineListenerAdapter<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultStateMachineListener.class);
+    private static final Logger log = LoggerFactory.getLogger(LoggingStateMachineListener.class);
 
     @Override
     public void stateChanged(State<S, E> from, State<S, E> to) {

@@ -23,40 +23,40 @@ import org.springframework.statemachine.StateMachine;
 /**
  * @author Per Johansson
  */
-public class USSDApplication<S, E extends MOInput> {
+public class SermoDialogExecutor<S, E extends MOInput> {
 
-    private static final Logger log = LoggerFactory.getLogger(USSDApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
 
-    private final USSDStateMachineService<S, E> ussdStateMachineService;
-    private final CompositeUSSDApplicationListener<E> ussdApplicationListener;
+    private final SermoStateMachineService<S, E> sermoStateMachineService;
+    private final CompositeSermoDialogListener<E> ussdApplicationListener;
 
-    public USSDApplication(USSDStateMachineService<S, E> ussdStateMachineService) {
-        this.ussdStateMachineService = ussdStateMachineService;
-        this.ussdApplicationListener = new CompositeUSSDApplicationListener<>();
+    public SermoDialogExecutor(SermoStateMachineService<S, E> sermoStateMachineService) {
+        this.sermoStateMachineService = sermoStateMachineService;
+        this.ussdApplicationListener = new CompositeSermoDialogListener<>();
     }
 
-    public EventResult applyEvent(String sessionId, E event) throws USSDException {
+    public EventResult applyEvent(String sessionId, E event) throws SermoException {
         StateMachine<S, E> stateMachine = null;
         EventResult eventResult = null;
         boolean exceptionThrown = false;
         try {
             ussdApplicationListener.preEventHandled(sessionId, event);
-            stateMachine = ussdStateMachineService.acquireStateMachine(sessionId);
+            stateMachine = sermoStateMachineService.acquireStateMachine(sessionId);
             eventResult = handleEvent(stateMachine, event);
         } catch(RuntimeException e) {
             exceptionThrown = true;
-            if(e instanceof USSDException) {
+            if(e instanceof SermoException) {
                 throw e;
             } else {
-                throw new USSDException(e);
+                throw new SermoException(e);
             }
         } finally {
             try {
                 if (stateMachine != null) {
                     if(exceptionThrown) {
-                        ussdStateMachineService.releaseStateMachineOnException(sessionId, stateMachine);
+                        sermoStateMachineService.releaseStateMachineOnException(sessionId, stateMachine);
                     } else {
-                        ussdStateMachineService.releaseStateMachine(sessionId, stateMachine);
+                        sermoStateMachineService.releaseStateMachine(sessionId, stateMachine);
                     }
                 }
             } finally {
@@ -66,11 +66,11 @@ public class USSDApplication<S, E extends MOInput> {
         return eventResult;
     }
 
-    public void register(USSDApplicationListener<E> listener) {
+    public void register(SermoDialogListener<E> listener) {
         ussdApplicationListener.register(listener);
     }
 
-    public void unregister(USSDApplicationListener<E> listener) {
+    public void unregister(SermoDialogListener<E> listener) {
         ussdApplicationListener.unregister(listener);
     }
 
@@ -94,19 +94,19 @@ public class USSDApplication<S, E extends MOInput> {
     protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine) {
         String output = getOutput(stateMachine);
         if (output != null) {
-            stateMachine.getExtendedState().getVariables().put(USSDSystemConstants.LAST_OUTPUT_KEY, output);
+            stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.LAST_OUTPUT_KEY, output);
         } else {
-            String lastOutput = stateMachine.getExtendedState().get(USSDSystemConstants.LAST_OUTPUT_KEY, String.class);
+            String lastOutput = stateMachine.getExtendedState().get(SermoSystemConstants.LAST_OUTPUT_KEY, String.class);
             if (lastOutput != null) {
                 log.debug("No output set for event, using last output: lastOutput=\n{}", lastOutput);
                 output = lastOutput;
             }
         }
-        stateMachine.getExtendedState().getVariables().remove(USSDSystemConstants.OUTPUT_KEY);
+        stateMachine.getExtendedState().getVariables().remove(SermoSystemConstants.OUTPUT_KEY);
         return output;
     }
 
     protected String getOutput(StateMachine<S, E> stateMachine) {
-        return stateMachine.getExtendedState().get(USSDSystemConstants.OUTPUT_KEY, String.class);
+        return stateMachine.getExtendedState().get(SermoSystemConstants.OUTPUT_KEY, String.class);
     }
 }

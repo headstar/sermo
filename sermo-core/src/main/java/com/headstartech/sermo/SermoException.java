@@ -19,26 +19,26 @@ package com.headstartech.sermo;
 /**
  * @author Per Johansson
  */
-public class USSDException extends RuntimeException {
+public class SermoException extends RuntimeException {
 
     private static final long serialVersionUID = -1479930274584977818L;
 
-    public USSDException() {
+    public SermoException() {
     }
 
-    public USSDException(String message) {
+    public SermoException(String message) {
         super(message);
     }
 
-    public USSDException(String message, Throwable cause) {
+    public SermoException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public USSDException(Throwable cause) {
+    public SermoException(Throwable cause) {
         super(cause);
     }
 
-    public USSDException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public SermoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

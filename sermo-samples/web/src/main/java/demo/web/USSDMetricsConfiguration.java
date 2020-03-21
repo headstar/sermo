@@ -17,7 +17,7 @@
 package demo.web;
 
 import com.headstartech.sermo.MOInput;
-import com.headstartech.sermo.USSDApplication;
+import com.headstartech.sermo.SermoDialogExecutor;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +30,8 @@ import org.springframework.context.annotation.Configuration;
 public class USSDMetricsConfiguration {
 
     @Bean
-    public <S, E extends MOInput> USSDMetrics<S, E>  ussdMetricsBinder(MeterRegistry meterRegistry, USSDApplication<S, E> ussdApplication) {
-        return new USSDMetrics<>(ussdApplication);
+    public <S, E extends MOInput> USSDMetrics<S, E>  ussdMetricsBinder(MeterRegistry meterRegistry, SermoDialogExecutor<S, E> sermoDialogExecutor) {
+        return new USSDMetrics<>(sermoDialogExecutor);
     }
 
 }

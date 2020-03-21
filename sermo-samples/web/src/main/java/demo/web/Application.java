@@ -69,11 +69,11 @@ public class Application {
     }
 
     @Bean
-    public USSDApplication<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter,
-                                                                    Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
+    public SermoDialogExecutor<States, SubscriberEvent> ussdApplication(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter,
+                                                                        Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
         StateMachineFactoryBuilder.Builder<States, SubscriberEvent> stateMachineFactoryBuilder = StateMachineFactoryBuilder.builder();
-        USSDStateMachineBuilder.Builder<States, SubscriberEvent> builder = USSDStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
+        SermoStateMachineBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineBuilder.builder(stateMachineFactoryBuilder, SubscriberEvent.class);
         
         builder.withStates(states);
 
@@ -99,12 +99,12 @@ public class Application {
 
         builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
-        USSDStateMachineService<States, SubscriberEvent> ussdStateMachineService = new DefaultUssdStateMachineService<>(stateMachineFactoryBuilder.build(), stateMachinePersist,
+        SermoStateMachineService<States, SubscriberEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactoryBuilder.build(), stateMachinePersist,
                 stateMachineDeleter);
 
-        USSDApplication<States, SubscriberEvent> ussdApplication = new USSDApplication<>(ussdStateMachineService);
-        ussdApplication.register(new DefaultMDCApplicationListener<>());
-        return ussdApplication;
+        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(sermoStateMachineService);
+        sermoDialogExecutor.register(new MDCSermoDialogListener<>());
+        return sermoDialogExecutor;
     }
 
     @Bean

@@ -28,16 +28,16 @@ import java.util.Optional;
 public class ExtendedStateSupport {
 
     public static void setOutput(ExtendedState extendedState, String output) {
-        extendedState.getVariables().put(USSDSystemConstants.OUTPUT_KEY, output);
+        extendedState.getVariables().put(SermoSystemConstants.OUTPUT_KEY, output);
     }
 
     public static void setScreenMenuInputMap(ExtendedState extendedState, InputMap inputMap) {
-        extendedState.getVariables().put(USSDSystemConstants.INPUT_MAP_KEY, inputMap);
+        extendedState.getVariables().put(SermoSystemConstants.INPUT_MAP_KEY, inputMap);
     }
 
 
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {
-        return (InputMap) extendedState.getVariables().get(USSDSystemConstants.INPUT_MAP_KEY);
+        return (InputMap) extendedState.getVariables().get(SermoSystemConstants.INPUT_MAP_KEY);
     }
 
     public static Optional<Object> getTransition(ExtendedState extendedState, String input) {
@@ -49,18 +49,18 @@ public class ExtendedStateSupport {
     }
 
     public static void setPagedScreenSetup(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
-        extendedState.getVariables().put(USSDSystemConstants.PAGED_SCREEN_KEY, pagedScreenSetup);
+        extendedState.getVariables().put(SermoSystemConstants.PAGED_SCREEN_KEY, pagedScreenSetup);
     }
 
     public static PagedScreenSetup getPagedScreenSetup(ExtendedState extendedState) {
-        return (PagedScreenSetup) extendedState.getVariables().get(USSDSystemConstants.PAGED_SCREEN_KEY);
+        return (PagedScreenSetup) extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY);
     }
 
     public static Object getItemData(ExtendedState extendedState) {
-        return extendedState.getVariables().get(USSDSystemConstants.INPUT_ITEM_DATA_KEY);
+        return extendedState.getVariables().get(SermoSystemConstants.INPUT_ITEM_DATA_KEY);
     }
 
     public static InputMap getInputMap(ExtendedState extendedState) {
-        return extendedState.get(USSDSystemConstants.INPUT_MAP_KEY, InputMap.class);
+        return extendedState.get(SermoSystemConstants.INPUT_MAP_KEY, InputMap.class);
     }
 }

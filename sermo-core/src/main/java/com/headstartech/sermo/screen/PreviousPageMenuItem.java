@@ -16,7 +16,7 @@
 
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.USSDSystemConstants;
+import com.headstartech.sermo.SermoSystemConstants;
 
 /**
  * @author Per Johansson
@@ -24,6 +24,6 @@ import com.headstartech.sermo.USSDSystemConstants;
 public class PreviousPageMenuItem extends StaticMenuItem {
 
     public PreviousPageMenuItem(String input, String label) {
-        super(input, label, USSDSystemConstants.PREVIOUS_PAGE_KEY);
+        super(input, label, SermoSystemConstants.PREVIOUS_PAGE_KEY);
     }
 }

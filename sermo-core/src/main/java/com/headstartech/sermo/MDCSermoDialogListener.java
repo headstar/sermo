@@ -18,12 +18,12 @@ package com.headstartech.sermo;
 
 import org.slf4j.MDC;
 
-import static com.headstartech.sermo.USSDSystemConstants.MDC_SESSION_ID_KEY;
+import static com.headstartech.sermo.SermoSystemConstants.MDC_SESSION_ID_KEY;
 
 /**
  * @author Per Johansson
  */
-public class DefaultMDCApplicationListener<E extends MOInput> implements USSDApplicationListener<E> {
+public class MDCSermoDialogListener<E extends MOInput> implements SermoDialogListener<E> {
 
     @Override
     public void preEventHandled(String sessionId, E event) {
