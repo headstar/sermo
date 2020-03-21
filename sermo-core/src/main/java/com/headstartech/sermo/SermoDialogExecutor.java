@@ -16,6 +16,7 @@
 
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.support.CompositeSermoDialogListener;
 import com.headstartech.sermo.support.DefaultSermoStateMachineService;
@@ -36,7 +37,11 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
     private final SermoStateMachineService<S, E> sermoStateMachineService;
     private final CompositeSermoDialogListener<E> compositeListener;
 
-    public SermoDialogExecutor(StateMachineFactory stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
+    public SermoDialogExecutor(StateMachineFactory<S, E> stateMachineFactory, CachePersist<S, E> cachePersist) {
+        this(new DefaultSermoStateMachineService<S, E>(stateMachineFactory, cachePersist, cachePersist));
+    }
+
+    public SermoDialogExecutor(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
         this(new DefaultSermoStateMachineService<S, E>(stateMachineFactory, stateMachinePersist, stateMachineDeleter));
     }
 
