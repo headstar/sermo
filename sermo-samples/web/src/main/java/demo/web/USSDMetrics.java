@@ -16,8 +16,8 @@
 
 package demo.web;
 
-import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.SermoDialogExecutor;
 import com.headstartech.sermo.SermoDialogListener;
 import io.micrometer.core.instrument.FunctionCounter;
@@ -74,13 +74,9 @@ public class USSDMetrics<S,E extends DialogEvent> implements MeterBinder {
             Timer.Sample sample = sessionTimerSamples.remove(sessionId);
             sample.stop(meterRegistry.timer("sermo.dialog.event"));
 
-            if (dialogEventResult != null) {
-                if (DialogEventResult.DialogState.ERROR.equals(dialogEventResult.getDialogState())) {
-                    dialogErrorCounter.incrementAndGet();
-                }
+            if (DialogEventResult.DialogState.ERROR.equals(dialogEventResult.getDialogState())) {
+                dialogErrorCounter.incrementAndGet();
             }
-
-
         }
     }
 }
