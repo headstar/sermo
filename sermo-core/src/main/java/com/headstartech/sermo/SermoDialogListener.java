@@ -23,6 +23,6 @@ public interface SermoDialogListener< E extends DialogEvent> {
 
     void preEventHandled(String sessionId, E event);
 
-    void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult);
+    void postEventHandled(String sessionId, E event, SermoDialogException e);
 
 }

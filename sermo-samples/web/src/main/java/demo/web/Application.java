@@ -5,7 +5,6 @@ import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.ChoiceOption;
 import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
-import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
@@ -98,8 +97,6 @@ public class Application {
 
 
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, Arrays.asList(new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false)));
-
-        builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
 
         SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), cachePersist);
         sermoDialogExecutor.register(new MDCSermoDialogListener<>());

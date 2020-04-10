@@ -17,7 +17,7 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoException;
+import com.headstartech.sermo.SermoDialogException;
 import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.statemachine.StateMachinePool;
@@ -59,7 +59,7 @@ public class DefaultSermoStateMachineService<S, E extends DialogEvent> implement
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
-            throw new SermoException(String.format("Unable to restore state machine: %s", machineId), e);
+            throw new SermoDialogException(String.format("Unable to restore state machine: %s", machineId), e);
         }
 
         if(stateMachineIsCompleteOrHasError(stateMachine)) {
@@ -78,7 +78,7 @@ public class DefaultSermoStateMachineService<S, E extends DialogEvent> implement
             stateMachinePersister.persist(stateMachine, machineId);
         } catch (Exception e) {
             exceptionOnPersist = true;
-            throw new SermoException(String.format("Unable to persist context to store: %s", machineId), e);
+            throw new SermoDialogException(String.format("Unable to persist context to store: %s", machineId), e);
         } finally {
             if(exceptionOnPersist || stateMachineIsCompleteOrHasError(stateMachine)) {
                 try {

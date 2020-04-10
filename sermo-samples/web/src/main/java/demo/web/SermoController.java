@@ -1,8 +1,8 @@
 package demo.web;
 
 import com.headstartech.sermo.DialogEventResult;
-import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SubscriberEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,19 +33,16 @@ public class SermoController {
     @RequestMapping("/")
     public String input(@RequestParam("msisdn") String msisdn, @RequestParam("input") String input , Model model) throws Exception {
 
-        DialogEventResult dialogEventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
-
-        DialogEventResult.DialogState dialogState = dialogEventResult.getDialogState();
-        if(DialogEventResult.DialogState.COMPLETE.equals(dialogState) || DialogEventResult.DialogState.ERROR.equals(dialogState)) {
-            if(DialogEventResult.DialogState.COMPLETE.equals(dialogState)) {
+        try {
+            DialogEventResult dialogEventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
+            if(dialogEventResult.isDialogComplete()) {
                 model.addAttribute("screen", dialogEventResult.getOutput().orElse("(completed)"));
             } else {
-                model.addAttribute("screen", dialogEventResult.getOutput().orElse("(internal error)"));
+                model.addAttribute("screen", dialogEventResult.getOutput().orElse(""));
+                model.addAttribute("msisdn", msisdn);
             }
-            model.addAttribute("msisdn", "");
-        } else {
-            model.addAttribute("screen", dialogEventResult.getOutput().orElse(""));
-            model.addAttribute("msisdn",  msisdn);
+        } catch (Exception e) {
+            model.addAttribute("screen","An internal error occured.\nPlease try again later!");
         }
 
         model.addAttribute("shortCodes", shortCodes);

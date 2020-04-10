@@ -16,8 +16,8 @@
 
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.SermoDialogException;
 import com.headstartech.sermo.SermoDialogListener;
 import org.slf4j.MDC;
 
@@ -34,7 +34,7 @@ public class MDCSermoDialogListener<E extends DialogEvent> implements SermoDialo
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult) {
+    public void postEventHandled(String sessionId, E event, SermoDialogException e) {
         MDC.clear();
     }
 }

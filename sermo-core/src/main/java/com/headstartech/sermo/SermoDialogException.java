@@ -14,22 +14,31 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.statemachine.actions;
-
-import org.springframework.statemachine.StateContext;
+package com.headstartech.sermo;
 
 /**
  * @author Per Johansson
  */
-public class SetFixedOutputOnError<S,E> extends SetOutputOnError<S, E> {
+public class SermoDialogException extends RuntimeException {
 
-    private final String output;
+    private static final long serialVersionUID = -4302908681874019397L;
 
-    public SetFixedOutputOnError(String output) {
-        this.output = output;
+    public SermoDialogException() {
     }
 
-    protected String getOutput(StateContext<S, E> context) {
-        return output;
+    public SermoDialogException(String message) {
+        super(message);
+    }
+
+    public SermoDialogException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SermoDialogException(Throwable cause) {
+        super(cause);
+    }
+
+    public SermoDialogException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

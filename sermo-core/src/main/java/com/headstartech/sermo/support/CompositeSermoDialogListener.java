@@ -16,10 +16,7 @@
 
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.DialogEventResult;
-import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SermoDialogListener;
+import com.headstartech.sermo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,11 +41,11 @@ public class CompositeSermoDialogListener<E extends DialogEvent> extends Abstrac
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, DialogEventResult dialogEventResult) {
+    public void postEventHandled(String sessionId, E event, SermoDialogException sde) {
         getListeners().stream().forEach(e ->
                 {
                     try {
-                        e.postEventHandled(sessionId, event, dialogEventResult);
+                        e.postEventHandled(sessionId, event, sde);
                     } catch(Throwable ex) {
                         log.warn("Error during postEventHandled", ex);
                     }

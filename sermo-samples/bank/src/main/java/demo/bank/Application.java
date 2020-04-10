@@ -1,11 +1,12 @@
 package demo.bank;
 
-import com.headstartech.sermo.*;
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SubscriberEvent;
+import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
 import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.StateMachineFactoryBuilder;
-import com.headstartech.sermo.statemachine.actions.SetFixedOutputOnError;
-import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
@@ -50,9 +51,7 @@ public class Application {
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
         builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
-
-        builder.withErrorAction(new SetFixedOutputOnError<>("An internal error occured.\nPlease try again later!"));
-
+        
         CachePersist<States, SubscriberEvent> stateMachinePersist = new CachePersist<>(new ConcurrentMapCache("bank"));
         SermoStateMachineService<States, SubscriberEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
@@ -62,17 +61,16 @@ public class Application {
         String msisdn = "888888";
 
         List<String> inputs = Arrays.asList("111", "1", "0", "0", "#", "1", "1");
-        for(int i=0; i<inputs.size(); ++i) {
-            DialogEventResult result = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
-            if(DialogEventResult.DialogState.ERROR.equals(result.getDialogState())) {
-                System.out.println("Internal error\n" + result.getOutput().orElse(""));
-                break;
-            } else {
+        try {
+            for (int i = 0; i < inputs.size(); ++i) {
+                DialogEventResult result = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(inputs.get(i), msisdn));
                 System.out.println(result.getOutput());
+                if(result.isDialogComplete()) {
+                    break;
+                }
             }
-            if(DialogEventResult.DialogState.ERROR.equals(result.getDialogState())) {
-                break;
-            }
+        } catch (Exception e) {
+            System.out.println("An internal error occured.\nPlease try again later!");
         }
 	}
 
