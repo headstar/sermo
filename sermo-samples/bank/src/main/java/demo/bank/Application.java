@@ -51,7 +51,7 @@ public class Application {
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
         builder.withScreenTransition(States.ROOT, States.STATEMENT, Transitions.STATEMENT);
         builder.withScreenTransition(States.ROOT, States.END, Transitions.EXIT);
-        
+
         CachePersist<States, SubscriberEvent> stateMachinePersist = new CachePersist<>(new ConcurrentMapCache("bank"));
         SermoStateMachineService<States, SubscriberEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(new DefaultStateMachinePool<>(stateMachineFactoryBuilder.build()),
                 new DefaultStateMachinePersister<>(stateMachinePersist), stateMachinePersist);
