@@ -20,6 +20,9 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
 
 /**
+ * Default implementation of a {@link StateMachinePool} returning a new instance every time.
+ *
+ *
  * @author Per Johansson
  */
 public class DefaultStateMachinePool<S, E> implements StateMachinePool<S,E> {

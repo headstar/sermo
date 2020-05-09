@@ -21,11 +21,14 @@ import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 import org.springframework.statemachine.transition.Transition;
 
 /**
+ * {@link StateMachineListener} implementation logging state transitions.
+ *
  * @author Per Johansson
  */
 public class LoggingStateMachineListener<S, E extends DialogEvent> extends StateMachineListenerAdapter<S, E> {

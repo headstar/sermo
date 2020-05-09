@@ -24,6 +24,8 @@ import org.slf4j.MDC;
 import static com.headstartech.sermo.SermoSystemConstants.MDC_SESSION_ID_KEY;
 
 /**
+ * {@link SermoDialogListener} implementation setting the session id in the MDC to be available in the log output.
+ *
  * @author Per Johansson
  */
 public class MDCSermoDialogListener<E extends DialogEvent> implements SermoDialogListener<E> {

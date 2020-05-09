@@ -20,10 +20,15 @@ import com.headstartech.sermo.DialogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.guard.Guard;
 
 import java.util.function.Predicate;
 
 /**
+ * {@link Guard} based on a {@link Predicate}.
+ *
+ * Used to accept/reject user input.
+ *
  * @author Per Johansson
  */
 public class FormInputGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
