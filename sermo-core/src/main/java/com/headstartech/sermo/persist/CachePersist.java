@@ -20,10 +20,15 @@ import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
 
 /**
+ * Implementation of {@link StateMachinePersist} and {@link StateMachineDeleter} using a {@link Cache}.
+ *
+ * Use with e.g. a {@link ConcurrentMapCache}.
+ *
  * @author Per Johansson
  */
 public class CachePersist<S, E> implements StateMachinePersist<S, E, String>, StateMachineDeleter<String> {
