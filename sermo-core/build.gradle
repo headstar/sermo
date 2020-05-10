@@ -33,4 +33,13 @@ dependencies {
     implementation("org.springframework.statemachine:spring-statemachine-core:2.2.0.RELEASE")
     implementation 'org.springframework:spring-context-support:5.2.3.RELEASE'
     implementation 'org.slf4j:slf4j-api:1.7.30'
+
+    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+    testImplementation('org.mockito:mockito-junit-jupiter:3.3.3')
+    testImplementation('ch.qos.logback:logback-classic:1.1.2')
+}
+
+
+test {
+    useJUnitPlatform()
 }
