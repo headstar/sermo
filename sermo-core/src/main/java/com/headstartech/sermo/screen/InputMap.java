@@ -48,6 +48,10 @@ public class InputMap {
         return Optional.ofNullable(inputTransitionMap.get(input));
     }
 
+    public boolean isEmpty() {
+        return inputTransitionMap.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
