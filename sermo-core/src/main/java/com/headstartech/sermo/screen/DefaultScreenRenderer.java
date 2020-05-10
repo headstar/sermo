@@ -16,8 +16,6 @@
 
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.screen.*;
-
 /**
  * @author Per Johansson
  */
@@ -59,13 +57,17 @@ public class DefaultScreenRenderer implements ScreenRenderer {
     }
 
     protected void renderMenuGroup(StringBuilder sb, InputMap inputMap, MenuGroup menuGroup) {
-        int i = 1;
+        int i = 0;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
-            String input = String.format("%d", i);
+            String input = getInput(i);
             sb.append(String.format("%s. %s\n", input, menuItem.getLabel()));
             inputMap.addMapping(input, menuItem.getTransition(), menuItem.getItemData());
             ++i;
         }
+    }
+
+    protected String getInput(int menuItemIndex) {
+        return String.format("%d", menuItemIndex + 1);
     }
 
     protected void renderStaticMenuItem(StringBuilder sb, InputMap inputMap, StaticMenuItem staticMenuItem) {
