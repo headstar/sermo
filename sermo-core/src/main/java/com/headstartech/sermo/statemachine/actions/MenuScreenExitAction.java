@@ -17,15 +17,13 @@
 package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.InputMap;
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 
 import java.util.Optional;
-
-import static com.headstartech.sermo.SermoSystemConstants.INPUT_ITEM_DATA_KEY;
 
 /**
  * @author Per Johansson
@@ -39,15 +37,15 @@ public class MenuScreenExitAction<S, E extends DialogEvent> implements Action<S,
     }
 
     protected void clearScreen(ExtendedState extendedState) {
-        extendedState.getVariables().remove(SermoSystemConstants.INPUT_MAP_KEY);
+        ExtendedStateSupport.clearScreenMenuInputMap(extendedState);
     }
 
     protected void transferItemKey(ExtendedState extendedState, DialogEvent event) {
-        InputMap inputMap = (InputMap) extendedState.getVariables().get(SermoSystemConstants.INPUT_MAP_KEY);
+        InputMap inputMap = ExtendedStateSupport.getScreenMenuInputMap(extendedState);
         if (inputMap != null) {
             Optional<Object> itemData = inputMap.getItemDataForInput(event.getInput());
             if(itemData.isPresent()) {
-                extendedState.getVariables().put(INPUT_ITEM_DATA_KEY, itemData.get());
+                ExtendedStateSupport.setItemData(extendedState, itemData.get());
             }
         }
     }

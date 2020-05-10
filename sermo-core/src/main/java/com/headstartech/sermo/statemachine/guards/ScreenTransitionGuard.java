@@ -42,7 +42,7 @@ public class ScreenTransitionGuard<S, E extends DialogEvent> extends GuardBase<S
 
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
         boolean res = false;
-        InputMap inputMap = ExtendedStateSupport.getInputMap(context.getExtendedState());
+        InputMap inputMap = ExtendedStateSupport.getScreenMenuInputMap(context.getExtendedState());
         if(inputMap != null && inputMap.hasTransitionForInput(transitionId, input)) {
             res = true;
         }

@@ -23,6 +23,8 @@ import org.springframework.statemachine.ExtendedState;
 
 import java.util.Optional;
 
+import static com.headstartech.sermo.SermoSystemConstants.INPUT_ITEM_DATA_KEY;
+
 /**
  * @author Per Johansson
  */
@@ -36,6 +38,9 @@ public class ExtendedStateSupport {
         extendedState.getVariables().put(SermoSystemConstants.INPUT_MAP_KEY, inputMap);
     }
 
+    public static void clearScreenMenuInputMap(ExtendedState extendedState) {
+        extendedState.getVariables().remove(SermoSystemConstants.INPUT_MAP_KEY);
+    }
 
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {
         return (InputMap) extendedState.getVariables().get(SermoSystemConstants.INPUT_MAP_KEY);
@@ -61,7 +66,8 @@ public class ExtendedStateSupport {
         return extendedState.getVariables().get(SermoSystemConstants.INPUT_ITEM_DATA_KEY);
     }
 
-    public static InputMap getInputMap(ExtendedState extendedState) {
-        return extendedState.get(SermoSystemConstants.INPUT_MAP_KEY, InputMap.class);
+    public static void setItemData(ExtendedState extendedState, Object itemData) {
+        extendedState.getVariables().put(INPUT_ITEM_DATA_KEY, itemData);
     }
+
 }
