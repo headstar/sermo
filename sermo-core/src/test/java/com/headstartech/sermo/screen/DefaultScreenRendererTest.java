@@ -18,7 +18,6 @@ package com.headstartech.sermo.screen;
 
 import org.junit.jupiter.api.Test;
 
-import javax.security.auth.callback.TextInputCallback;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,8 +38,9 @@ public class DefaultScreenRendererTest {
         ScreenRenderResult srr = sr.renderScreen(sbc);
 
         // then
-        assertTrue(srr.getInputMap().isEmpty());
         assertEquals(expectedOutput, srr.getOutput());
+
+        assertTrue(srr.getInputMap().isEmpty());
     }
 
     @Test
@@ -56,8 +56,9 @@ public class DefaultScreenRendererTest {
         ScreenRenderResult srr = sr.renderScreen(sbc);
 
         // then
-        assertTrue(srr.getInputMap().isEmpty());
         assertEquals(expectedOutput, srr.getOutput());
+
+        assertTrue(srr.getInputMap().isEmpty());
     }
 
     @Test
@@ -75,11 +76,46 @@ public class DefaultScreenRendererTest {
         ScreenRenderResult srr = sr.renderScreen(sbc);
 
         // then
+        assertEquals(expectedOutput, srr.getOutput());
+
         InputMap im  = srr.getInputMap();
         assertFalse(im.isEmpty());
         assertTrue(im.hasTransitionForInput(transitionId, input));
         assertFalse(im.getItemDataForInput(input).isPresent());
+    }
+
+    @Test
+    public void canRenderMenuGroup() {
+        // given
+        ScreenRenderer sr = new DefaultScreenRenderer();
+
+        MenuItem mi1 = new MenuItem("Option 1", "tr1", "myItem1");
+        MenuItem mi2 = new MenuItem("Option 2", "tr2", "myItem2");
+
+        String expectedOutput =
+                "1. " + mi1.getLabel() + "\n" +
+                "2. " + mi2.getLabel() + "\n";
+
+        MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2));
+
+        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(mg));
+
+        // when
+        ScreenRenderResult srr = sr.renderScreen(sbc);
+
+        // then
         assertEquals(expectedOutput, srr.getOutput());
+
+        InputMap im  = srr.getInputMap();
+        assertFalse(im.isEmpty());
+
+        assertTrue(im.hasTransitionForInput(mi1.getTransition(), "1"));
+        assertTrue(im.getItemDataForInput("1").isPresent());
+        assertEquals("myItem1", im.getItemDataForInput("1").get());
+
+        assertTrue(im.hasTransitionForInput(mi2.getTransition(), "2"));
+        assertTrue(im.getItemDataForInput("2").isPresent());
+        assertEquals("myItem2", im.getItemDataForInput("2").get());
     }
 
 }
