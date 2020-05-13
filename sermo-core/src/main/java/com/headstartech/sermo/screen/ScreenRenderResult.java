@@ -17,6 +17,9 @@
 package com.headstartech.sermo.screen;
 
 /**
+ * The result from a {@link ScreenRenderer}.
+ *
+ *
  * @author Per Johansson
  */
 public class ScreenRenderResult {
@@ -29,10 +32,20 @@ public class ScreenRenderResult {
         this.output = output;
     }
 
+    /**
+     * Gets the {@link InputMap} associated with the result.
+     *
+     * @return
+     */
     public InputMap getInputMap() {
         return inputMap;
     }
 
+    /**
+     * Gets the output.
+     *
+     * @return
+     */
     public String getOutput() {
         return output;
     }

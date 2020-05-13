@@ -19,6 +19,10 @@ package com.headstartech.sermo.screen;
 import java.util.*;
 
 /**
+ *  An {@code InputMap} keeps associations between user inputs and state machine transitions and item data.
+ *
+ *  E.g. the user input "2" is associated with the transition with id "accounts" and item data "account id 4711".
+ *
  * @author Per Johansson
  */
 public class InputMap {
