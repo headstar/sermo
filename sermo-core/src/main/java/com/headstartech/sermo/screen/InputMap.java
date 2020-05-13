@@ -30,14 +30,9 @@ public class InputMap {
     private final Map<String, Object> inputTransitionMap;
     private final Map<String, Object> inputItemDataMap;
 
-    public InputMap() {
-        inputTransitionMap = new HashMap<>();
-        inputItemDataMap = new HashMap<>();
-    }
-
-    public void addMapping(String input, Object transitionId, Object itemData) {
-        inputTransitionMap.put(input, transitionId);
-        inputItemDataMap.put(input, itemData);
+    private InputMap(Map<String, Object> inputTransitionMap, Map<String, Object> inputItemDataMap) {
+        this.inputTransitionMap = inputTransitionMap;
+        this.inputItemDataMap = inputItemDataMap;
     }
 
     public Optional<Object> getItemDataForInput(String input) {
@@ -76,5 +71,34 @@ public class InputMap {
                 .add("inputTransitionMap=" + inputTransitionMap)
                 .add("inputItemDataMap=" + inputItemDataMap)
                 .toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private final Map<String, Object> inputTransitionMap = new HashMap<>();
+        private final Map<String, Object> inputItemDataMap = new HashMap<>();
+
+        public Builder() {
+        }
+
+        public Builder addMapping(String input, Object transitionId) {
+            return addMapping(input, transitionId, null);
+        }
+
+        public Builder addMapping(String input, Object transitionId, Object itemData) {
+            inputTransitionMap.put(input, transitionId);
+            if(itemData != null) {
+                inputItemDataMap.put(input, itemData);
+            }
+            return this;
+        }
+
+        public InputMap build() {
+            return new InputMap(inputTransitionMap, inputItemDataMap);
+        }
     }
 }

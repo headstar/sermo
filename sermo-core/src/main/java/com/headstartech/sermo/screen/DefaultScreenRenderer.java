@@ -24,22 +24,22 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     @Override
     public ScreenRenderResult renderScreen(ScreenBlocksContainer screenBlocksContainer) {
-        InputMap inputMap = new InputMap();
+        InputMap.Builder inputMapBuilder = InputMap.builder();
         StringBuilder sb = new StringBuilder();
 
-        screenBlocksContainer.getScreenBlocks().forEach(e -> renderBlock(e, sb, inputMap));
-        return new ScreenRenderResult(inputMap, sb.toString());
+        screenBlocksContainer.getScreenBlocks().forEach(e -> renderBlock(e, sb, inputMapBuilder));
+        return new ScreenRenderResult(inputMapBuilder.build(), sb.toString());
     }
 
-    protected void renderBlock(ScreenBlock screenBlock, StringBuilder sb, InputMap inputMap) {
+    protected void renderBlock(ScreenBlock screenBlock, StringBuilder sb, InputMap.Builder inputMapBuilder) {
         if(screenBlock instanceof EmptyLine) {
             renderEmptyLine(sb);
         } else if(screenBlock instanceof Text) {
             renderText(sb, (Text) screenBlock);
         } else if(screenBlock instanceof MenuGroup) {
-            renderMenuGroup(sb, inputMap, (MenuGroup) screenBlock);
+            renderMenuGroup(sb, inputMapBuilder, (MenuGroup) screenBlock);
         } else if(screenBlock instanceof StaticMenuItem) {
-            renderStaticMenuItem(sb, inputMap, (StaticMenuItem) screenBlock);
+            renderStaticMenuItem(sb, inputMapBuilder, (StaticMenuItem) screenBlock);
         } else {
             throw new IllegalStateException(String.format("unknown ScreenBlock type %s", screenBlock.getClass().getName()));
         }
@@ -56,12 +56,12 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     }
 
-    protected void renderMenuGroup(StringBuilder sb, InputMap inputMap, MenuGroup menuGroup) {
+    protected void renderMenuGroup(StringBuilder sb, InputMap.Builder inputMapBuilder, MenuGroup menuGroup) {
         int i = 0;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
             String input = getInput(i);
             sb.append(String.format("%s. %s\n", input, menuItem.getLabel()));
-            inputMap.addMapping(input, menuItem.getTransition(), menuItem.getItemData());
+            inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemData());
             ++i;
         }
     }
@@ -70,9 +70,9 @@ public class DefaultScreenRenderer implements ScreenRenderer {
         return String.format("%d", menuItemIndex + 1);
     }
 
-    protected void renderStaticMenuItem(StringBuilder sb, InputMap inputMap, StaticMenuItem staticMenuItem) {
+    protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {
         sb.append(String.format("%s %s\n", staticMenuItem.getInput(), staticMenuItem.getLabel()));
-        inputMap.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemData());
+        inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemData());
 
     }
 
