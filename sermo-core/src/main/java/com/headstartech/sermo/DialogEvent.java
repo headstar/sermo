@@ -22,9 +22,7 @@ import org.springframework.statemachine.trigger.TriggerContext;
  * @author Per Johansson
  */
 public class DialogEvent {
-
-    public static final DialogEvent INSTANCE = new DialogEvent();
-
+    
     protected final String input;
 
     public DialogEvent() {
