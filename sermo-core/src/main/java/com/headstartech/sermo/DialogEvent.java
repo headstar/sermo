@@ -16,7 +16,16 @@
 
 package com.headstartech.sermo;
 
+import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
+import org.springframework.statemachine.guard.Guard;
+
 /**
+ * Base class for events handled by {@link SermoDialogExecutor}.
+ *
+ * Note, the equals() method always returns {@code true}. This to let {@link Guard} implementations control if transitions should be executed or not.
+ *
+ * @see ScreenTransitionGuard
+ *
  * @author Per Johansson
  */
 public class DialogEvent {
