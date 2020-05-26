@@ -17,6 +17,8 @@
 package com.headstartech.sermo;
 
 /**
+ * Exception if there's an error when handling an event.
+ *
  * @author Per Johansson
  */
 public class SermoDialogException extends RuntimeException {

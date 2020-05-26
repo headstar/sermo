@@ -44,7 +44,7 @@ public class DialogEventResult {
     }
 
     /**
-     * Incicates if the dialog is complete. When the dialog is complete
+     * Incicates if the dialog is complete. When the dialog is complete no more input is accepted.
      *
      * @return
      */
