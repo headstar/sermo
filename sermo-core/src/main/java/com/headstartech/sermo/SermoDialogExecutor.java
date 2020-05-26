@@ -98,6 +98,7 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
 
         DialogEventResult dialogEventResult;
         if (stateMachine.hasStateMachineError()) {
+            // TODO: get exception from listener or extended state
             SermoDialogException ex = new SermoDialogException();
             throw ex;
         } else {
