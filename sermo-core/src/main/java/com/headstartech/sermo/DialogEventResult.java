@@ -20,6 +20,8 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
+ * Result from {@link SermoDialogExecutor}.
+ *
  * @author Per Johansson
  */
 public class DialogEventResult {
@@ -32,10 +34,20 @@ public class DialogEventResult {
         this.dialogComplete = dialogComplete;
     }
 
+    /**
+     * Resulting output after handling input.
+     *
+     * @return
+     */
     public Optional<String> getOutput() {
         return Optional.ofNullable(output);
     }
 
+    /**
+     * Incicates if the dialog is complete. When the dialog is complete
+     *
+     * @return
+     */
     public boolean isDialogComplete() {
         return dialogComplete;
     }
