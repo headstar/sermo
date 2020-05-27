@@ -27,20 +27,20 @@ import java.util.regex.Pattern;
 /**
  * @author Per Johansson
  */
-public class InitialTransitionGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
+public class RegExpTransitionGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(InitialTransitionGuard.class);
+    private static final Logger log = LoggerFactory.getLogger(RegExpTransitionGuard.class);
 
     private final Pattern pattern;
 
-    public InitialTransitionGuard(Pattern pattern) {
+    public RegExpTransitionGuard(Pattern pattern) {
         this.pattern = pattern;
     }
 
     protected boolean doEvaluate(StateContext<S, E> context, String input) {
         Matcher m = pattern.matcher(input);
         boolean res = m.matches();
-        log.debug("Initial transition guard evaluation: result={}, input={}, pattern={}", res, input, pattern.pattern());
+        log.debug("Regexp transition guard evaluation: result={}, input={}, pattern={}", res, input, pattern.pattern());
         return res;
     }
 

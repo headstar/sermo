@@ -9,12 +9,12 @@ import static com.headstartech.sermo.TestUtils.createStateContext;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FormInputGuardTest {
+public class PredicateInputGuardTest {
 
     @Test
     public void evaluatesToTrueIfPredicateIsTrue() {
         // given
-        Guard<String, DialogEvent> guard = new FormInputGuard<>(t -> true);
+        Guard<String, DialogEvent> guard = new PredicateInputGuard<>(t -> true);
         StateContext<String, DialogEvent> stateContext = createStateContext("1");
 
         // when
@@ -27,7 +27,7 @@ public class FormInputGuardTest {
     @Test
     public void evaluatesToFalseIfPatternDoesNotMatches() {
         // given
-        Guard<String, DialogEvent> guard = new FormInputGuard<>(t -> false);
+        Guard<String, DialogEvent> guard = new PredicateInputGuard<>(t -> false);
         StateContext<String, DialogEvent> stateContext = createStateContext("1");
 
         // when

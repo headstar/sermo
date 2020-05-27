@@ -31,13 +31,13 @@ import java.util.function.Predicate;
  *
  * @author Per Johansson
  */
-public class FormInputGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
+public class PredicateInputGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(FormInputGuard.class);
+    private static final Logger log = LoggerFactory.getLogger(PredicateInputGuard.class);
 
     private final Predicate<String> predicate;
 
-    public FormInputGuard(Predicate<String> predicate) {
+    public PredicateInputGuard(Predicate<String> predicate) {
         this.predicate = predicate;
     }
 

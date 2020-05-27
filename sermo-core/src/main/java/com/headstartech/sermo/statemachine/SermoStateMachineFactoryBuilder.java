@@ -19,8 +19,8 @@ package com.headstartech.sermo.statemachine;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.statemachine.actions.SetStateMachineErrorOnExceptionAction;
-import com.headstartech.sermo.statemachine.guards.FormInputGuard;
-import com.headstartech.sermo.statemachine.guards.InitialTransitionGuard;
+import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
+import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
@@ -135,7 +135,7 @@ public class SermoStateMachineFactoryBuilder {
                     .source(initialState)
                     .target(to)
                     .event(eventToken)
-                    .guard(new InitialTransitionGuard<>(shortCode));
+                    .guard(new RegExpTransitionGuard<>(shortCode));
 
             return this;
         }
@@ -151,7 +151,7 @@ public class SermoStateMachineFactoryBuilder {
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(inputValid));
+                    .guard(new PredicateInputGuard<>(inputValid));
 
             if(inputValidAction != null) {
                 externalTransitionConfigurer.action(wrapWithErrorActions(inputValidAction));
@@ -162,7 +162,7 @@ public class SermoStateMachineFactoryBuilder {
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(new FormInputGuard<>(inputValid.negate()));
+                    .guard(new PredicateInputGuard<>(inputValid.negate()));
 
             if(inputInvalidAction != null) {
                 externalTransitionConfigurer.action(wrapWithErrorActions(inputInvalidAction));

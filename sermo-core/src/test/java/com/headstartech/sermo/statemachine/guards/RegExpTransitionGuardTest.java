@@ -11,13 +11,13 @@ import static com.headstartech.sermo.TestUtils.createStateContext;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InitialTransitionGuardTest {
+public class RegExpTransitionGuardTest {
 
     @Test
     public void evaluatesToTrueIfPatternMatches() {
         // given
         Pattern pattern = Pattern.compile("a.c");
-        Guard<String, DialogEvent> guard = new InitialTransitionGuard<>(pattern);
+        Guard<String, DialogEvent> guard = new RegExpTransitionGuard<>(pattern);
         StateContext<String, DialogEvent> stateContext = createStateContext("abc");
 
         // when
@@ -31,7 +31,7 @@ public class InitialTransitionGuardTest {
     public void evaluatesToFalseIfPatternDoesNotMatches() {
         // given
         Pattern pattern = Pattern.compile("a.c");
-        Guard<String, DialogEvent> guard = new InitialTransitionGuard<>(pattern);
+        Guard<String, DialogEvent> guard = new RegExpTransitionGuard<>(pattern);
         StateContext<String, DialogEvent> stateContext = createStateContext("c");
 
         // when
