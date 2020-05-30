@@ -16,18 +16,19 @@
 
 package com.headstartech.sermo.statemachine.actions;
 
-import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
-import com.headstartech.sermo.support.ExtendedStateSupport;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoSystemConstants;
-import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
 import com.headstartech.sermo.screen.PagedScreenSupport;
+import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
 
 /**
  * @author Per Johansson
  */
-public class PagedMenuScreenInternalAction<S, E extends DialogEvent> extends MenuScreenEntryAction<S, E> {
+public class PagedMenuScreenInternalAction<S, E extends DialogEvent> implements Action<S, E> {
 
     private final PagedScreenSupport pagedScreenSupport;
 
@@ -54,7 +55,7 @@ public class PagedMenuScreenInternalAction<S, E extends DialogEvent> extends Men
         }
 
         Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
-        setScreen(context.getExtendedState(), screen);
+        ExtendedStateSupport.setScreen(context.getExtendedState(), screen);
     }
 
 }

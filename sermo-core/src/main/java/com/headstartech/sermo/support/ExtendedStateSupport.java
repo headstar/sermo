@@ -19,6 +19,7 @@ package com.headstartech.sermo.support;
 import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.InputMap;
 import com.headstartech.sermo.screen.PagedScreenSetup;
+import com.headstartech.sermo.screen.Screen;
 import org.springframework.statemachine.ExtendedState;
 
 import java.util.Optional;
@@ -68,6 +69,11 @@ public class ExtendedStateSupport {
 
     public static void setItemData(ExtendedState extendedState, Object itemData) {
         extendedState.getVariables().put(INPUT_ITEM_DATA_KEY, itemData);
+    }
+
+    public static void setScreen(ExtendedState extendedState, Screen screen) {
+        setScreenMenuInputMap(extendedState, screen.getInputMap());
+        setOutput(extendedState, screen.getOutput());
     }
 
 }

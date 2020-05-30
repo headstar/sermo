@@ -1,17 +1,18 @@
 package demo.web;
 
 import com.headstartech.sermo.SubscriberEvent;
-import com.headstartech.sermo.statemachine.actions.MenuScreenEntryAction;
 import com.headstartech.sermo.screen.EmptyLine;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.StaticMenuItem;
 import com.headstartech.sermo.screen.Text;
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
 
 /**
  * @author Per Johansson
  */
-public class StatementAnnualEntryAction extends MenuScreenEntryAction<States, SubscriberEvent> {
+public class StatementAnnualEntryAction implements Action<States, SubscriberEvent> {
 
     @Override
     public void execute(StateContext<States, SubscriberEvent> context) {
@@ -23,6 +24,6 @@ public class StatementAnnualEntryAction extends MenuScreenEntryAction<States, Su
         screenBuilder.withScreenBlock(new StaticMenuItem("#", "Main menu", Transitions.ROOT));
 
         Screen screen = screenBuilder.build();
-        setScreen(context.getExtendedState(), screen);
+        ExtendedStateSupport.setScreen(context.getExtendedState(), screen);
     }
 }
