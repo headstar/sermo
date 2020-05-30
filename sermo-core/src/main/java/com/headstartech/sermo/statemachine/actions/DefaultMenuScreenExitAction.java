@@ -26,21 +26,21 @@ import org.springframework.statemachine.action.Action;
 import java.util.Optional;
 
 /**
+ * Action:
+ *   * fetching item data (if any) associated with given input and setting in {@link ExtendedState}.
+ *   * clearing {@link InputMap} from {@link ExtendedState}.
+ *
  * @author Per Johansson
  */
-public class MenuScreenExitAction<S, E extends DialogEvent> implements Action<S, E> {
+public class DefaultMenuScreenExitAction<S, E extends DialogEvent> implements Action<S, E> {
 
     @Override
     public void execute(StateContext<S, E> context) {
-        transferItemKey(context.getExtendedState(), context.getEvent());
-        clearScreen(context.getExtendedState());
+        transferItemData(context.getExtendedState(), context.getEvent());
+        clearScreenInputMap(context.getExtendedState());
     }
 
-    protected void clearScreen(ExtendedState extendedState) {
-        ExtendedStateSupport.clearScreenMenuInputMap(extendedState);
-    }
-
-    protected void transferItemKey(ExtendedState extendedState, DialogEvent event) {
+    protected void transferItemData(ExtendedState extendedState, DialogEvent event) {
         InputMap inputMap = ExtendedStateSupport.getScreenMenuInputMap(extendedState);
         if (inputMap != null) {
             Optional<Object> itemData = inputMap.getItemDataForInput(event.getInput());
@@ -48,5 +48,9 @@ public class MenuScreenExitAction<S, E extends DialogEvent> implements Action<S,
                 ExtendedStateSupport.setItemData(extendedState, itemData.get());
             }
         }
+    }
+
+    protected void clearScreenInputMap(ExtendedState extendedState) {
+        ExtendedStateSupport.clearScreenMenuInputMap(extendedState);
     }
 }

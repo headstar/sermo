@@ -17,7 +17,7 @@
 package com.headstartech.sermo.states;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.statemachine.actions.MenuScreenExitAction;
+import com.headstartech.sermo.statemachine.actions.DefaultMenuScreenExitAction;
 import org.springframework.statemachine.action.Action;
 
 import java.util.*;
@@ -62,6 +62,6 @@ public class USSDState<S, E extends DialogEvent> {
     }
 
     protected void addDefaultActions() {
-        exitActions.add(new MenuScreenExitAction<>());
+        exitActions.add(new DefaultMenuScreenExitAction<>());
     }
 }
