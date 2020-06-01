@@ -5,6 +5,7 @@ import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.ChoiceOption;
 import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
@@ -79,8 +80,8 @@ public class Application {
         builder.withStates(states);
 
         builder.withInitialState(States.INITIAL);
-        builder.withShortCodeTransition(States.ROOT, Pattern.compile(Pattern.quote(mainMenuShortCode)));
-        builder.withShortCodeTransition(States.STATEMENT, Pattern.compile(Pattern.quote(statementShortCode)));
+        builder.withInitialTransition(States.ROOT, new RegExpTransitionGuard<>(Pattern.compile(Pattern.quote(mainMenuShortCode))));
+        builder.withInitialTransition(States.STATEMENT, new RegExpTransitionGuard<>(Pattern.compile(Pattern.quote(statementShortCode))));
 
         builder.withLoggingListener();
 

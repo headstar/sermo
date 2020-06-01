@@ -7,6 +7,7 @@ import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
 import com.headstartech.sermo.statemachine.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.StateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
@@ -44,8 +45,8 @@ public class Application {
                 .withState(endScreen);
 
         builder.withInitialState(States.INITIAL);
-        builder.withShortCodeTransition(States.ROOT, Pattern.compile("111"));
-        builder.withShortCodeTransition(States.STATEMENT, Pattern.compile("222"));
+        builder.withInitialTransition(States.ROOT, new RegExpTransitionGuard<>(Pattern.compile("111")));
+        builder.withInitialTransition(States.STATEMENT, new RegExpTransitionGuard<>(Pattern.compile("222")));
 
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);

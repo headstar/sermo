@@ -127,15 +127,22 @@ public class SermoStateMachineFactoryBuilder {
             choiceTransitionConfigurer.last(defaultTarget);
             return this;
         }
+        
+        public Builder<S, E> withInitialTransition(S to, Guard<S,E> guard) throws Exception {
+            return withInitialTransition(to, guard, null);
+        }
 
-
-        public Builder<S, E> withShortCodeTransition(S to, Pattern shortCode) throws Exception {
-            transitionConfigurer
+        public Builder<S, E> withInitialTransition(S to, Guard<S,E> guard, Action<S, E> action) throws Exception {
+            ExternalTransitionConfigurer<S, E> externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(initialState)
                     .target(to)
                     .event(eventToken)
-                    .guard(new RegExpTransitionGuard<>(shortCode));
+                    .guard(guard);
+
+            if(action != null) {
+                externalTransitionConfigurer.action(wrapWithErrorActions(action));
+            }
 
             return this;
         }
