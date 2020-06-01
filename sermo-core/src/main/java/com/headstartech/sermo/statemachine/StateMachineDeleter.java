@@ -16,7 +16,11 @@
 
 package com.headstartech.sermo.statemachine;
 
+import org.springframework.statemachine.StateMachine;
+
 /**
+ * Interface for deleting a {@link StateMachine}.
+ *
  * @author Per Johansson
  */
 public interface StateMachineDeleter<T> {

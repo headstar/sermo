@@ -19,7 +19,7 @@ package com.headstartech.sermo.statemachine;
 import org.springframework.statemachine.StateMachine;
 
 /**
- * Interface for a {@link StateMachine} pool-
+ * Interface for a {@link StateMachine} pool.
  *
  * @author Per Johansson
  */
