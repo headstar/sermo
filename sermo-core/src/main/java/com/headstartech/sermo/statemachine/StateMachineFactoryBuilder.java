@@ -21,6 +21,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineException;
 import org.springframework.statemachine.config.ObjectStateMachineFactory;
+import org.springframework.statemachine.config.StateMachineBuilder;
 import org.springframework.statemachine.config.StateMachineConfig;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.config.builders.*;
@@ -32,11 +33,12 @@ import org.springframework.statemachine.config.model.StatesData;
 import org.springframework.statemachine.config.model.TransitionsData;
 
 /**
- * {@code StateMachineBuilder} provides a builder pattern for
- * {@link StateMachine} using a similar concepts found from a
- * normal annotation based configuration.
+ * {@code StateMachineFactoryBuilder} provides a builder pattern for
+ * {@link StateMachineFactory}.
  *
- * @author Janne Valkealahti
+ *  NOTE, this is a copy of {@link StateMachineBuilder} but returning a {@link StateMachineFactory} instead of a {@link StateMachine}.
+ *
+ * @author Per Johansson
  *
  */
 public class StateMachineFactoryBuilder {
