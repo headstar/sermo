@@ -20,12 +20,15 @@ import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.support.CompositeSermoDialogListener;
 import com.headstartech.sermo.support.DefaultSermoStateMachineService;
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import com.headstartech.sermo.support.SermoStateMachineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.config.StateMachineFactory;
+
+import java.util.Optional;
 
 /**
  * @author Per Johansson
@@ -54,20 +57,17 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
         StateMachine<S, E> stateMachine = null;
         DialogEventResult dialogEventResult = null;
         SermoDialogException exceptionThrown = null;
+
+        notifyPreEventHandled(sessionId, event);
         try {
-            notifyPreEventHandled(sessionId, event);
-            stateMachine = sermoStateMachineService.acquireStateMachine(sessionId);
+            stateMachine = acquireStateMachine(sessionId);
             dialogEventResult = handleEvent(stateMachine, event);
-        } catch (Exception e) {
+        } catch(Exception e) {
             exceptionThrown = toSermoDialogException(e);
         } finally {
             try {
                 if (stateMachine != null) {
-                    if (exceptionThrown != null) {
-                        sermoStateMachineService.releaseStateMachineOnException(sessionId, stateMachine);
-                    } else {
-                        sermoStateMachineService.releaseStateMachine(sessionId, stateMachine);
-                    }
+                    releaseStateMachine(stateMachine, sessionId, exceptionThrown != null);
                 }
             } finally {
                 notifyPostEventHandled(sessionId, event, exceptionThrown);
@@ -84,11 +84,19 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
         compositeListener.unregister(listener);
     }
 
-    protected SermoDialogException toSermoDialogException(Exception e) {
-        if (e instanceof SermoDialogException) {
-            return (SermoDialogException) e;
+    protected StateMachine<S, E> acquireStateMachine(String sessionId) {
+        try {
+            return sermoStateMachineService.acquireStateMachine(sessionId);
+        } catch(RuntimeException e) {
+            throw new SermoDialogServiceException("Exception when acquiring a state machine", e);
+        }
+    }
+
+    protected void releaseStateMachine(StateMachine<S, E> stateMachine, String sessionId, boolean exceptionThrown) {
+        if (exceptionThrown) {
+            sermoStateMachineService.releaseStateMachineOnException(sessionId, stateMachine);
         } else {
-            return new SermoDialogException(e);
+            sermoStateMachineService.releaseStateMachine(sessionId, stateMachine);
         }
     }
 
@@ -98,9 +106,12 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
 
         DialogEventResult dialogEventResult;
         if (stateMachine.hasStateMachineError()) {
-            // TODO: get exception from listener or extended state
-            SermoDialogException ex = new SermoDialogException();
-            throw ex;
+            Optional<Exception> exOpt = ExtendedStateSupport.getExecutionException(stateMachine.getExtendedState());
+            if(exOpt.isPresent()) {
+                throw new SermoDialogExecutionException("State machine action exception", exOpt.get());
+            } else {
+                throw new SermoDialogExecutionException("State machine error (cause unknown)");
+            }
         } else {
             boolean dialogComplete = stateMachine.isComplete();
             String output = handleOutputWhenNoStateMachineError(stateMachine, dialogComplete);
@@ -135,6 +146,14 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
 
     protected void notifyPostEventHandled(String sessionId, E event, SermoDialogException e) {
         compositeListener.postEventHandled(sessionId, event, e);
+    }
+
+    protected SermoDialogException toSermoDialogException(Exception e) {
+        if (e instanceof SermoDialogException) {
+            return (SermoDialogException) e;
+        } else {
+            return new SermoDialogServiceException(e);
+        }
     }
 
 }

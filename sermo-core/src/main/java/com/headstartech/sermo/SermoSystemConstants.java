@@ -37,4 +37,5 @@ public class SermoSystemConstants {
 
     public static final String MDC_SESSION_ID_KEY = "sessionId";
 
+    public static final String EXECUTION_EXCEPTION_KEY = "__execution_exception_key__";
 }

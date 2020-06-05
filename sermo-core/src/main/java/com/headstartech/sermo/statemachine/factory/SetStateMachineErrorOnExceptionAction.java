@@ -16,16 +16,23 @@
 
 package com.headstartech.sermo.statemachine.factory;
 
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 
 /**
+ * {@link Action} which will be executed if any application {@code Action} throws an exception.
+ *
+ * It sets the Exception as the state machine error (processing is finished).
+ *
  * @author Per Johansson
  */
 public class SetStateMachineErrorOnExceptionAction<S, E> implements Action<S, E> {
 
     @Override
     public void execute(StateContext<S, E> context) {
-        context.getStateMachine().setStateMachineError(context.getException());
+        Exception exception = context.getException();
+        context.getStateMachine().setStateMachineError(exception);
+        ExtendedStateSupport.setExecutionException(context.getExtendedState(), exception);
     }
 }

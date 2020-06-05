@@ -17,15 +17,16 @@
 package com.headstartech.sermo;
 
 /**
- * Exception if there's an error when handling an event.
+ * Base class for exceptions thrown by {@link SermoDialogExecutor} if there's an error when handling an event.
  *
  * @author Per Johansson
  */
-public class SermoDialogException extends RuntimeException {
+public abstract class SermoDialogException extends RuntimeException {
 
     private static final long serialVersionUID = -4302908681874019397L;
 
-    public SermoDialogException() {
+    public SermoDialogException(Throwable cause) {
+        super(cause);
     }
 
     public SermoDialogException(String message) {
@@ -34,13 +35,5 @@ public class SermoDialogException extends RuntimeException {
 
     public SermoDialogException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    public SermoDialogException(Throwable cause) {
-        super(cause);
-    }
-
-    public SermoDialogException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

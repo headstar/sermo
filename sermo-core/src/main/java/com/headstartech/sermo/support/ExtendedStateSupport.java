@@ -76,4 +76,12 @@ public class ExtendedStateSupport {
         setOutput(extendedState, screen.getOutput());
     }
 
+    public static Optional<Exception> getExecutionException(ExtendedState extendedState) {
+        return Optional.ofNullable(extendedState.get(SermoSystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
+    }
+
+    public static void setExecutionException(ExtendedState extendedState, Exception executionException) {
+        extendedState.getVariables().put(SermoSystemConstants.EXECUTION_EXCEPTION_KEY, executionException);
+    }
+
 }
