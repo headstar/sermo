@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.statemachine.actions;
+package com.headstartech.sermo.statemachine.factory;
 
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;

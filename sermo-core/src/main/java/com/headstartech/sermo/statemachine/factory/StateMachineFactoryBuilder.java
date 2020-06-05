@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.statemachine;
+package com.headstartech.sermo.statemachine.factory;
 
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;

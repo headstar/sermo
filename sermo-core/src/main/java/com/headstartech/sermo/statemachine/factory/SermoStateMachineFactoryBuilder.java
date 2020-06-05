@@ -14,13 +14,12 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.statemachine;
+package com.headstartech.sermo.statemachine.factory;
 
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoSystemConstants;
-import com.headstartech.sermo.statemachine.actions.SetStateMachineErrorOnExceptionAction;
+import com.headstartech.sermo.statemachine.LoggingStateMachineListener;
 import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
-import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
@@ -42,7 +41,6 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
