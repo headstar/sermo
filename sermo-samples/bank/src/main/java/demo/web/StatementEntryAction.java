@@ -1,6 +1,5 @@
 package demo.web;
 
-import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.screen.*;
 import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;

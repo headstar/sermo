@@ -2,7 +2,6 @@ package demo.web;
 
 import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SubscriberEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

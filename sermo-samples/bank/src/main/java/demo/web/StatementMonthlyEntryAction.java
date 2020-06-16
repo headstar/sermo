@@ -1,6 +1,5 @@
 package demo.web;
 
-import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.screen.EmptyLine;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.StaticMenuItem;

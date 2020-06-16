@@ -14,7 +14,9 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package demo.web;
+
+import com.headstartech.sermo.DialogEvent;
 
 import java.util.StringJoiner;
 

@@ -1,7 +1,6 @@
 package demo.web;
 
 import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SubscriberEvent;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
