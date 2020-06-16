@@ -7,7 +7,7 @@ def String[] modules = [
 include modules
 
 def String[] samples = [
-        'web'
+        'bank'
 ]
 
 include samples
