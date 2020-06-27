@@ -20,6 +20,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             group = 'com.headstartech.sermo'
+
             from components.java
             artifact sourcesJar
         }
