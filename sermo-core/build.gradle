@@ -32,7 +32,7 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    implementation("org.springframework.statemachine:spring-statemachine-core:2.2.0.RELEASE")
+    api("org.springframework.statemachine:spring-statemachine-core:2.2.0.RELEASE")
     implementation 'org.springframework:spring-context-support:5.2.3.RELEASE'
     implementation 'org.slf4j:slf4j-api:1.7.30'
 
