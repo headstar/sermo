@@ -2,3 +2,4 @@
 * Support "state scope" for context variables?
 * How to handle multiple guards being true?
 * What's a "state action"?
+* Auto-conf for sermo-metrics

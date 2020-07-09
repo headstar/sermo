@@ -1,6 +1,7 @@
 package demo.web;
 
 import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.SermoMetricsConfiguration;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
@@ -13,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @SpringBootApplication
+@Import(SermoMetricsConfiguration.class)
 public class Application {
 
     public static void main(String[] args) {

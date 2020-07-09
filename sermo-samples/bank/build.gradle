@@ -22,6 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	implementation project(':sermo-core')
+	implementation project(':sermo-metrics')
 	implementation("org.springframework.statemachine:spring-statemachine-core:2.2.0.RELEASE")
 
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")

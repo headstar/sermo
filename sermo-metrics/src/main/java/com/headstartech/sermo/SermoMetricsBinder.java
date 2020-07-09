@@ -14,12 +14,8 @@
  *  limitations under the License.
  */
 
-package demo.web;
+package com.headstartech.sermo;
 
-import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoDialogException;
-import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SermoDialogListener;
 import io.micrometer.core.instrument.FunctionCounter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -31,11 +27,11 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author Per Johansson
  */
-public class USSDMetrics<S,E extends DialogEvent> implements MeterBinder {
+public class SermoMetricsBinder<S,E extends DialogEvent> implements MeterBinder {
 
     private final SermoDialogExecutor<S, E> sermoDialogExecutor;
 
-    public USSDMetrics(SermoDialogExecutor<S, E> sermoDialogExecutor) {
+    public SermoMetricsBinder(SermoDialogExecutor<S, E> sermoDialogExecutor) {
         this.sermoDialogExecutor = sermoDialogExecutor;
     }
 

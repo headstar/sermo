@@ -1,7 +1,8 @@
 rootProject.name = 'sermo'
 
 def String[] modules = [
-        'sermo-core'
+        'sermo-core',
+        'sermo-metrics'
 ]
 
 include modules
