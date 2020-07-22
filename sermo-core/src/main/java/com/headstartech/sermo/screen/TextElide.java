@@ -5,6 +5,10 @@ import java.util.Objects;
 import static com.headstartech.sermo.screen.TextElide.Mode.NONE;
 import static com.headstartech.sermo.screen.TextElide.Mode.RIGHT;
 
+/**
+ * Class representing elided text setting (i.e. a string with "..." in it)
+ *
+ */
 public class TextElide {
 
     public enum Mode {
