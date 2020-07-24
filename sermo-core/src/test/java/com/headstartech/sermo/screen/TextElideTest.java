@@ -57,4 +57,32 @@ public class TextElideTest {
         // then
         assertEquals("abc...", elided);
     }
+
+    @Test
+    public void originalStringReturnedWhenLengthIsEqualToMaxUsing2Ellipsis() {
+        // given
+        String orig = "abcde";
+        int maxLen = orig.length();
+        TextElide elide = new TextElide(TextElide.Mode.RIGHT, maxLen, 2);
+
+        // when
+        String elided = TextElide.elidedString(orig, elide);
+
+        // then
+        assertEquals(orig, elided);
+    }
+
+    @Test
+    public void stringElidedWithWhenStringIsGreaterThanMaxLengthUsing2Ellipsis() {
+        // given
+        String orig = "abcdefghijklmno";
+        int maxLen = orig.length();
+        TextElide elide = new TextElide(TextElide.Mode.RIGHT, 6, 2);
+
+        // when
+        String elided = TextElide.elidedString(orig, elide);
+
+        // then
+        assertEquals("abcd..", elided);
+    }
 }

@@ -118,4 +118,39 @@ public class DefaultScreenRendererTest {
         assertEquals("myItem2", im.getItemDataForInput("2").get());
     }
 
+    @Test
+    public void canRenderMenuGroupWithElidedText() {
+        // given
+        ScreenRenderer sr = new DefaultScreenRenderer();
+
+        MenuItem mi1 = new MenuItem("ABCDEFGHI", "tr1", "myItem1");
+        MenuItem mi2 = new MenuItem("JKLMNOPQR", "tr2", "myItem2");
+
+        TextElide textElide = new TextElide(TextElide.Mode.RIGHT, 9);
+
+        String expectedOutput = "1. " + "ABC..." + "\n" +
+                        "2. " + "JKL..." + "\n";
+
+        MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2), textElide);
+
+        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(mg));
+
+        // when
+        ScreenRenderResult srr = sr.renderScreen(sbc);
+
+        // then
+        assertEquals(expectedOutput, srr.getOutput());
+
+        InputMap im  = srr.getInputMap();
+        assertFalse(im.isEmpty());
+
+        assertTrue(im.hasTransitionForInput(mi1.getTransition(), "1"));
+        assertTrue(im.getItemDataForInput("1").isPresent());
+        assertEquals("myItem1", im.getItemDataForInput("1").get());
+
+        assertTrue(im.hasTransitionForInput(mi2.getTransition(), "2"));
+        assertTrue(im.getItemDataForInput("2").isPresent());
+        assertEquals("myItem2", im.getItemDataForInput("2").get());
+    }
+
 }

@@ -15,20 +15,34 @@ public class TextElide {
         NONE, RIGHT
     }
 
+    private static final int DEFAULT_NUM_ELLIPSIS = 3;
+
     private final Mode mode;
     private final int maxLen;
+    private final int numEllipsis;
 
     public TextElide() {
-        this(NONE, 0);
+        this(NONE, 0, 3);
     }
 
     public TextElide(Mode mode, int maxLen) {
+        this(mode, maxLen, DEFAULT_NUM_ELLIPSIS);
+    }
+
+    public TextElide(Mode mode, int maxLen, int numEllipsis) {
         Objects.requireNonNull(mode, "mode must be non-null");
-        if(!NONE.equals(mode) && maxLen < 4) {
-            throw new IllegalArgumentException("maxLen must be >= 4");
+        if(numEllipsis < 2 && numEllipsis > 3) {
+            throw new IllegalArgumentException("numEllipsis must be 2 or 3");
+        }
+        if(!NONE.equals(mode)) {
+            int maxLenMin = (1 + numEllipsis);
+            if(maxLen < maxLenMin) {
+                throw new IllegalArgumentException(String.format("maxLen must be >= %s", maxLenMin));
+            }
         }
         this.mode = mode;
         this.maxLen = maxLen;
+        this.numEllipsis = numEllipsis;
     }
 
     public Mode getMode() {
@@ -39,18 +53,23 @@ public class TextElide {
         return maxLen;
     }
 
+    public int getNumEllipsis() {
+        return numEllipsis;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TextElide elide = (TextElide) o;
-        return maxLen == elide.maxLen &&
-                mode == elide.mode;
+        TextElide textElide = (TextElide) o;
+        return maxLen == textElide.maxLen &&
+                numEllipsis == textElide.numEllipsis &&
+                mode == textElide.mode;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mode, maxLen);
+        return Objects.hash(mode, maxLen, numEllipsis);
     }
 
     @Override
@@ -58,6 +77,7 @@ public class TextElide {
         final StringBuffer sb = new StringBuffer("TextElide{");
         sb.append("mode=").append(mode);
         sb.append(", maxLen=").append(maxLen);
+        sb.append(", numEllipsis=").append(numEllipsis);
         sb.append('}');
         return sb.toString();
     }
@@ -83,9 +103,17 @@ public class TextElide {
         }
 
         if(RIGHT.equals(elide.getMode())) {
-            return str.substring(0, elide.getMaxLen() - 3) + "...";
+            return str.substring(0, elide.getMaxLen() - elide.getNumEllipsis()) + repeat(".", elide.getNumEllipsis());
         } else {
             throw new RuntimeException(String.format("Unknown elide mode: %s", elide.getMode()));
         }
+    }
+
+    private static String repeat(String str, int n) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<n; ++i) {
+            sb.append(str);
+        }
+        return sb.toString();
     }
 }

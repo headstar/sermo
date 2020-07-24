@@ -60,7 +60,10 @@ public class DefaultScreenRenderer implements ScreenRenderer {
         int i = 0;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
             String input = getInput(i);
-            sb.append(String.format("%s. %s\n", input, menuItem.getLabel()));
+            String row = String.format("%s. %s", input, menuItem.getLabel());
+            String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
+            sb.append(elidedRow);
+            sb.append("\n");
             inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemData());
             ++i;
         }

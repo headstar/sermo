@@ -24,14 +24,25 @@ import java.util.*;
 public class MenuGroup implements ScreenBlock {
 
     private final List<MenuItem> menuItems;
+    private final TextElide elide;
+
+    public MenuGroup(List<MenuItem> menuItems, TextElide elide) {
+        Objects.requireNonNull(menuItems, "menuItems must be non-null");
+        Objects.requireNonNull(elide, "elide must be non-null");
+        this.menuItems = Collections.unmodifiableList(menuItems);
+        this.elide = elide;
+    }
 
     public MenuGroup(List<MenuItem> menuItems) {
-        Objects.requireNonNull(menuItems, "menuItems must be non-null");
-        this.menuItems = Collections.unmodifiableList(menuItems);
+        this(menuItems, new TextElide());
     }
 
     public List<MenuItem> getMenuItems() {
         return menuItems;
+    }
+
+    public TextElide getElide() {
+        return elide;
     }
 
     @Override
