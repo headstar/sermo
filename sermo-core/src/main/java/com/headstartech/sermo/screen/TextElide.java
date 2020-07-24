@@ -39,6 +39,29 @@ public class TextElide {
         return maxLen;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TextElide elide = (TextElide) o;
+        return maxLen == elide.maxLen &&
+                mode == elide.mode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mode, maxLen);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("TextElide{");
+        sb.append("mode=").append(mode);
+        sb.append(", maxLen=").append(maxLen);
+        sb.append('}');
+        return sb.toString();
+    }
+
     /**
      * Returns an elided version of the string (i.e. a string with "..." in it) if the string is wider than the max length.
      * Otherwise, returns the original string.
