@@ -63,10 +63,12 @@ public class ExtendedStateSupport {
         return (PagedScreenSetup) extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY);
     }
 
+    // TODO: should be removed
     public static Object getItemData(ExtendedState extendedState) {
         return extendedState.getVariables().get(SermoSystemConstants.INPUT_ITEM_DATA_KEY);
     }
 
+    // TODO: should be removed
     public static void setItemData(ExtendedState extendedState, Object itemData) {
         extendedState.getVariables().put(INPUT_ITEM_DATA_KEY, itemData);
     }

@@ -20,24 +20,13 @@ import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.statemachine.actions.PagedMenuScreenInternalAction;
 import org.springframework.statemachine.action.Action;
 
-import java.util.Collection;
-
 /**
- * TODO: remove! (replaced by IPagedUSSDState
  * @author Per Johansson
  */
-public class PagedUSSDState<S, E extends DialogEvent> extends USSDState<S, E> implements IPagedUSSDState<S, E> {
+public class DefaultPagedUSSDState<S, E extends DialogEvent> extends DefaultInputUSSDState<S, E> implements IPagedUSSDState<S, E> {
 
-    public PagedUSSDState(S id, Action<S, E> entryAction) {
+    public DefaultPagedUSSDState(S id, Action<S, E> entryAction) {
         super(id, entryAction);
-    }
-
-    public PagedUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
-        super(id, entryAction, exitAction);
-    }
-
-    public PagedUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
-        super(id, entryActions, exitActions);
     }
 
     @Override

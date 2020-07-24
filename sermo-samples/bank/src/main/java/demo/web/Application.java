@@ -6,7 +6,7 @@ import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
-import com.headstartech.sermo.states.PagedUSSDState;
+import com.headstartech.sermo.states.DefaultPagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
 import com.headstartech.sermo.states.USSDState;
 import com.headstartech.sermo.support.MDCSermoDialogListener;
@@ -45,7 +45,7 @@ public class Application {
 
     @Bean
     public USSDState<States, SubscriberEvent> accountsMenu() {
-        return new PagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
+        return new DefaultPagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
     }
 
     @Bean
