@@ -52,7 +52,7 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
         List<MenuItem> allMenuItems = pagedScreenSetup.getAllMenuItems();
         int page = pagedScreenSetup.getPage();
-        screenBuilder.withScreenBlock(getMenuGroupForCurrentPage(allMenuItems, page, pagedScreenSetup.getPageSize()));
+        screenBuilder.withScreenBlock(getMenuGroupForCurrentPage(allMenuItems, page, pagedScreenSetup.getPageSize(), pagedScreenSetup.getMenuItemElide()));
 
         if(hasNextPage(allMenuItems.size(), page, pagedScreenSetup.getPageSize())) {
             screenBuilder.withScreenBlock(pagedScreenSetup.getNextPageMenuItem());
@@ -75,8 +75,10 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
         decrementPageIndex(extendedState);
     }
 
-    private MenuGroup getMenuGroupForCurrentPage(List<MenuItem> allItems, int pageIndex, int pageSize) {
+    private MenuGroup getMenuGroupForCurrentPage(List<MenuItem> allItems, int pageIndex, int pageSize, TextElide elide) {
         MenuGroup.Builder builder = MenuGroup.builder();
+        builder.withElide(elide);
+
         int startIndex = pageSize * pageIndex;
         for(int i=startIndex; i<startIndex + pageSize; ++i) {
             if(i < allItems.size()) {

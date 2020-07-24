@@ -71,6 +71,7 @@ public class MenuGroup implements ScreenBlock {
 
     public static class Builder {
         private List<MenuItem> menuItems = new ArrayList<>();
+        private TextElide elide = new TextElide();
 
         public Builder withMenuItem(MenuItem menuItem) {
             menuItems.add(menuItem);
@@ -87,8 +88,13 @@ public class MenuGroup implements ScreenBlock {
             return this;
         }
 
+        public Builder withElide(TextElide elide) {
+            this.elide = elide;
+            return this;
+        }
+
         public MenuGroup build() {
-            return new MenuGroup(menuItems);
+            return new MenuGroup(menuItems, elide);
         }
     }
 

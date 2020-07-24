@@ -30,15 +30,20 @@ public class PagedScreenSetup {
     private final ScreenBlock footerBlock;
     private final int pageSize;
     private int page;
+    private final TextElide menuItemElide;
 
-
-    public PagedScreenSetup(List<MenuItem> allMenuItems, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
+    public PagedScreenSetup(List<MenuItem> allMenuItems, TextElide menuItemElide, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
         this.allMenuItems = allMenuItems;
+        this.menuItemElide = menuItemElide;
         this.nextPageMenuItem = nextPageMenuItem;
         this.previousPageMenuItem = previousPageMenuItem;
         this.headerBlock = headerBlock;
         this.footerBlock = footerBlock;
         this.pageSize = pageSize;
+    }
+
+    public PagedScreenSetup(List<MenuItem> allMenuItems, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
+        this(allMenuItems, new TextElide(), nextPageMenuItem, previousPageMenuItem, headerBlock, footerBlock, pageSize);
     }
 
     public List<MenuItem> getAllMenuItems() {
@@ -71,5 +76,9 @@ public class PagedScreenSetup {
 
     public void setPage(int page) {
         this.page = page;
+    }
+
+    public TextElide getMenuItemElide() {
+        return menuItemElide;
     }
 }

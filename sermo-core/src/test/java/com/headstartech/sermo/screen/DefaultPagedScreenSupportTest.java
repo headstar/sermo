@@ -31,16 +31,16 @@ public class DefaultPagedScreenSupportTest {
     public void canRenderPagedScreen () {
         // given
         String expectedPage1 = "Accounts\n" +
-                "1. Account A\n" +
-                "2. Account B\n" +
+                "1. Account A...\n" +
+                "2. Account B...\n" +
                 "0 Next page\n";
         String expectedPage2 = "Accounts\n" +
-                "1. Account C\n" +
-                "2. Account D\n" +
+                "1. Account C...\n" +
+                "2. Account D...\n" +
                 "0 Next page\n" +
                 "# Previous page\n";
         String expectedPage3 = "Accounts\n" +
-                "1. Account E\n" +
+                "1. Account E...\n" +
                 "# Previous page\n";
 
         PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
@@ -54,16 +54,17 @@ public class DefaultPagedScreenSupportTest {
         String itemD = "D";
         String itemE = "E";
         List<MenuItem> items = new ArrayList<>();
-        items.add(new MenuItem("Account A", transationId, itemA));
-        items.add(new MenuItem("Account B", transationId, itemB));
-        items.add(new MenuItem("Account C", transationId, itemC));
-        items.add(new MenuItem("Account D", transationId, itemD));
-        items.add(new MenuItem("Account E", transationId, itemE));
+        items.add(new MenuItem("Account A12345", transationId, itemA));
+        items.add(new MenuItem("Account B12345", transationId, itemB));
+        items.add(new MenuItem("Account C12345", transationId, itemC));
+        items.add(new MenuItem("Account D12345", transationId, itemD));
+        items.add(new MenuItem("Account E12345", transationId, itemE));
 
         Text headerBlock = new Text("Accounts");
         NextPageMenuItem nextPageMenuItem = new NextPageMenuItem("0", "Next page");
         PreviousPageMenuItem previousPageMenuItem = new PreviousPageMenuItem("#", "Previous page");
-        PagedScreenSetup pagedScreenSetup = new PagedScreenSetup(items, nextPageMenuItem, previousPageMenuItem, headerBlock, null, pageSize);
+        TextElide elide = new TextElide(TextElide.Mode.RIGHT, 15);
+        PagedScreenSetup pagedScreenSetup = new PagedScreenSetup(items, elide, nextPageMenuItem, previousPageMenuItem, headerBlock, null, pageSize);
 
         pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
 
