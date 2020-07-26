@@ -6,7 +6,7 @@ public class OnItemHandlers {
 
     private OnItemHandlers() {}
 
-    public static Object setVariable(Object key, Object value) {
+    public static Object setExtendedStateVariable(Object key, Object value) {
         return new SetVariableItemHandler(key, value);
     }
 

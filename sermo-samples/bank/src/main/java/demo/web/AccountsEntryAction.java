@@ -19,7 +19,7 @@ public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, Subs
 
         List<MenuItem> items = getAccountDetailsDTOs().stream()
                 .map(e -> new MenuItem(e.getAccountId(), Transitions.ACCOUNT_DETAIL,
-                        OnItemHandlers.setVariable(Constants.ACCOUNT_DATA_KEY, e))
+                        OnItemHandlers.setExtendedStateVariable(Constants.ACCOUNT_DATA_KEY, e))
                 )
                 .collect(Collectors.toList());
 
