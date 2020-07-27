@@ -64,6 +64,7 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
             dialogEventResult = handleEvent(stateMachine, event);
         } catch(Exception e) {
             exceptionThrown = toSermoDialogException(e);
+            throw exceptionThrown;
         } finally {
             try {
                 if (stateMachine != null) {
