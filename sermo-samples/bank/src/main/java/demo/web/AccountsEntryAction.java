@@ -17,9 +17,12 @@ public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, Subs
     @Override
     protected PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
 
+        context.getExtendedState().getVariables().put(Constants.ACCOUNT_DATA_KEY, new AccountData());
+
         List<MenuItem> items = getAccountDetailsDTOs().stream()
-                .map(e -> new MenuItem(e.getAccountId(), Transitions.ACCOUNT_DETAIL,
-                        OnItemHandlers.setExtendedStateVariable(Constants.ACCOUNT_DATA_KEY, e))
+                .map(accountDetailDTO -> new MenuItem(accountDetailDTO.getAccountId(), Transitions.ACCOUNT_DETAIL,
+                        OnItemHandlers.modifyExtendedStateVariable(Constants.ACCOUNT_DATA_KEY, AccountData.class,
+                                (accountData) ->  accountData.setAccountDetailsDTO(accountDetailDTO)))
                 )
                 .collect(Collectors.toList());
 

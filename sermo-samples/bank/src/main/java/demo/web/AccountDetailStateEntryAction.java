@@ -15,7 +15,8 @@ public class AccountDetailStateEntryAction implements Action<States, SubscriberE
 
     @Override
     public void execute(StateContext<States, SubscriberEvent> context) {
-        AccountDetailsDTO accountDetailsDTO = (AccountDetailsDTO) context.getExtendedState().getVariables().remove(Constants.ACCOUNT_DATA_KEY);
+        AccountData accountData = context.getExtendedState().get(Constants.ACCOUNT_DATA_KEY, AccountData.class);
+        AccountDetailsDTO accountDetailsDTO = accountData.getAccountDetailsDTO();
 
         Screen.Builder screenBuilder =  Screen.builder();
 
