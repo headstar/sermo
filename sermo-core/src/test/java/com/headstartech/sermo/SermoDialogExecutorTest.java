@@ -3,6 +3,8 @@ package com.headstartech.sermo;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.states.USSDState;
+import com.headstartech.sermo.support.DefaultSermoStateMachineService;
+import com.headstartech.sermo.support.SermoStateMachineService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -14,14 +16,18 @@ import org.springframework.statemachine.guard.Guard;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 public class SermoDialogExecutorTest {
 
     @Test
-    public void throwsExceptionWhenActionThrows() throws Exception {
+    public void applyEventThrowsWhenActionThrows() throws Exception {
         // given
         StateMachineFactory<States, DialogEvent> stateMachineFactory = createStateMachine();
-        SermoDialogExecutor<States, DialogEvent> dialogExecutor = new SermoDialogExecutor<States, DialogEvent>(stateMachineFactory, createCachePersist());
+        CachePersist<States, DialogEvent> cachePersist = Mockito.spy(createCachePersist());
+        SermoStateMachineService<States, DialogEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
+
+        SermoDialogExecutor<States, DialogEvent> dialogExecutor = new SermoDialogExecutor<States, DialogEvent>(sermoStateMachineService);
 
         // when
         try {
@@ -31,6 +37,8 @@ public class SermoDialogExecutorTest {
             // then
             assertTrue(e instanceof SermoDialogException);
             assertTrue(e.getCause() instanceof TestException);
+
+            verify(cachePersist).delete("session1");
         }
 
     }
