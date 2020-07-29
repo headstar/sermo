@@ -8,11 +8,11 @@ public class OnItemHandlers {
 
     private OnItemHandlers() {}
 
-    public static Object setExtendedStateVariable(Object key, Object value) {
+    public static OnItemHandler setExtendedStateVariable(Object key, Object value) {
         return new SetVariableItemHandler(key, value);
     }
 
-    public static <T> Object modifyExtendedStateVariable(Object key, Class<T> clazz, Consumer<T> consumer) {
+    public static <T> OnItemHandler modifyExtendedStateVariable(Object key, Class<T> clazz, Consumer<T> consumer) {
         return new ModifyingVariableItemHandler<>(key, clazz, consumer);
     }
 
