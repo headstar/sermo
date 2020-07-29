@@ -2,6 +2,8 @@ package demo.web;
 
 import com.headstartech.sermo.DialogEventResult;
 import com.headstartech.sermo.SermoDialogExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @Controller
 public class SermoController {
+
+    private static final Logger log = LoggerFactory.getLogger(SermoController.class);
 
     @Autowired
     private SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor;
@@ -41,6 +45,7 @@ public class SermoController {
                 model.addAttribute("msisdn", msisdn);
             }
         } catch (Exception e) {
+            log.warn("Dialog threw exception", e);
             model.addAttribute("screen","An internal error occured.\nPlease try again later!");
         }
 

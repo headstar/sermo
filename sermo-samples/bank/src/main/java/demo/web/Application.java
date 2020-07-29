@@ -3,6 +3,7 @@ package demo.web;
 import com.headstartech.sermo.SermoDialogExecutor;
 import com.headstartech.sermo.SermoMetricsConfiguration;
 import com.headstartech.sermo.persist.CachePersist;
+import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.statemachine.StateMachinePersist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +35,8 @@ public class Application {
     private static final String statementShortCode = "*8444*11#";
 
     @Bean
-    public CachePersist<States, SubscriberEvent> stateMachinePersist() {
-        return new CachePersist<>(new ConcurrentMapCache("bank"));
+    public KryoCachePersist<States, SubscriberEvent> stateMachinePersist() {
+        return new KryoCachePersist<>(new ConcurrentMapCache("bank"));
     }
 
     @Bean
@@ -73,8 +75,7 @@ public class Application {
     }
 
     @Bean
-    public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(CachePersist<States, SubscriberEvent> cachePersist,
-                                                                       Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
+    public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(StateMachinePersist<States, SubscriberEvent, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter, Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
         SermoStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineFactoryBuilder.builder(SubscriberEvent.class);
         
@@ -84,7 +85,7 @@ public class Application {
         builder.withInitialTransition(States.ROOT, new RegExpTransitionGuard<>(Pattern.compile(Pattern.quote(mainMenuShortCode))));
         builder.withInitialTransition(States.STATEMENT, new RegExpTransitionGuard<>(Pattern.compile(Pattern.quote(statementShortCode))));
 
-        builder.withLoggingListener();
+        //builder.withLoggingListener();
 
         builder.withScreenTransition(States.ROOT, States.ACCOUNTS, Transitions.ACCOUNTS);
         builder.withScreenTransition(States.ACCOUNTS, States.ACCOUNT_DETAILS, Transitions.ACCOUNT_DETAIL);
@@ -100,7 +101,7 @@ public class Application {
 
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, Arrays.asList(new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false)));
 
-        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), cachePersist);
+        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), stateMachinePersist, stateMachineDeleter);
         sermoDialogExecutor.register(new MDCSermoDialogListener<>());
         return sermoDialogExecutor;
     }
