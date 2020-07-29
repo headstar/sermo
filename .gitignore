@@ -1,4 +1,5 @@
 .gradle
+.attach_pid*
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 
