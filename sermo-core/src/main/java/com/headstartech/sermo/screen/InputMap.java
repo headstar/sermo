@@ -30,6 +30,10 @@ public class InputMap {
     private final Map<String, Object> inputTransitionMap;
     private final Map<String, Object> inputItemDataMap;
 
+    public InputMap() {
+        this(Collections.emptyMap(), Collections.emptyMap());
+    }
+
     private InputMap(Map<String, Object> inputTransitionMap, Map<String, Object> inputItemDataMap) {
         this.inputTransitionMap = inputTransitionMap;
         this.inputItemDataMap = inputItemDataMap;
