@@ -168,7 +168,7 @@ public class SermoStateMachineFactoryBuilder {
             externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(from)
-                    .target(to)
+                    .target(from)
                     .event(eventToken)
                     .guard(new PredicateInputGuard<>(inputValid.negate()));
 
