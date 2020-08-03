@@ -1,7 +1,6 @@
 package demo.web;
 
 import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SermoMetricsConfiguration;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
@@ -14,7 +13,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +71,17 @@ public class Application {
     }
 
     @Bean
+    public USSDState<States, SubscriberEvent> interestMenu() {
+        return new USSDState<>(States.INTEREST_RATE, new InterestEntryAction());
+    }
+
+    @Bean
+    public USSDState<States, SubscriberEvent> interestRateOfffeMenu() {
+        return new USSDState<>(States.INTEREST_RATE_OFFER, new InterestOfferEntryAction());
+    }
+
+
+    @Bean
     public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(CachePersist<States, SubscriberEvent> cachePersist,
                                                                        Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
@@ -96,9 +105,13 @@ public class Application {
         builder.withScreenTransition(States.STATEMENT, States.ROOT, Transitions.ROOT);
         builder.withScreenTransition(States.STATEMENT_MONTHLY, States.ROOT, Transitions.ROOT);
         builder.withScreenTransition(States.STATEMENT_ANNUAL, States.ROOT, Transitions.ROOT);
+        builder.withScreenTransition(States.ROOT, States.INTEREST_RATE, Transitions.INTEREST);
 
 
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, Arrays.asList(new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false)));
+
+        builder.withFormInputTransition(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenPredicate());
+        builder.withScreenTransition(States.INTEREST_RATE_OFFER, States.ROOT, Transitions.ROOT);
 
         SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), cachePersist);
         sermoDialogExecutor.register(new MDCSermoDialogListener<>());
