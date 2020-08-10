@@ -17,7 +17,6 @@
 package com.headstartech.sermo.states;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.statemachine.actions.DefaultMenuScreenExitAction;
 import org.springframework.statemachine.action.Action;
 
 import java.util.*;
@@ -26,27 +25,25 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class USSDState<S, E extends DialogEvent> {
+public class DefaultUSSDState<S, E extends DialogEvent> {
 
     private final S id;
     private final List<Action<S, E>> entryActions;
     private final List<Action<S, E>> exitActions;
 
 
-    public USSDState(S id, Action<S, E> entryAction) {
+    public DefaultUSSDState(S id, Action<S, E> entryAction) {
         this(id, entryAction, null);
     }
 
-    public USSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
+    public DefaultUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
         this(id, Collections.singletonList(entryAction), Collections.singletonList(exitAction));
     }
 
-    public USSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
+    public DefaultUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
         this.id = id;
         this.entryActions = new ArrayList<>(entryActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
         this.exitActions = new ArrayList<>(exitActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
-
-        addDefaultActions();
     }
 
     public S getId() {
@@ -61,7 +58,30 @@ public class USSDState<S, E extends DialogEvent> {
         return exitActions;
     }
 
-    protected void addDefaultActions() {
-        exitActions.add(new DefaultMenuScreenExitAction<>());
+    public static class Builder<S, E extends DialogEvent> {
+        private final S id;
+        private final List<Action<S, E>> entryActions;
+        private final List<Action<S, E>> exitActions;
+
+        public Builder(S id) {
+            this.id = id;
+            this.entryActions = new ArrayList<>();
+            this.exitActions = new ArrayList<>();
+        }
+
+        public Builder<S, E> addEntryAction(Action<S, E> action) {
+            entryActions.add(action);
+            return this;
+        }
+
+        public Builder<S, E> addExitAction(Action<S, E> action) {
+            exitActions.add(action);
+            return this;
+        }
+
+        public DefaultUSSDState<S, E> build() {
+            return new DefaultUSSDState<>(id, entryActions, exitActions);
+        }
     }
+
 }

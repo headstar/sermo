@@ -4,7 +4,7 @@ import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.states.USSDEndState;
-import com.headstartech.sermo.states.USSDState;
+import com.headstartech.sermo.states.DefaultUSSDState;
 import com.headstartech.sermo.support.DefaultSermoStateMachineService;
 import com.headstartech.sermo.support.SermoStateMachineService;
 import org.junit.jupiter.api.Test;
@@ -111,12 +111,12 @@ public class SermoDialogExecutorTest {
         return new CachePersist<>(new ConcurrentMapCache("cache"));
     }
 
-    private USSDState<States, DialogEvent> createState(States state, Action<States, DialogEvent> action) {
-        return new USSDState<>(state, action);
+    private DefaultUSSDState<States, DialogEvent> createState(States state, Action<States, DialogEvent> action) {
+        return new DefaultUSSDState<>(state, action);
     }
 
 
-    private USSDState<States, DialogEvent> createEndState(States state, Action<States, DialogEvent> action) {
+    private DefaultUSSDState<States, DialogEvent> createEndState(States state, Action<States, DialogEvent> action) {
         return new USSDEndState<>(state, action);
     }
 

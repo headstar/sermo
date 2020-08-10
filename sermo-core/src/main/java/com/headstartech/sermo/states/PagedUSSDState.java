@@ -26,7 +26,7 @@ import java.util.Collection;
  * TODO: remove! (replaced by IPagedUSSDState
  * @author Per Johansson
  */
-public class PagedUSSDState<S, E extends DialogEvent> extends USSDState<S, E> implements IPagedUSSDState<S, E> {
+public class PagedUSSDState<S, E extends DialogEvent> extends DefaultUSSDState<S, E> implements IPagedUSSDState<S, E> {
 
     public PagedUSSDState(S id, Action<S, E> entryAction) {
         super(id, entryAction);

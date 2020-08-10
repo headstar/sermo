@@ -23,7 +23,7 @@ import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.IPagedUSSDState;
 import com.headstartech.sermo.states.USSDEndState;
-import com.headstartech.sermo.states.USSDState;
+import com.headstartech.sermo.states.DefaultUSSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
@@ -91,14 +91,14 @@ public class SermoStateMachineFactoryBuilder {
             return this;
         }
 
-        public Builder<S, E> withStates(Collection<USSDState<S, E>> states) throws Exception {
-            for (USSDState<S, E> state : states) {
+        public Builder<S, E> withStates(Collection<DefaultUSSDState<S, E>> states) throws Exception {
+            for (DefaultUSSDState<S, E> state : states) {
                 withState(state);
             }
             return this;
         }
 
-        public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
+        public Builder<S, E> withState(DefaultUSSDState<S, E> state) throws Exception {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
             if (state instanceof IPagedUSSDState) {

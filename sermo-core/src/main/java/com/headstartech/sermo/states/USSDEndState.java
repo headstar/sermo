@@ -25,7 +25,7 @@ import java.util.Collections;
 /**
  * @author Per Johansson
  */
-public class USSDEndState<S, E extends DialogEvent> extends USSDState<S, E> {
+public class USSDEndState<S, E extends DialogEvent> extends DefaultUSSDState<S, E> {
 
     public USSDEndState(S id) { this(id, Collections.emptyList());}
 
