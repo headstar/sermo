@@ -25,43 +25,64 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class DefaultUSSDState<S, E extends DialogEvent> {
+public class DefaultUSSDState<S, E extends DialogEvent> implements USSDState<S, E> {
 
     private final S id;
     private final List<Action<S, E>> entryActions;
     private final List<Action<S, E>> exitActions;
+    private final boolean end;
 
-
-    public DefaultUSSDState(S id, Action<S, E> entryAction) {
-        this(id, entryAction, null);
+    public DefaultUSSDState(S id, List<Action<S, E>> entryActions, List<Action<S, E>> exitActions, boolean end) {
+        this.id = id;
+        this.entryActions = entryActions;
+        this.exitActions = exitActions;
+        this.end = end;
     }
 
-    public DefaultUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
-        this(id, Collections.singletonList(entryAction), Collections.singletonList(exitAction));
+    public DefaultUSSDState(S id, Action<S, E> entryAction, boolean end) {
+        this(id, entryAction, null, end);
     }
 
-    public DefaultUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
+    public DefaultUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction, boolean end) {
+        this(id, Collections.singletonList(entryAction), Collections.singletonList(exitAction), end);
+    }
+
+    public DefaultUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions, boolean end) {
         this.id = id;
         this.entryActions = new ArrayList<>(entryActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
         this.exitActions = new ArrayList<>(exitActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
+        this.end = end;
     }
 
+    @Override
     public S getId() {
         return id;
     }
 
+    @Override
     public Collection<Action<S, E>> getEntryActions() {
         return entryActions;
     }
 
+    @Override
     public Collection<Action<S, E>> getExitActions() {
         return exitActions;
+    }
+
+    @Override
+    public boolean isEnd() {
+        return end;
+    }
+
+    public static <S, E extends DialogEvent> Builder<S, E> builder(S id) {
+        return new Builder<>(id);
     }
 
     public static class Builder<S, E extends DialogEvent> {
         private final S id;
         private final List<Action<S, E>> entryActions;
         private final List<Action<S, E>> exitActions;
+        private boolean end = false;
 
         public Builder(S id) {
             this.id = id;
@@ -69,18 +90,23 @@ public class DefaultUSSDState<S, E extends DialogEvent> {
             this.exitActions = new ArrayList<>();
         }
 
-        public Builder<S, E> addEntryAction(Action<S, E> action) {
+        public Builder<S, E> withEntryAction(Action<S, E> action) {
             entryActions.add(action);
             return this;
         }
 
-        public Builder<S, E> addExitAction(Action<S, E> action) {
+        public Builder<S, E> withExitAction(Action<S, E> action) {
             exitActions.add(action);
             return this;
         }
 
+        public Builder<S, E> withEnd(boolean end) {
+            this.end = end;
+            return this;
+        }
+
         public DefaultUSSDState<S, E> build() {
-            return new DefaultUSSDState<>(id, entryActions, exitActions);
+            return new DefaultUSSDState<>(id, entryActions, exitActions, end);
         }
     }
 

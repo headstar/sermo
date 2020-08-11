@@ -5,9 +5,8 @@ import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
-import com.headstartech.sermo.states.DefaultPagedUSSDState;
-import com.headstartech.sermo.states.USSDEndState;
-import com.headstartech.sermo.states.DefaultUSSDState;
+import com.headstartech.sermo.states.USSDState;
+import com.headstartech.sermo.states.USSDStates;
 import com.headstartech.sermo.support.MDCSermoDialogListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,54 +35,54 @@ public class Application {
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> rootMenu() {
-        return new DefaultUSSDState<>(States.ROOT, new RootEntryAction());
+    public USSDState<States, SubscriberEvent> rootMenu() {
+        return USSDStates.menuInputState(States.ROOT, new RootEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> accountsMenu() {
-        return new DefaultPagedUSSDState<>(States.ACCOUNTS, new AccountsEntryAction());
+    public USSDState<States, SubscriberEvent> accountsMenu() {
+        return USSDStates.pagedMenuInputState(States.ACCOUNTS, new AccountsEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> statementsMenu() {
-        return new DefaultUSSDState<>(States.STATEMENT, new StatementEntryAction());
+    public USSDState<States, SubscriberEvent> statementsMenu() {
+        return USSDStates.menuInputState(States.STATEMENT, new StatementEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> statementsMonthlyMenu() {
-        return new DefaultUSSDState<>(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
+    public USSDState<States, SubscriberEvent> statementsMonthlyMenu() {
+        return USSDStates.menuInputState(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> statementsAnnualMenu() {
-        return new DefaultUSSDState<>(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
+    public USSDState<States, SubscriberEvent> statementsAnnualMenu() {
+        return USSDStates.menuInputState(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> accountsDetailMenu() {
-        return new DefaultUSSDState<>(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
+    public USSDState<States, SubscriberEvent> accountsDetailMenu() {
+        return USSDStates.menuInputState(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> endMenu() {
-        return new USSDEndState<>(States.END);
+    public USSDState<States, SubscriberEvent> endMenu() {
+        return USSDStates.endState(States.END);
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> interestMenu() {
-        return new DefaultUSSDState<>(States.INTEREST_RATE, new InterestEntryAction());
+    public USSDState<States, SubscriberEvent> interestMenu() {
+        return USSDStates.menuInputState(States.INTEREST_RATE, new InterestEntryAction());
     }
 
     @Bean
-    public DefaultUSSDState<States, SubscriberEvent> interestRateOfffeMenu() {
-        return new DefaultUSSDState<>(States.INTEREST_RATE_OFFER, new InterestOfferEntryAction());
+    public USSDState<States, SubscriberEvent> interestRateOfffeMenu() {
+        return USSDStates.menuInputState(States.INTEREST_RATE_OFFER, new InterestOfferEntryAction());
     }
 
 
     @Bean
     public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(CachePersist<States, SubscriberEvent> cachePersist,
-                                                                       Collection<DefaultUSSDState<States, SubscriberEvent>> states) throws Exception {
+                                                                       Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
         SermoStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineFactoryBuilder.builder(SubscriberEvent.class);
         

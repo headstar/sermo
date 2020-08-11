@@ -29,15 +29,15 @@ import java.util.Collection;
 public class PagedUSSDState<S, E extends DialogEvent> extends DefaultUSSDState<S, E> implements IPagedUSSDState<S, E> {
 
     public PagedUSSDState(S id, Action<S, E> entryAction) {
-        super(id, entryAction);
+        super(id, entryAction, false);
     }
 
     public PagedUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
-        super(id, entryAction, exitAction);
+        super(id, entryAction, exitAction, false);
     }
 
     public PagedUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
-        super(id, entryActions, exitActions);
+        super(id, entryActions, exitActions, false);
     }
 
     @Override
