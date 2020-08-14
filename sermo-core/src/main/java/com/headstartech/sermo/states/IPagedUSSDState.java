@@ -11,7 +11,7 @@ import org.springframework.statemachine.action.Action;
  * @param <S>
  * @param <E>
  */
-public interface IPagedUSSDState<S, E extends DialogEvent> {
+public interface IPagedUSSDState<S, E extends DialogEvent> extends USSDState<S, E> {
 
     Action<S, E> toNextOrToPreviousPageAction();
 }
