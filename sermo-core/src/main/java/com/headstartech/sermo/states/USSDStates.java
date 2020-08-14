@@ -45,6 +45,9 @@ public class USSDStates {
     }
 
     public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, Action<S, E> entryAction) {
-        return new XPagedUSSDState<>(id, entryAction, new ItemHandlerExitAction<>(), new PagedMenuScreenInternalAction<>());
+        DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
+        builder.withEntryAction(entryAction);
+        builder.withExitAction(new ItemHandlerExitAction<>());
+        return new XPagedUSSDState<>(builder.build(), new PagedMenuScreenInternalAction<>());
     }
 }

@@ -19,20 +19,43 @@ package com.headstartech.sermo.states;
 import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.action.Action;
 
+import java.util.Collection;
+
 /**
  * @author Per Johansson
  */
-public class XPagedUSSDState<S, E extends DialogEvent> extends DefaultUSSDState<S, E> implements IPagedUSSDState<S, E> {
+public class XPagedUSSDState<S, E extends DialogEvent>  implements IPagedUSSDState<S, E> {
 
-    private final Action<S, E> internalAction;
+    private final USSDState<S, E> ussdState;
+    private final Action<S, E> internalPageAction;
 
-    public XPagedUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction, Action<S, E> internalAction) {
-        super(id, entryAction, exitAction, false);
-        this.internalAction = internalAction;
+    public XPagedUSSDState(USSDState<S, E> ussdState, Action<S, E> internalPageAction) {
+        this.ussdState = ussdState;
+        this.internalPageAction = internalPageAction;
+    }
+
+    @Override
+    public S getId() {
+        return ussdState.getId();
+    }
+
+    @Override
+    public Collection<Action<S, E>> getEntryActions() {
+        return ussdState.getEntryActions();
+    }
+
+    @Override
+    public Collection<Action<S, E>> getExitActions() {
+        return ussdState.getExitActions();
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
     }
 
     @Override
     public Action<S, E> toNextOrToPreviousPageAction() {
-        return internalAction;
+        return internalPageAction;
     }
 }
