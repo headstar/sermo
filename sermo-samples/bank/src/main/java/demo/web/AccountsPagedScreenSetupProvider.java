@@ -1,22 +1,18 @@
 package demo.web;
 
-import com.headstartech.sermo.statemachine.actions.OnItemHandlers;
-import com.headstartech.sermo.statemachine.actions.PagedMenuScreenEntryAction;
 import com.headstartech.sermo.screen.*;
+import com.headstartech.sermo.statemachine.actions.OnItemHandlers;
+import com.headstartech.sermo.statemachine.actions.PagedScreenSetupProvider;
 import org.springframework.statemachine.StateContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Per Johansson
- */
-public class AccountsEntryAction extends PagedMenuScreenEntryAction<States, SubscriberEvent> {
+public class AccountsPagedScreenSetupProvider implements PagedScreenSetupProvider<States, SubscriberEvent> {
 
     @Override
-    protected PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
-
+    public PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
         context.getExtendedState().getVariables().put(Constants.ACCOUNT_DATA_KEY, new AccountData());
 
         List<MenuItem> items = getAccountDetailsDTOs().stream()

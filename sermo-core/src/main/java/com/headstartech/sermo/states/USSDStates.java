@@ -2,8 +2,12 @@ package com.headstartech.sermo.states;
 
 
 import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
+import com.headstartech.sermo.screen.PagedScreenSupport;
 import com.headstartech.sermo.statemachine.actions.ItemHandlerExitAction;
+import com.headstartech.sermo.statemachine.actions.PagedMenuScreenEntryAction;
 import com.headstartech.sermo.statemachine.actions.PagedMenuScreenInternalAction;
+import com.headstartech.sermo.statemachine.actions.PagedScreenSetupProvider;
 import org.springframework.statemachine.action.Action;
 
 /**
@@ -44,10 +48,15 @@ public class USSDStates {
         return builder.build();
     }
 
-    public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, Action<S, E> entryAction) {
+    public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
+        return pagedMenuInputState(id, pagedScreenSetupProvider, new DefaultPagedScreenSupport());
+    }
+
+    public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
-        builder.withEntryAction(entryAction);
+        builder.withEntryAction(new PagedMenuScreenEntryAction<>(pagedScreenSetupProvider, pagedScreenSupport));
         builder.withExitAction(new ItemHandlerExitAction<>());
         return new XPagedUSSDState<>(builder.build(), new PagedMenuScreenInternalAction<>());
     }
+
 }
