@@ -25,7 +25,6 @@ import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
@@ -115,10 +114,10 @@ public class SermoStateMachineFactoryBuilder {
         }
 
         public Builder<S, E> withChoice(S s, S defaultTarget, Collection<ChoiceOption<S, E>> options) throws Exception {
-           return withChoice(s, new ChoiceOption<>(defaultTarget, null), options);
+           return withChoice(s, new DefaultChoiceOption<>(defaultTarget), options);
         }
 
-        public Builder<S, E> withChoice(S s, ChoiceOption<S, E> defaultOption, Collection<ChoiceOption<S, E>> options) throws Exception {
+        public Builder<S, E> withChoice(S s, DefaultChoiceOption<S, E> defaultOption, Collection<ChoiceOption<S, E>> options) throws Exception {
             stateConfigurer.choice(s);
             ChoiceTransitionConfigurer<S, E> choiceTransitionConfigurer = transitionConfigurer.withChoice();
             choiceTransitionConfigurer.source(s);
