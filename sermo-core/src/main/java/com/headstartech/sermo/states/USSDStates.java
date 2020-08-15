@@ -19,15 +19,15 @@ public class USSDStates {
     private USSDStates() {
     }
 
-    public static <S, E extends DialogEvent> USSDState<S, E> menuInputState(S id, Action<S, E> entryAction) {
+    public static <S, E extends DialogEvent> USSDState<S, E> menuState(S id, Action<S, E> entryAction) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(entryAction);
         builder.withExitAction(new ItemHandlerExitAction<>());
         return builder.build();
     }
 
-    public static <S, E extends DialogEvent> USSDState<S, E> menuInputState(S id, Action<S, E> entryAction,
-                                                                                  Action<S, E> exitAction) {
+    public static <S, E extends DialogEvent> USSDState<S, E> menuState(S id, Action<S, E> entryAction,
+                                                                       Action<S, E> exitAction) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(entryAction);
         builder.withExitAction(new ItemHandlerExitAction<>());
@@ -48,11 +48,11 @@ public class USSDStates {
         return builder.build();
     }
 
-    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
-        return pagedMenuInputState(id, pagedScreenSetupProvider, new DefaultPagedScreenSupport());
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
+        return pagedMenuState(id, pagedScreenSetupProvider, new DefaultPagedScreenSupport());
     }
 
-    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(new PagedMenuScreenEntryAction<>(pagedScreenSetupProvider, pagedScreenSupport));
         builder.withExitAction(new ItemHandlerExitAction<>());

@@ -113,7 +113,7 @@ public class SermoDialogExecutorTest {
     }
 
     private USSDState<States, DialogEvent> createState(States state, Action<States, DialogEvent> action) {
-        return USSDStates.menuInputState(state, action);
+        return USSDStates.menuState(state, action);
     }
 
 

@@ -36,32 +36,32 @@ public class Application {
 
     @Bean
     public USSDState<States, SubscriberEvent> rootMenu() {
-        return USSDStates.menuInputState(States.ROOT, new RootEntryAction());
+        return USSDStates.menuState(States.ROOT, new RootEntryAction());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> accountsMenu() {
-        return USSDStates.pagedMenuInputState(States.ACCOUNTS, new AccountsPagedScreenSetupProvider());
+        return USSDStates.pagedMenuState(States.ACCOUNTS, new AccountsPagedScreenSetupProvider());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> statementsMenu() {
-        return USSDStates.menuInputState(States.STATEMENT, new StatementEntryAction());
+        return USSDStates.menuState(States.STATEMENT, new StatementEntryAction());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> statementsMonthlyMenu() {
-        return USSDStates.menuInputState(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
+        return USSDStates.menuState(States.STATEMENT_MONTHLY, new StatementMonthlyEntryAction());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> statementsAnnualMenu() {
-        return USSDStates.menuInputState(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
+        return USSDStates.menuState(States.STATEMENT_ANNUAL, new StatementAnnualEntryAction());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> accountsDetailMenu() {
-        return USSDStates.menuInputState(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
+        return USSDStates.menuState(States.ACCOUNT_DETAILS, new AccountDetailStateEntryAction());
     }
 
     @Bean
@@ -71,12 +71,12 @@ public class Application {
 
     @Bean
     public USSDState<States, SubscriberEvent> interestMenu() {
-        return USSDStates.menuInputState(States.INTEREST_RATE, new InterestEntryAction());
+        return USSDStates.menuState(States.INTEREST_RATE, new InterestEntryAction());
     }
 
     @Bean
     public USSDState<States, SubscriberEvent> interestRateOfffeMenu() {
-        return USSDStates.menuInputState(States.INTEREST_RATE_OFFER, new InterestOfferEntryAction());
+        return USSDStates.menuState(States.INTEREST_RATE_OFFER, new InterestOfferEntryAction());
     }
 
 
