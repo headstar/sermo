@@ -48,15 +48,15 @@ public class USSDStates {
         return builder.build();
     }
 
-    public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
         return pagedMenuInputState(id, pagedScreenSetupProvider, new DefaultPagedScreenSupport());
     }
 
-    public static <S, E extends DialogEvent> IPagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuInputState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(new PagedMenuScreenEntryAction<>(pagedScreenSetupProvider, pagedScreenSupport));
         builder.withExitAction(new ItemHandlerExitAction<>());
-        return new XPagedUSSDState<>(builder.build(), new PagedMenuScreenInternalAction<>());
+        return new DefaultPagedUSSDState<>(builder.build(), new PagedMenuScreenInternalAction<>());
     }
 
 }

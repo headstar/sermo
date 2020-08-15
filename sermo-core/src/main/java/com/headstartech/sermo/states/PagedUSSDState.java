@@ -1,47 +1,16 @@
-/*
- *  Copyright 2020 the original author or authors.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package com.headstartech.sermo.states;
 
+
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.statemachine.actions.PagedMenuScreenInternalAction;
 import org.springframework.statemachine.action.Action;
 
-import java.util.Collection;
-
 /**
- * TODO: remove! (replaced by IPagedUSSDState
- * @author Per Johansson
+ * Interface for states supporting paging.
+ *
+ * @param <S>
+ * @param <E>
  */
-public class PagedUSSDState<S, E extends DialogEvent> extends DefaultUSSDState<S, E> implements IPagedUSSDState<S, E> {
+public interface PagedUSSDState<S, E extends DialogEvent> extends USSDState<S, E> {
 
-    public PagedUSSDState(S id, Action<S, E> entryAction) {
-        super(id, entryAction, false);
-    }
-
-    public PagedUSSDState(S id, Action<S, E> entryAction, Action<S, E> exitAction) {
-        super(id, entryAction, exitAction, false);
-    }
-
-    public PagedUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions) {
-        super(id, entryActions, exitActions, false);
-    }
-
-    @Override
-    public Action<S, E> toNextOrToPreviousPageAction() {
-        return new PagedMenuScreenInternalAction<>();
-    }
+    Action<S, E> toNextOrToPreviousPageAction();
 }

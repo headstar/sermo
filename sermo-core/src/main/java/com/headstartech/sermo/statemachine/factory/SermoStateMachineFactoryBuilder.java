@@ -21,7 +21,7 @@ import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.statemachine.LoggingStateMachineListener;
 import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
-import com.headstartech.sermo.states.IPagedUSSDState;
+import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,11 +100,11 @@ public class SermoStateMachineFactoryBuilder {
         public Builder<S, E> withState(USSDState<S, E> state) throws Exception {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
-            if (state instanceof IPagedUSSDState) {
+            if (state instanceof PagedUSSDState) {
                 // TODO: anyway to avoid using @SuppressWarnings ?
                 @SuppressWarnings("unchecked")
-                IPagedUSSDState<S,E> iPagedUSSDState = ((IPagedUSSDState<S, E>) state);
-                withPagedScreenTransitions(state.getId(), iPagedUSSDState.toNextOrToPreviousPageAction());
+                PagedUSSDState<S,E> pagedUSSDState = ((PagedUSSDState<S, E>) state);
+                withPagedScreenTransitions(state.getId(), pagedUSSDState.toNextOrToPreviousPageAction());
             }
 
             if(state.isEnd()) {

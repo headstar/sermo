@@ -17,20 +17,47 @@
 package com.headstartech.sermo.states;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.statemachine.actions.PagedMenuScreenInternalAction;
 import org.springframework.statemachine.action.Action;
 
+import java.util.Collection;
+
 /**
+ * Default implementation of {@link PagedUSSDState}.
+ *
  * @author Per Johansson
  */
-public class DefaultPagedUSSDState<S, E extends DialogEvent> extends DefaultInputUSSDState<S, E> implements IPagedUSSDState<S, E> {
+public class DefaultPagedUSSDState<S, E extends DialogEvent>  implements PagedUSSDState<S, E> {
 
-    public DefaultPagedUSSDState(S id, Action<S, E> entryAction) {
-        super(id, entryAction);
+    private final USSDState<S, E> ussdState;
+    private final Action<S, E> internalPageAction;
+
+    public DefaultPagedUSSDState(USSDState<S, E> ussdState, Action<S, E> internalPageAction) {
+        this.ussdState = ussdState;
+        this.internalPageAction = internalPageAction;
+    }
+
+    @Override
+    public S getId() {
+        return ussdState.getId();
+    }
+
+    @Override
+    public Collection<Action<S, E>> getEntryActions() {
+        return ussdState.getEntryActions();
+    }
+
+    @Override
+    public Collection<Action<S, E>> getExitActions() {
+        return ussdState.getExitActions();
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
     }
 
     @Override
     public Action<S, E> toNextOrToPreviousPageAction() {
-        return new PagedMenuScreenInternalAction<>();
+        return internalPageAction;
     }
 }
