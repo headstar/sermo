@@ -25,6 +25,7 @@ import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.action.Actions;
@@ -114,20 +115,28 @@ public class SermoStateMachineFactoryBuilder {
         }
 
         public Builder<S, E> withChoice(S s, S defaultTarget, Collection<ChoiceOption<S, E>> options) throws Exception {
+           return withChoice(s, new ChoiceOption<>(defaultTarget, null), options);
+        }
+
+        public Builder<S, E> withChoice(S s, ChoiceOption<S, E> defaultOption, Collection<ChoiceOption<S, E>> options) throws Exception {
             stateConfigurer.choice(s);
             ChoiceTransitionConfigurer<S, E> choiceTransitionConfigurer = transitionConfigurer.withChoice();
             choiceTransitionConfigurer.source(s);
             options.forEach(e -> {
                 if(e.getAction() != null) {
                     choiceTransitionConfigurer.then(e.getTarget(), e.getGuard(), wrapWithErrorActions(e.getAction()));
-                 } else {
+                } else {
                     choiceTransitionConfigurer.then(e.getTarget(), e.getGuard());
                 }
             });
-            choiceTransitionConfigurer.last(defaultTarget);
+            if(defaultOption.getAction() != null) {
+                choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorActions(defaultOption.getAction()));
+            } else {
+                choiceTransitionConfigurer.last(defaultOption.getTarget());
+            }
             return this;
         }
-        
+
         public Builder<S, E> withInitialTransition(S to, Guard<S,E> guard) throws Exception {
             return withInitialTransition(to, guard, null);
         }
