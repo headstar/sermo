@@ -26,14 +26,14 @@ public class MenuItem {
 
     private final String label;
     private final Object transitionId;
-    private final Object itemData;
+    private final Object itemObject;
 
-    public MenuItem(String label, Object transitionId, Object itemData) {
+    public MenuItem(String label, Object transitionId, Object itemObject) {
         Objects.requireNonNull(label, "label must be non-null");
         Objects.requireNonNull(transitionId, "transitionId must be non-null");
         this.transitionId = transitionId;
         this.label = label;
-        this.itemData = itemData;
+        this.itemObject = itemObject;
     }
 
     public MenuItem(String label, Object transitionId) {
@@ -48,8 +48,8 @@ public class MenuItem {
         return label;
     }
 
-    public Object getItemData() {
-        return itemData;
+    public Object getItemObject() {
+        return itemObject;
     }
 
     @Override
@@ -59,12 +59,12 @@ public class MenuItem {
         MenuItem menuItem = (MenuItem) o;
         return label.equals(menuItem.label) &&
                 transitionId.equals(menuItem.transitionId) &&
-                Objects.equals(itemData, menuItem.itemData);
+                Objects.equals(itemObject, menuItem.itemObject);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(label, transitionId, itemData);
+        return Objects.hash(label, transitionId, itemObject);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MenuItem {
         return new StringJoiner(", ", MenuItem.class.getSimpleName() + "[", "]")
                 .add("label='" + label + "'")
                 .add("transitionId=" + transitionId)
-                .add("itemData=" + itemData)
+                .add("itemObject=" + itemObject)
                 .toString();
     }
 }

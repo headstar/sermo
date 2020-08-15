@@ -33,14 +33,14 @@ public abstract class AbstractItemObjectExitAction<S, E extends DialogEvent> imp
 
     @Override
     public void execute(StateContext<S, E> context) {
-        transferItemData(context.getExtendedState(), context.getEvent());
+        handleEvent(context.getExtendedState(), context.getEvent());
         clearScreenInputMap(context.getExtendedState());
     }
 
-    protected void transferItemData(ExtendedState extendedState, DialogEvent event) {
+    protected void handleEvent(ExtendedState extendedState, DialogEvent event) {
         InputMap inputMap = ExtendedStateSupport.getScreenMenuInputMap(extendedState);
         if (inputMap != null) {
-            Optional<Object> itemObject = inputMap.getItemDataForInput(event.getInput());
+            Optional<Object> itemObject = inputMap.getItemObjectForInput(event.getInput());
             if(itemObject.isPresent()) {
                 handleItemObject(extendedState, itemObject.get());
             }

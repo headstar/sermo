@@ -64,7 +64,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
             String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
             sb.append(elidedRow);
             sb.append("\n");
-            inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemData());
+            inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemObject());
             ++i;
         }
     }
@@ -75,7 +75,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {
         sb.append(String.format("%s %s\n", staticMenuItem.getInput(), staticMenuItem.getLabel()));
-        inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemData());
+        inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemObject());
 
     }
 

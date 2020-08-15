@@ -28,19 +28,19 @@ import java.util.*;
 public class InputMap {
 
     private final Map<String, Object> inputTransitionMap;
-    private final Map<String, Object> inputItemDataMap;
+    private final Map<String, Object> inputItemObjectMap;
 
     public InputMap() {
         this(Collections.emptyMap(), Collections.emptyMap());
     }
 
-    private InputMap(Map<String, Object> inputTransitionMap, Map<String, Object> inputItemDataMap) {
+    private InputMap(Map<String, Object> inputTransitionMap, Map<String, Object> inputItemObjectMap) {
         this.inputTransitionMap = inputTransitionMap;
-        this.inputItemDataMap = inputItemDataMap;
+        this.inputItemObjectMap = inputItemObjectMap;
     }
 
-    public Optional<Object> getItemDataForInput(String input) {
-        return Optional.ofNullable(inputItemDataMap.get(input));
+    public Optional<Object> getItemObjectForInput(String input) {
+        return Optional.ofNullable(inputItemObjectMap.get(input));
     }
 
     public boolean hasTransitionForInput(Object transitionId, String input) {
@@ -61,19 +61,19 @@ public class InputMap {
         if (o == null || getClass() != o.getClass()) return false;
         InputMap inputMap = (InputMap) o;
         return inputTransitionMap.equals(inputMap.inputTransitionMap) &&
-                inputItemDataMap.equals(inputMap.inputItemDataMap);
+                inputItemObjectMap.equals(inputMap.inputItemObjectMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inputTransitionMap, inputItemDataMap);
+        return Objects.hash(inputTransitionMap, inputItemObjectMap);
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", InputMap.class.getSimpleName() + "[", "]")
                 .add("inputTransitionMap=" + inputTransitionMap)
-                .add("inputItemDataMap=" + inputItemDataMap)
+                .add("inputItemObjectMap=" + inputItemObjectMap)
                 .toString();
     }
 

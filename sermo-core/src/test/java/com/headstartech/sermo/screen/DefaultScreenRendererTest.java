@@ -81,7 +81,7 @@ public class DefaultScreenRendererTest {
         InputMap im  = srr.getInputMap();
         assertFalse(im.isEmpty());
         assertTrue(im.hasTransitionForInput(transitionId, input));
-        assertFalse(im.getItemDataForInput(input).isPresent());
+        assertFalse(im.getItemObjectForInput(input).isPresent());
     }
 
     @Test
@@ -110,12 +110,12 @@ public class DefaultScreenRendererTest {
         assertFalse(im.isEmpty());
 
         assertTrue(im.hasTransitionForInput(mi1.getTransition(), "1"));
-        assertTrue(im.getItemDataForInput("1").isPresent());
-        assertEquals("myItem1", im.getItemDataForInput("1").get());
+        assertTrue(im.getItemObjectForInput("1").isPresent());
+        assertEquals("myItem1", im.getItemObjectForInput("1").get());
 
         assertTrue(im.hasTransitionForInput(mi2.getTransition(), "2"));
-        assertTrue(im.getItemDataForInput("2").isPresent());
-        assertEquals("myItem2", im.getItemDataForInput("2").get());
+        assertTrue(im.getItemObjectForInput("2").isPresent());
+        assertEquals("myItem2", im.getItemObjectForInput("2").get());
     }
 
     @Test
@@ -145,12 +145,12 @@ public class DefaultScreenRendererTest {
         assertFalse(im.isEmpty());
 
         assertTrue(im.hasTransitionForInput(mi1.getTransition(), "1"));
-        assertTrue(im.getItemDataForInput("1").isPresent());
-        assertEquals("myItem1", im.getItemDataForInput("1").get());
+        assertTrue(im.getItemObjectForInput("1").isPresent());
+        assertEquals("myItem1", im.getItemObjectForInput("1").get());
 
         assertTrue(im.hasTransitionForInput(mi2.getTransition(), "2"));
-        assertTrue(im.getItemDataForInput("2").isPresent());
-        assertEquals("myItem2", im.getItemDataForInput("2").get());
+        assertTrue(im.getItemObjectForInput("2").isPresent());
+        assertEquals("myItem2", im.getItemObjectForInput("2").get());
     }
 
 }
