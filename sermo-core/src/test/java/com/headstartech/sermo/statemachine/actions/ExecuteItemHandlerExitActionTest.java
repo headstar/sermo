@@ -6,22 +6,19 @@ import com.headstartech.sermo.screen.InputMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
-import org.springframework.statemachine.support.DefaultExtendedState;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ItemHandlerExitActionTest {
+public class ExecuteItemHandlerExitActionTest {
 
     @Test
     public void throwsExceptionIfNotOnItemHandler() {
         // given
-        Action<String, DialogEvent> action = new ItemHandlerExitAction<>();
+        Action<String, DialogEvent> action = new ExecuteItemHandlerExitAction<>();
 
         InputMap inputMap = InputMap.builder().
                 addMapping("1", "tr1", new Object())
@@ -36,7 +33,7 @@ public class ItemHandlerExitActionTest {
     @Test
     public void callingItemHandler() {
         // given
-        Action<String, DialogEvent> action = new ItemHandlerExitAction<>();
+        Action<String, DialogEvent> action = new ExecuteItemHandlerExitAction<>();
 
         OnItemHandler onItemHandler = Mockito.mock(OnItemHandler.class);
 

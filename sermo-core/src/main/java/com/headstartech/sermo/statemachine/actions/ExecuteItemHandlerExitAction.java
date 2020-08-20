@@ -5,13 +5,13 @@ import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.action.Action;
 
 /**
- * Exit {@link Action} assuming the object associated with a {@link MenuItem} is an instance {@link OnItemHandler}.
+ * Exit {@link Action} assuming the object associated with a {@link com.headstartech.sermo.screen.MenuItem} is an instance of {@link OnItemHandler}.
  * The action calls {@link OnItemHandler#handle(ExtendedState)} 
  * 
  * @param <S>
  * @param <E>
  */
-public class ItemHandlerExitAction<S, E extends DialogEvent> extends AbstractItemObjectExitAction<S, E> {
+public class ExecuteItemHandlerExitAction<S, E extends DialogEvent> extends AbstractItemObjectExitAction<S, E> {
 
     @Override
     protected void handleItemObject(ExtendedState extendedState, Object itemObject) {
