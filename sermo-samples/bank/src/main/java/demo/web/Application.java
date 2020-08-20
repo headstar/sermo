@@ -41,7 +41,7 @@ public class Application {
 
     @Bean
     public USSDState<States, SubscriberEvent> accountsMenu() {
-        return USSDStates.pagedMenuState(States.ACCOUNTS, new AccountsPagedScreenSetupProvider());
+        return USSDStates.pagedMenuState(States.ACCOUNTS, new PagedAccountsSetupProvider());
     }
 
     @Bean

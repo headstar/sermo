@@ -21,9 +21,9 @@ import org.springframework.statemachine.ExtendedState;
 /**
  * @author Per Johansson
  */
-public interface PagedScreenSupport {
+public interface PagedMenuSupport {
 
-    void initializePagedScreen(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup);
+    void initializePagedScreen(ExtendedState extendedState, PagedMenuSetup pagedMenuSetup);
 
     Screen createScreen(ExtendedState extendedState);
 

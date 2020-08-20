@@ -18,7 +18,7 @@ package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.screen.InputMap;
-import com.headstartech.sermo.screen.PagedScreenSetup;
+import com.headstartech.sermo.screen.PagedMenuSetup;
 import com.headstartech.sermo.screen.Screen;
 import org.springframework.statemachine.ExtendedState;
 
@@ -55,12 +55,12 @@ public class ExtendedStateSupport {
         return Optional.empty();
     }
 
-    public static void setPagedScreenSetup(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
-        extendedState.getVariables().put(SermoSystemConstants.PAGED_SCREEN_KEY, pagedScreenSetup);
+    public static void setPagedMenuSetup(ExtendedState extendedState, PagedMenuSetup pagedMenuSetup) {
+        extendedState.getVariables().put(SermoSystemConstants.PAGED_SCREEN_KEY, pagedMenuSetup);
     }
 
-    public static PagedScreenSetup getPagedScreenSetup(ExtendedState extendedState) {
-        return (PagedScreenSetup) extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY);
+    public static PagedMenuSetup getPagedMenuSetup(ExtendedState extendedState) {
+        return (PagedMenuSetup) extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY);
     }
 
     // TODO: should be removed

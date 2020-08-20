@@ -18,8 +18,8 @@ package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SermoSystemConstants;
-import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
-import com.headstartech.sermo.screen.PagedScreenSupport;
+import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
+import com.headstartech.sermo.screen.PagedMenuSupport;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
@@ -28,16 +28,16 @@ import org.springframework.statemachine.action.Action;
 /**
  * @author Per Johansson
  */
-public class PagedMenuScreenInternalAction<S, E extends DialogEvent> implements Action<S, E> {
+public class PagedMenuInternalAction<S, E extends DialogEvent> implements Action<S, E> {
 
-    private final PagedScreenSupport pagedScreenSupport;
+    private final PagedMenuSupport pagedMenuSupport;
 
-    public PagedMenuScreenInternalAction(PagedScreenSupport pagedScreenSupport) {
-        this.pagedScreenSupport = pagedScreenSupport;
+    public PagedMenuInternalAction(PagedMenuSupport pagedMenuSupport) {
+        this.pagedMenuSupport = pagedMenuSupport;
     }
 
-    public PagedMenuScreenInternalAction() {
-        this(new DefaultPagedScreenSupport());
+    public PagedMenuInternalAction() {
+        this(new DefaultPagedMenuSupport());
     }
 
     @Override
@@ -47,14 +47,14 @@ public class PagedMenuScreenInternalAction<S, E extends DialogEvent> implements 
                 .orElseThrow(() -> new IllegalStateException("PagedMenuScreenInternalAction executed with no transition id set"));
 
         if(SermoSystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
-            pagedScreenSupport.incrementPage(context.getExtendedState());
+            pagedMenuSupport.incrementPage(context.getExtendedState());
         } else if(SermoSystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
-            pagedScreenSupport.decrementPage(context.getExtendedState());
+            pagedMenuSupport.decrementPage(context.getExtendedState());
         } else {
             throw new IllegalStateException(String.format("PagedMenuScreenInternalAction executed with unknown transition id: transitionId=%s", transitionId));
         }
 
-        Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
+        Screen screen = pagedMenuSupport.createScreen(context.getExtendedState());
         ExtendedStateSupport.setScreen(context.getExtendedState(), screen);
     }
 

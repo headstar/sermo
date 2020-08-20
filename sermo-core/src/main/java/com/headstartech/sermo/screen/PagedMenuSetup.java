@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class PagedScreenSetup {
+public class PagedMenuSetup {
 
     private final List<MenuItem> allMenuItems;
     private final NextPageMenuItem nextPageMenuItem;
@@ -32,7 +32,7 @@ public class PagedScreenSetup {
     private int page;
     private final TextElide menuItemElide;
 
-    public PagedScreenSetup(List<MenuItem> allMenuItems, TextElide menuItemElide, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
+    public PagedMenuSetup(List<MenuItem> allMenuItems, TextElide menuItemElide, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
         this.allMenuItems = allMenuItems;
         this.menuItemElide = menuItemElide;
         this.nextPageMenuItem = nextPageMenuItem;
@@ -42,7 +42,7 @@ public class PagedScreenSetup {
         this.pageSize = pageSize;
     }
 
-    public PagedScreenSetup(List<MenuItem> allMenuItems, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
+    public PagedMenuSetup(List<MenuItem> allMenuItems, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
         this(allMenuItems, new TextElide(), nextPageMenuItem, previousPageMenuItem, headerBlock, footerBlock, pageSize);
     }
 

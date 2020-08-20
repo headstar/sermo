@@ -2,17 +2,17 @@ package demo.web;
 
 import com.headstartech.sermo.screen.*;
 import com.headstartech.sermo.statemachine.actions.OnItemHandlers;
-import com.headstartech.sermo.statemachine.actions.PagedScreenSetupProvider;
+import com.headstartech.sermo.statemachine.actions.PagedMenuSetupProvider;
 import org.springframework.statemachine.StateContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AccountsPagedScreenSetupProvider implements PagedScreenSetupProvider<States, SubscriberEvent> {
+public class PagedAccountsSetupProvider implements PagedMenuSetupProvider<States, SubscriberEvent> {
 
     @Override
-    public PagedScreenSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
+    public PagedMenuSetup getPagedScreenSetup(StateContext<States, SubscriberEvent> context) {
         context.getExtendedState().getVariables().put(Constants.ACCOUNT_DATA_KEY, new AccountData());
 
         List<MenuItem> items = getAccountDetailsDTOs().stream()
@@ -22,7 +22,7 @@ public class AccountsPagedScreenSetupProvider implements PagedScreenSetupProvide
                 )
                 .collect(Collectors.toList());
 
-        return new PagedScreenSetup(items, getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null, 2);
+        return new PagedMenuSetup(items, getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null, 2);
     }
 
     protected ScreenBlock getHeaderBlock() {

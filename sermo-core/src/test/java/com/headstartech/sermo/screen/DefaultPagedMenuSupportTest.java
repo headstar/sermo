@@ -11,20 +11,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class DefaultPagedScreenSupportTest {
+public class DefaultPagedMenuSupportTest {
 
     @Test
     public void pagedScreenSetupInExtendedState() {
         // given
-        PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
+        PagedMenuSupport pagedMenuSupport = new DefaultPagedMenuSupport();
         ExtendedState extendedState = new DefaultExtendedState();
-        PagedScreenSetup pagedScreenSetup = new PagedScreenSetup(null, null, null, null, null, 0);
+        PagedMenuSetup pagedMenuSetup = new PagedMenuSetup(null, null, null, null, null, 0);
 
         // when
-        pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
+        pagedMenuSupport.initializePagedScreen(extendedState, pagedMenuSetup);
 
         // then
-        assertSame(pagedScreenSetup, extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY));
+        assertSame(pagedMenuSetup, extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class DefaultPagedScreenSupportTest {
                 "1. Account E...\n" +
                 "# Previous page\n";
 
-        PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
+        PagedMenuSupport pagedMenuSupport = new DefaultPagedMenuSupport();
         ExtendedState extendedState = new DefaultExtendedState();
 
         int pageSize = 2;
@@ -64,34 +64,34 @@ public class DefaultPagedScreenSupportTest {
         NextPageMenuItem nextPageMenuItem = new NextPageMenuItem("0", "Next page");
         PreviousPageMenuItem previousPageMenuItem = new PreviousPageMenuItem("#", "Previous page");
         TextElide elide = new TextElide(TextElide.Mode.RIGHT, 15);
-        PagedScreenSetup pagedScreenSetup = new PagedScreenSetup(items, elide, nextPageMenuItem, previousPageMenuItem, headerBlock, null, pageSize);
+        PagedMenuSetup pagedMenuSetup = new PagedMenuSetup(items, elide, nextPageMenuItem, previousPageMenuItem, headerBlock, null, pageSize);
 
-        pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
+        pagedMenuSupport.initializePagedScreen(extendedState, pagedMenuSetup);
 
         // when ... then
 
         // page 1
-        Screen screen = pagedScreenSupport.createScreen(extendedState);
+        Screen screen = pagedMenuSupport.createScreen(extendedState);
         assertEquals(expectedPage1, screen.getOutput());
 
         // page 2
-        pagedScreenSupport.incrementPage(extendedState);
-        screen = pagedScreenSupport.createScreen(extendedState);
+        pagedMenuSupport.incrementPage(extendedState);
+        screen = pagedMenuSupport.createScreen(extendedState);
         assertEquals(expectedPage2, screen.getOutput());
 
         // page 3
-        pagedScreenSupport.incrementPage(extendedState);
-        screen = pagedScreenSupport.createScreen(extendedState);
+        pagedMenuSupport.incrementPage(extendedState);
+        screen = pagedMenuSupport.createScreen(extendedState);
         assertEquals(expectedPage3, screen.getOutput());
 
         // back to page 2
-        pagedScreenSupport.decrementPage(extendedState);
-        screen = pagedScreenSupport.createScreen(extendedState);
+        pagedMenuSupport.decrementPage(extendedState);
+        screen = pagedMenuSupport.createScreen(extendedState);
         assertEquals(expectedPage2, screen.getOutput());
 
         // back to page 1
-        pagedScreenSupport.decrementPage(extendedState);
-        screen = pagedScreenSupport.createScreen(extendedState);
+        pagedMenuSupport.decrementPage(extendedState);
+        screen = pagedMenuSupport.createScreen(extendedState);
         assertEquals(expectedPage1, screen.getOutput());
     }
 }

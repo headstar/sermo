@@ -24,44 +24,44 @@ import java.util.List;
 /**
  * @author Per Johansson
  */
-public class DefaultPagedScreenSupport implements PagedScreenSupport {
+public class DefaultPagedMenuSupport implements PagedMenuSupport {
 
     private final ScreenRenderer screenRenderer;
 
-    public DefaultPagedScreenSupport(ScreenRenderer screenRenderer) {
+    public DefaultPagedMenuSupport(ScreenRenderer screenRenderer) {
         this.screenRenderer = screenRenderer;
     }
 
-    public DefaultPagedScreenSupport() {
+    public DefaultPagedMenuSupport() {
         this(new DefaultScreenRenderer());
     }
 
     @Override
-    public void initializePagedScreen(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
-        ExtendedStateSupport.setPagedScreenSetup(extendedState, pagedScreenSetup);
+    public void initializePagedScreen(ExtendedState extendedState, PagedMenuSetup pagedMenuSetup) {
+        ExtendedStateSupport.setPagedMenuSetup(extendedState, pagedMenuSetup);
     }
 
     @Override
     public Screen createScreen(ExtendedState extendedState) {
-        PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
+        PagedMenuSetup pagedMenuSetup = ExtendedStateSupport.getPagedMenuSetup(extendedState);
 
         Screen.Builder screenBuilder =  Screen.builder();
 
         screenBuilder.withScreenRenderer(screenRenderer);
-        screenBuilder.withScreenBlock(pagedScreenSetup.getHeaderBlock());
+        screenBuilder.withScreenBlock(pagedMenuSetup.getHeaderBlock());
 
-        List<MenuItem> allMenuItems = pagedScreenSetup.getAllMenuItems();
-        int page = pagedScreenSetup.getPage();
-        screenBuilder.withScreenBlock(getMenuGroupForCurrentPage(allMenuItems, page, pagedScreenSetup.getPageSize(), pagedScreenSetup.getMenuItemElide()));
+        List<MenuItem> allMenuItems = pagedMenuSetup.getAllMenuItems();
+        int page = pagedMenuSetup.getPage();
+        screenBuilder.withScreenBlock(getMenuGroupForCurrentPage(allMenuItems, page, pagedMenuSetup.getPageSize(), pagedMenuSetup.getMenuItemElide()));
 
-        if(hasNextPage(allMenuItems.size(), page, pagedScreenSetup.getPageSize())) {
-            screenBuilder.withScreenBlock(pagedScreenSetup.getNextPageMenuItem());
+        if(hasNextPage(allMenuItems.size(), page, pagedMenuSetup.getPageSize())) {
+            screenBuilder.withScreenBlock(pagedMenuSetup.getNextPageMenuItem());
         }
         if(page > 0) {
-            screenBuilder.withScreenBlock(pagedScreenSetup.getPreviousPageMenuItem());
+            screenBuilder.withScreenBlock(pagedMenuSetup.getPreviousPageMenuItem());
         }
 
-        screenBuilder.withScreenBlock(pagedScreenSetup.getFooterBlock());
+        screenBuilder.withScreenBlock(pagedMenuSetup.getFooterBlock());
         return screenBuilder.build();
     }
 
@@ -96,19 +96,19 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
 
     private void incrementPageIndex(ExtendedState extendedState) {
-        PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
-        adjustPage(pagedScreenSetup, 1);
+        PagedMenuSetup pagedMenuSetup = ExtendedStateSupport.getPagedMenuSetup(extendedState);
+        adjustPage(pagedMenuSetup, 1);
     }
 
     private void decrementPageIndex(ExtendedState extendedState) {
-        PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
-        adjustPage(pagedScreenSetup, -1);
+        PagedMenuSetup pagedMenuSetup = ExtendedStateSupport.getPagedMenuSetup(extendedState);
+        adjustPage(pagedMenuSetup, -1);
     }
 
-    private void adjustPage(PagedScreenSetup pagedScreenSetup, int diff) {
-        int page = pagedScreenSetup.getPage() + diff;
+    private void adjustPage(PagedMenuSetup pagedMenuSetup, int diff) {
+        int page = pagedMenuSetup.getPage() + diff;
         page = page < 0 ? 0 : page;
-        pagedScreenSetup.setPage(page);
+        pagedMenuSetup.setPage(page);
 
     }
 

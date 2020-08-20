@@ -17,8 +17,8 @@
 package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
-import com.headstartech.sermo.screen.PagedScreenSupport;
+import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
+import com.headstartech.sermo.screen.PagedMenuSupport;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
@@ -27,25 +27,25 @@ import org.springframework.statemachine.action.Action;
 /**
  * @author Per Johansson
  */
-public class PagedMenuScreenEntryAction<S, E extends DialogEvent> implements Action<S, E> {
+public class PagedMenuEntryAction<S, E extends DialogEvent> implements Action<S, E> {
 
-    private final PagedScreenSetupProvider<S, E> pagedScreenSetupProvider;
-    private final PagedScreenSupport pagedScreenSupport;
+    private final PagedMenuSetupProvider<S, E> pagedMenuSetupProvider;
+    private final PagedMenuSupport pagedMenuSupport;
 
-    public PagedMenuScreenEntryAction(PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
-        this.pagedScreenSetupProvider = pagedScreenSetupProvider;
-        this.pagedScreenSupport = pagedScreenSupport;
+    public PagedMenuEntryAction(PagedMenuSetupProvider<S, E> pagedMenuSetupProvider, PagedMenuSupport pagedMenuSupport) {
+        this.pagedMenuSetupProvider = pagedMenuSetupProvider;
+        this.pagedMenuSupport = pagedMenuSupport;
     }
 
-    public PagedMenuScreenEntryAction(PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
-        this.pagedScreenSetupProvider = pagedScreenSetupProvider;
-        this.pagedScreenSupport = new DefaultPagedScreenSupport();
+    public PagedMenuEntryAction(PagedMenuSetupProvider<S, E> pagedMenuSetupProvider) {
+        this.pagedMenuSetupProvider = pagedMenuSetupProvider;
+        this.pagedMenuSupport = new DefaultPagedMenuSupport();
     }
 
     @Override
     public void execute(StateContext<S, E> context) {
-        pagedScreenSupport.initializePagedScreen(context.getExtendedState(), pagedScreenSetupProvider.getPagedScreenSetup(context));
-        Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
+        pagedMenuSupport.initializePagedScreen(context.getExtendedState(), pagedMenuSetupProvider.getPagedScreenSetup(context));
+        Screen screen = pagedMenuSupport.createScreen(context.getExtendedState());
 
         ExtendedStateSupport.setScreen(context.getExtendedState(), screen);
     }
