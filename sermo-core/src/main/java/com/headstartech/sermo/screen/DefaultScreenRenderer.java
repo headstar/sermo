@@ -23,16 +23,18 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
 
     @Override
-    public ScreenRenderResult renderScreen(ScreenBlocksContainer screenBlocksContainer) {
+    public ScreenRenderResult renderScreen(ScreenBlock screenBlock) {
         InputMap.Builder inputMapBuilder = InputMap.builder();
         StringBuilder sb = new StringBuilder();
 
-        screenBlocksContainer.getScreenBlocks().forEach(e -> renderBlock(e, sb, inputMapBuilder));
+        renderBlock(screenBlock, sb, inputMapBuilder);
         return new ScreenRenderResult(inputMapBuilder.build(), sb.toString());
     }
 
     protected void renderBlock(ScreenBlock screenBlock, StringBuilder sb, InputMap.Builder inputMapBuilder) {
-        if(screenBlock instanceof EmptyLine) {
+        if(screenBlock instanceof ScreenBlocksContainer) {
+            renderScreenBlocksContainer((ScreenBlocksContainer) screenBlock, sb, inputMapBuilder);
+        } else if(screenBlock instanceof EmptyLine) {
             renderEmptyLine(sb);
         } else if(screenBlock instanceof Text) {
             renderText(sb, (Text) screenBlock);
@@ -44,6 +46,10 @@ public class DefaultScreenRenderer implements ScreenRenderer {
             throw new IllegalStateException(String.format("unknown ScreenBlock type %s", screenBlock.getClass().getName()));
         }
 
+    }
+
+    protected void renderScreenBlocksContainer(ScreenBlocksContainer screenBlocksContainer, StringBuilder sb, InputMap.Builder inputMapBuilder) {
+        screenBlocksContainer.getScreenBlocks().forEach(e -> renderBlock(e, sb, inputMapBuilder));
     }
 
     protected void renderEmptyLine(StringBuilder sb) {

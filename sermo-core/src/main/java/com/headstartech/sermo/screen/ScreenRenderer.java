@@ -21,6 +21,6 @@ package com.headstartech.sermo.screen;
  */
 public interface ScreenRenderer {
 
-    ScreenRenderResult renderScreen(ScreenBlocksContainer screenBlocksContainer);
+    ScreenRenderResult renderScreen(ScreenBlock screenBlock);
 
 }

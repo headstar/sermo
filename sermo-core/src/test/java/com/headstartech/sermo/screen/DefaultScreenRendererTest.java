@@ -31,11 +31,10 @@ public class DefaultScreenRendererTest {
     public void canRenderEmptyLine() {
         // given
         ScreenRenderer sr = new DefaultScreenRenderer();
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(EmptyLine.INSTANCE));
         String expectedOutput = "\n";
 
         // when
-        ScreenRenderResult srr = sr.renderScreen(sbc);
+        ScreenRenderResult srr = sr.renderScreen(EmptyLine.INSTANCE);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
@@ -49,11 +48,10 @@ public class DefaultScreenRendererTest {
         ScreenRenderer sr = new DefaultScreenRenderer();
         String text = "Apple banana";
         Text textItem = new Text(text);
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(textItem));
         String expectedOutput = text + "\n";
 
         // when
-        ScreenRenderResult srr = sr.renderScreen(sbc);
+        ScreenRenderResult srr = sr.renderScreen(textItem);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
@@ -69,11 +67,10 @@ public class DefaultScreenRendererTest {
         String input = "3";
         String transitionId = "foo";
         StaticMenuItem staticMenuItem = new StaticMenuItem(input, label, transitionId);
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(staticMenuItem));
         String expectedOutput = input + " " + label + "\n";
 
         // when
-        ScreenRenderResult srr = sr.renderScreen(sbc);
+        ScreenRenderResult srr = sr.renderScreen(staticMenuItem);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
@@ -98,10 +95,8 @@ public class DefaultScreenRendererTest {
 
         MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2));
 
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(mg));
-
         // when
-        ScreenRenderResult srr = sr.renderScreen(sbc);
+        ScreenRenderResult srr = sr.renderScreen(mg);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
@@ -133,10 +128,8 @@ public class DefaultScreenRendererTest {
 
         MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2), textElide);
 
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(mg));
-
         // when
-        ScreenRenderResult srr = sr.renderScreen(sbc);
+        ScreenRenderResult srr = sr.renderScreen(mg);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
@@ -151,6 +144,30 @@ public class DefaultScreenRendererTest {
         assertTrue(im.hasTransitionForInput(mi2.getTransition(), "2"));
         assertTrue(im.getItemObjectForInput("2").isPresent());
         assertEquals("myItem2", im.getItemObjectForInput("2").get());
+    }
+
+    @Test
+    public void canScreenBlocksContainer() {
+        // given
+        ScreenRenderer sr = new DefaultScreenRenderer();
+
+        String text1 = "Apple banana";
+        Text textItem1 = new Text(text1);
+
+        String text2 = "orange pear";
+        Text textItem2 = new Text(text2);
+
+        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(textItem1, textItem2));
+
+        String expectedOutput = text1 + "\n" + text2 + "\n";
+
+        // when
+        ScreenRenderResult srr = sr.renderScreen(sbc);
+
+        // then
+        assertEquals(expectedOutput, srr.getOutput());
+
+        assertTrue(srr.getInputMap().isEmpty());
     }
 
 }
