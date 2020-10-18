@@ -18,10 +18,7 @@ package com.headstartech.sermo;
 
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
-import com.headstartech.sermo.support.CompositeSermoDialogListener;
-import com.headstartech.sermo.support.DefaultSermoStateMachineService;
-import com.headstartech.sermo.support.ExtendedStateSupport;
-import com.headstartech.sermo.support.SermoStateMachineService;
+import com.headstartech.sermo.support.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
@@ -38,6 +35,7 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
     private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
 
     private final SermoStateMachineService<S, E> sermoStateMachineService;
+    private final OutputHandler<S, E> outputHandler;
     private final CompositeSermoDialogListener<E> compositeListener;
 
     public SermoDialogExecutor(StateMachineFactory<S, E> stateMachineFactory, CachePersist<S, E> cachePersist) {
@@ -49,7 +47,12 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
     }
 
     public SermoDialogExecutor(SermoStateMachineService<S, E> sermoStateMachineService) {
+        this(sermoStateMachineService, new DefaultOutputHandler<>());
+    }
+
+    public SermoDialogExecutor(SermoStateMachineService<S, E> sermoStateMachineService, OutputHandler<S, E> outputHandler) {
         this.sermoStateMachineService = sermoStateMachineService;
+        this.outputHandler = outputHandler;
         this.compositeListener = new CompositeSermoDialogListener<>();
     }
 
@@ -115,30 +118,11 @@ public class SermoDialogExecutor<S, E extends DialogEvent> {
             }
         } else {
             boolean dialogComplete = stateMachine.isComplete();
-            String output = handleOutputWhenNoStateMachineError(stateMachine, dialogComplete);
+            String output = outputHandler.getOutput(stateMachine);
             dialogEventResult = new DialogEventResult(output, dialogComplete);
             log.debug("Result of handling event: eventResult={}", dialogEventResult);
         }
         return dialogEventResult;
-    }
-
-    protected String handleOutputWhenNoStateMachineError(StateMachine<S, E> stateMachine, boolean dialogComplete) {
-        String output = getOutput(stateMachine);
-        if (output != null) {
-            stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.LAST_OUTPUT_KEY, output);
-        } else if(!dialogComplete) {
-            String lastOutput = stateMachine.getExtendedState().get(SermoSystemConstants.LAST_OUTPUT_KEY, String.class);
-            if (lastOutput != null) {
-                log.debug("No output set for event, using last output: lastOutput=\n{}", lastOutput);
-                output = lastOutput;
-            }
-        }
-        stateMachine.getExtendedState().getVariables().remove(SermoSystemConstants.OUTPUT_KEY);
-        return output;
-    }
-
-    protected String getOutput(StateMachine<S, E> stateMachine) {
-        return stateMachine.getExtendedState().get(SermoSystemConstants.OUTPUT_KEY, String.class);
     }
 
     protected void notifyPreEventHandled(String sessionId, E event) {
