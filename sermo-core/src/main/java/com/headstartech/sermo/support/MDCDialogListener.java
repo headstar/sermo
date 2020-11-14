@@ -37,6 +37,6 @@ public class MDCDialogListener<E extends DialogEvent> implements DialogListener<
 
     @Override
     public void postEventHandled(String sessionId, E event, DialogException e) {
-        MDC.clear();
+        MDC.remove(MDC_SESSION_ID_KEY);
     }
 }
