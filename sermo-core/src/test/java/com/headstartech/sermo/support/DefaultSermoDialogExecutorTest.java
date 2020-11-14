@@ -1,10 +1,9 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
+import com.headstartech.sermo.*;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
-import com.headstartech.sermo.support.DefaultSermoStateMachineService;
-import com.headstartech.sermo.support.SermoStateMachineService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -21,7 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
-public class SermoDialogExecutorTest {
+public class DefaultSermoDialogExecutorTest {
 
     @Test
     public void applyEventThrowsWhenActionThrows() throws Exception {
@@ -30,7 +29,7 @@ public class SermoDialogExecutorTest {
         CachePersist<TestUtils.States, DialogEvent> cachePersist = Mockito.spy(createCachePersist());
         SermoStateMachineService<TestUtils.States, DialogEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
 
-        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new SermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
+        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultSermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
 
         // when
         try {
@@ -55,7 +54,7 @@ public class SermoDialogExecutorTest {
 
         SermoStateMachineService<TestUtils.States, DialogEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
 
-        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new SermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
+        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultSermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
 
         dialogExecutor.applyEvent(sessionId, new DialogEvent("1"));
 

@@ -7,6 +7,7 @@ import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuild
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.states.USSDState;
 import com.headstartech.sermo.states.USSDStates;
+import com.headstartech.sermo.support.DefaultSermoDialogExecutor;
 import com.headstartech.sermo.support.MDCSermoDialogListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -112,7 +113,7 @@ public class Application {
         builder.withFormInputTransition(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenPredicate());
         builder.withScreenTransition(States.INTEREST_RATE_OFFER, States.ROOT, Transitions.ROOT);
 
-        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new SermoDialogExecutor<>(builder.build(), cachePersist);
+        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new DefaultSermoDialogExecutor<>(builder.build(), cachePersist);
         sermoDialogExecutor.register(new MDCSermoDialogListener<>());
         return sermoDialogExecutor;
     }

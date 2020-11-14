@@ -1,7 +1,6 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.OutputHandler;
 import com.headstartech.sermo.SermoSystemConstants;
 import com.headstartech.sermo.TestUtils;
 import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;

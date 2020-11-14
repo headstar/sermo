@@ -1,4 +1,4 @@
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.StateMachine;
