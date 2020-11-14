@@ -1,8 +1,8 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoDialogExecutor;
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.DialogExecutor;
+import com.headstartech.sermo.SystemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
@@ -16,7 +16,7 @@ import org.springframework.statemachine.StateMachine;
  */
 public class DefaultOutputHandler<S, E extends DialogEvent> implements OutputHandler<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
+    private static final Logger log = LoggerFactory.getLogger(DialogExecutor.class);
 
     @Override
     public String getOutput(StateMachine<S, E> stateMachine) {
@@ -35,18 +35,18 @@ public class DefaultOutputHandler<S, E extends DialogEvent> implements OutputHan
     }
 
     protected String getEventOutput(StateMachine<S, E> stateMachine) {
-        return stateMachine.getExtendedState().get(SermoSystemConstants.OUTPUT_KEY, String.class);
+        return stateMachine.getExtendedState().get(SystemConstants.OUTPUT_KEY, String.class);
     }
 
     protected void removeEventOutput(StateMachine<S, E> stateMachine) {
-        stateMachine.getExtendedState().getVariables().remove(SermoSystemConstants.OUTPUT_KEY);
+        stateMachine.getExtendedState().getVariables().remove(SystemConstants.OUTPUT_KEY);
     }
 
     protected void setLastOutputValue(StateMachine<S, E> stateMachine, String output) {
-        stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.LAST_OUTPUT_KEY, output);
+        stateMachine.getExtendedState().getVariables().put(SystemConstants.LAST_OUTPUT_KEY, output);
     }
 
     protected String getLastOutputValue(StateMachine<S, E> stateMachine) {
-        return stateMachine.getExtendedState().get(SermoSystemConstants.LAST_OUTPUT_KEY, String.class);
+        return stateMachine.getExtendedState().get(SystemConstants.LAST_OUTPUT_KEY, String.class);
     }
 }

@@ -17,17 +17,26 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import org.springframework.statemachine.StateMachine;
+import com.headstartech.sermo.DialogException;
+import com.headstartech.sermo.DialogListener;
+import org.slf4j.MDC;
+
+import static com.headstartech.sermo.SystemConstants.MDC_SESSION_ID_KEY;
 
 /**
+ * {@link DialogListener} implementation setting the session id in the MDC to be available in the log output.
+ *
  * @author Per Johansson
  */
-public interface SermoStateMachineService<S, E extends DialogEvent> {
+public class MDCDialogListener<E extends DialogEvent> implements DialogListener<E> {
 
-    StateMachine<S, E> acquireStateMachine(String machineId);
+    @Override
+    public void preEventHandled(String sessionId, E event) {
+        MDC.put(MDC_SESSION_ID_KEY, sessionId);
+    }
 
-    void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine);
-
-    void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine);
-
+    @Override
+    public void postEventHandled(String sessionId, E event, DialogException e) {
+        MDC.clear();
+    }
 }

@@ -17,8 +17,7 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoDialogException;
-import com.headstartech.sermo.SermoDialogServiceException;
+import com.headstartech.sermo.DialogServiceException;
 import com.headstartech.sermo.statemachine.DefaultStateMachinePool;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import com.headstartech.sermo.statemachine.StateMachinePool;
@@ -33,20 +32,20 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 /**
  * @author Per Johansson
  */
-public class DefaultSermoStateMachineService<S, E extends DialogEvent> implements SermoStateMachineService<S, E> {
+public class DefaultStateMachineService<S, E extends DialogEvent> implements StateMachineService<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultSermoStateMachineService.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultStateMachineService.class);
 
     private final StateMachinePool<S, E> stateMachinePool;
     private final StateMachinePersister<S, E, String> stateMachinePersister;
     private StateMachineDeleter<String> stateMachineDeleter;
 
 
-    public DefaultSermoStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
+    public DefaultStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
         this(new DefaultStateMachinePool<>(stateMachineFactory), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
     }
 
-    public DefaultSermoStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
+    public DefaultStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
         this.stateMachinePool = stateMachinePool;
         this.stateMachinePersister = stateMachinePersister;
         this.stateMachineDeleter = stateMachineDeleter;
@@ -60,7 +59,7 @@ public class DefaultSermoStateMachineService<S, E extends DialogEvent> implement
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);
         } catch (Exception e) {
-            throw new SermoDialogServiceException(String.format("Unable to restore state machine: %s", machineId), e);
+            throw new DialogServiceException(String.format("Unable to restore state machine: %s", machineId), e);
         }
 
         if(stateMachineIsCompleteOrHasError(stateMachine)) {
@@ -79,7 +78,7 @@ public class DefaultSermoStateMachineService<S, E extends DialogEvent> implement
             stateMachinePersister.persist(stateMachine, machineId);
         } catch (Exception e) {
             exceptionOnPersist = true;
-            throw new SermoDialogServiceException(String.format("Unable to persist context to store: %s", machineId), e);
+            throw new DialogServiceException(String.format("Unable to persist context to store: %s", machineId), e);
         } finally {
             if(exceptionOnPersist || stateMachineIsCompleteOrHasError(stateMachine)) {
                 try {

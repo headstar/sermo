@@ -19,9 +19,9 @@ package com.headstartech.sermo;
 /**
  * @author Per Johansson
  */
-public class SermoSystemConstants {
+public class SystemConstants {
 
-    private SermoSystemConstants() {}
+    private SystemConstants() {}
 
     public static final String INPUT_ITEM_DATA_KEY = "__input_item_data__";
 

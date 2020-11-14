@@ -16,7 +16,7 @@
 
 package com.headstartech.sermo.statemachine.factory;
 
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
@@ -51,7 +51,7 @@ public class SetStateMachineErrorOnExceptionActionTest {
 
         // then
         verify(sm).setStateMachineError(same(executionException));
-        assertSame(executionException, extendedState.getVariables().get(SermoSystemConstants.EXECUTION_EXCEPTION_KEY));
+        assertSame(executionException, extendedState.getVariables().get(SystemConstants.EXECUTION_EXCEPTION_KEY));
     }
 
 }

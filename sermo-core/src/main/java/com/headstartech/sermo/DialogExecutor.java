@@ -17,23 +17,33 @@
 package com.headstartech.sermo;
 
 /**
- * Base class for exceptions thrown by {@link SermoDialogExecutor} if there's an error when handling an event.
- *
  * @author Per Johansson
  */
-public abstract class SermoDialogException extends RuntimeException {
+public interface DialogExecutor<S, E extends DialogEvent> {
 
-    private static final long serialVersionUID = -4302908681874019397L;
+    /**
+     * Applies an event for a session.
+     *
+     * @param sessionId
+     * @param event
+     * @return
+     * @throws DialogException
+     */
+    DialogEventResult applyEvent(String sessionId, E event);
 
-    public SermoDialogException(Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Adds the dialog listener.
+     *
+     * @param listener the listener
+     */
+    void addListener(DialogListener<E> listener);
 
-    public SermoDialogException(String message) {
-        super(message);
-    }
 
-    public SermoDialogException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    /**
+     * Removes the dialog listener.
+     *
+     * @param listener the listener
+     */
+    void removeListener(DialogListener<E> listener);
+
 }

@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Per Johansson
  */
-public class CompositeSermoDialogListener<E extends DialogEvent> extends AbstractCompositeListener<SermoDialogListener<E>> implements SermoDialogListener<E> {
+public class CompositeDialogListener<E extends DialogEvent> extends AbstractCompositeListener<DialogListener<E>> implements DialogListener<E> {
 
-    private static final Logger log = LoggerFactory.getLogger(SermoDialogExecutor.class);
+    private static final Logger log = LoggerFactory.getLogger(DialogExecutor.class);
 
     @Override
     public void preEventHandled(String sessionId, E event) {
@@ -41,7 +41,7 @@ public class CompositeSermoDialogListener<E extends DialogEvent> extends Abstrac
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, SermoDialogException sde) {
+    public void postEventHandled(String sessionId, E event, DialogException sde) {
         getListeners().stream().forEach(e ->
                 {
                     try {

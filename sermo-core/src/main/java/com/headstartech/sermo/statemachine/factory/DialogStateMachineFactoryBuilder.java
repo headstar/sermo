@@ -17,7 +17,7 @@
 package com.headstartech.sermo.statemachine.factory;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.statemachine.LoggingStateMachineListener;
 import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
@@ -45,14 +45,14 @@ import java.util.stream.Collectors;
 /**
  * @author Per Johansson
  */
-public class SermoStateMachineFactoryBuilder {
+public class DialogStateMachineFactoryBuilder {
 
-    public static <S, E extends DialogEvent> SermoStateMachineFactoryBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
-        return new SermoStateMachineFactoryBuilder.Builder<>(stateMachineFactoryBuilder, clazz.newInstance());
+    public static <S, E extends DialogEvent> DialogStateMachineFactoryBuilder.Builder<S, E> builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, Class<E> clazz) throws Exception {
+        return new DialogStateMachineFactoryBuilder.Builder<>(stateMachineFactoryBuilder, clazz.newInstance());
     }
 
-    public static <S, E extends DialogEvent> SermoStateMachineFactoryBuilder.Builder<S, E> builder(Class<E> clazz) throws Exception {
-        return new SermoStateMachineFactoryBuilder.Builder<>(StateMachineFactoryBuilder.builder(), clazz.newInstance());
+    public static <S, E extends DialogEvent> DialogStateMachineFactoryBuilder.Builder<S, E> builder(Class<E> clazz) throws Exception {
+        return new DialogStateMachineFactoryBuilder.Builder<>(StateMachineFactoryBuilder.builder(), clazz.newInstance());
     }
 
     public static class Builder<S, E extends DialogEvent> {
@@ -242,14 +242,14 @@ public class SermoStateMachineFactoryBuilder {
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(SermoSystemConstants.NEXT_PAGE_KEY))
+                    .guard(screenTransitionGuard(SystemConstants.NEXT_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
-                    .guard(screenTransitionGuard(SermoSystemConstants.PREVIOUS_PAGE_KEY))
+                    .guard(screenTransitionGuard(SystemConstants.PREVIOUS_PAGE_KEY))
                     .action(wrapWithErrorActions(nextPreviousPageAction));
             return this;
         }

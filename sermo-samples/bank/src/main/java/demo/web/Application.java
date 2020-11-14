@@ -1,14 +1,14 @@
 package demo.web;
 
-import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.DialogExecutor;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.factory.ChoiceOption;
-import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.factory.DialogStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import com.headstartech.sermo.states.USSDState;
 import com.headstartech.sermo.states.USSDStates;
-import com.headstartech.sermo.support.DefaultSermoDialogExecutor;
-import com.headstartech.sermo.support.MDCSermoDialogListener;
+import com.headstartech.sermo.support.DefaultDialogExecutor;
+import com.headstartech.sermo.support.MDCDialogListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -82,10 +82,10 @@ public class Application {
 
 
     @Bean
-    public SermoDialogExecutor<States, SubscriberEvent> dialogExecutor(CachePersist<States, SubscriberEvent> cachePersist,
-                                                                       Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
+    public DialogExecutor<States, SubscriberEvent> dialogExecutor(CachePersist<States, SubscriberEvent> cachePersist,
+                                                                  Collection<USSDState<States, SubscriberEvent>> states) throws Exception {
 
-        SermoStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = SermoStateMachineFactoryBuilder.builder(SubscriberEvent.class);
+        DialogStateMachineFactoryBuilder.Builder<States, SubscriberEvent> builder = DialogStateMachineFactoryBuilder.builder(SubscriberEvent.class);
         
         builder.withStates(states);
 
@@ -113,9 +113,9 @@ public class Application {
         builder.withFormInputTransition(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenPredicate());
         builder.withScreenTransition(States.INTEREST_RATE_OFFER, States.ROOT, Transitions.ROOT);
 
-        SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor = new DefaultSermoDialogExecutor<>(builder.build(), cachePersist);
-        sermoDialogExecutor.register(new MDCSermoDialogListener<>());
-        return sermoDialogExecutor;
+        DialogExecutor<States, SubscriberEvent> dialogExecutor = new DefaultDialogExecutor<>(builder.build(), cachePersist);
+        dialogExecutor.addListener(new MDCDialogListener<>());
+        return dialogExecutor;
     }
 
     @Bean

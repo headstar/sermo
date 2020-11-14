@@ -14,15 +14,20 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo;
+package com.headstartech.sermo.support;
+
+import com.headstartech.sermo.DialogEvent;
+import org.springframework.statemachine.StateMachine;
 
 /**
  * @author Per Johansson
  */
-public interface SermoDialogListener< E extends DialogEvent> {
+public interface StateMachineService<S, E extends DialogEvent> {
 
-    void preEventHandled(String sessionId, E event);
+    StateMachine<S, E> acquireStateMachine(String machineId);
 
-    void postEventHandled(String sessionId, E event, SermoDialogException e);
+    void releaseStateMachine(String machineId, StateMachine<S, E> stateMachine);
+
+    void releaseStateMachineOnException(String machineId, StateMachine<S, E> stateMachine);
 
 }

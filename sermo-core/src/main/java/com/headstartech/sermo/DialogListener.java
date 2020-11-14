@@ -14,16 +14,15 @@
  *  limitations under the License.
  */
 
-package com.headstartech.sermo.screen;
-
-import com.headstartech.sermo.SystemConstants;
+package com.headstartech.sermo;
 
 /**
  * @author Per Johansson
  */
-public class NextPageMenuItem extends StaticMenuItem {
+public interface DialogListener< E extends DialogEvent> {
 
-    public NextPageMenuItem(String input, String label) {
-        super(input, label, SystemConstants.NEXT_PAGE_KEY);
-    }
+    void preEventHandled(String sessionId, E event);
+
+    void postEventHandled(String sessionId, E event, DialogException e);
+
 }

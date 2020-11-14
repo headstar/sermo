@@ -2,7 +2,7 @@ package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.*;
 import com.headstartech.sermo.persist.CachePersist;
-import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.factory.DialogStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
@@ -20,16 +20,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
-public class DefaultSermoDialogExecutorTest {
+public class DefaultDialogExecutorTest {
 
     @Test
     public void applyEventThrowsWhenActionThrows() throws Exception {
         // given
         StateMachineFactory<TestUtils.States, DialogEvent> stateMachineFactory = createStateMachineThrowingException();
         CachePersist<TestUtils.States, DialogEvent> cachePersist = Mockito.spy(createCachePersist());
-        SermoStateMachineService<TestUtils.States, DialogEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
+        StateMachineService<TestUtils.States, DialogEvent> stateMachineService = new DefaultStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
 
-        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultSermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
+        DialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultDialogExecutor<TestUtils.States, DialogEvent>(stateMachineService);
 
         // when
         try {
@@ -37,7 +37,7 @@ public class DefaultSermoDialogExecutorTest {
             fail("Expected exception");
         } catch(Exception e) {
             // then
-            assertTrue(e instanceof SermoDialogException);
+            assertTrue(e instanceof DialogException);
             assertTrue(e.getCause() instanceof TestException);
 
             verify(cachePersist).delete("session1");
@@ -52,9 +52,9 @@ public class DefaultSermoDialogExecutorTest {
         CachePersist<TestUtils.States, DialogEvent> cachePersist = Mockito.spy(createCachePersist());
         InOrder inOrder = inOrder(cachePersist);
 
-        SermoStateMachineService<TestUtils.States, DialogEvent> sermoStateMachineService = new DefaultSermoStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
+        StateMachineService<TestUtils.States, DialogEvent> stateMachineService = new DefaultStateMachineService<>(stateMachineFactory, cachePersist, cachePersist);
 
-        SermoDialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultSermoDialogExecutor<TestUtils.States, DialogEvent>(sermoStateMachineService);
+        DialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultDialogExecutor<TestUtils.States, DialogEvent>(stateMachineService);
 
         dialogExecutor.applyEvent(sessionId, new DialogEvent("1"));
 
@@ -70,7 +70,7 @@ public class DefaultSermoDialogExecutorTest {
     }
 
     private StateMachineFactory<TestUtils.States, DialogEvent> createStateMachineThrowingException() throws Exception {
-        SermoStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = SermoStateMachineFactoryBuilder.builder(DialogEvent.class);
+        DialogStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = DialogStateMachineFactoryBuilder.builder(DialogEvent.class);
 
         @SuppressWarnings("unchecked")
         Action<TestUtils.States, DialogEvent> initialAction = Mockito.mock(Action.class);
@@ -89,7 +89,7 @@ public class DefaultSermoDialogExecutorTest {
     }
 
     private StateMachineFactory<TestUtils.States, DialogEvent> createStateMachineToEndState() throws Exception {
-        SermoStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = SermoStateMachineFactoryBuilder.builder(DialogEvent.class);
+        DialogStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = DialogStateMachineFactoryBuilder.builder(DialogEvent.class);
 
         builder.withState(TestUtils.createState(TestUtils.States.A, new TestUtils.NopAction<>()));
         builder.withState(TestUtils.createState(TestUtils.States.B, new TestUtils.NopAction<>()));

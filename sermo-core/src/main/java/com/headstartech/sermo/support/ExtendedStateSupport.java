@@ -16,7 +16,7 @@
 
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.screen.InputMap;
 import com.headstartech.sermo.screen.PagedMenuSetup;
 import com.headstartech.sermo.screen.Screen;
@@ -24,7 +24,7 @@ import org.springframework.statemachine.ExtendedState;
 
 import java.util.Optional;
 
-import static com.headstartech.sermo.SermoSystemConstants.INPUT_ITEM_DATA_KEY;
+import static com.headstartech.sermo.SystemConstants.INPUT_ITEM_DATA_KEY;
 
 /**
  * @author Per Johansson
@@ -32,19 +32,19 @@ import static com.headstartech.sermo.SermoSystemConstants.INPUT_ITEM_DATA_KEY;
 public class ExtendedStateSupport {
 
     public static void setOutput(ExtendedState extendedState, String output) {
-        extendedState.getVariables().put(SermoSystemConstants.OUTPUT_KEY, output);
+        extendedState.getVariables().put(SystemConstants.OUTPUT_KEY, output);
     }
 
     public static void setScreenMenuInputMap(ExtendedState extendedState, InputMap inputMap) {
-        extendedState.getVariables().put(SermoSystemConstants.INPUT_MAP_KEY, inputMap);
+        extendedState.getVariables().put(SystemConstants.INPUT_MAP_KEY, inputMap);
     }
 
     public static void clearScreenMenuInputMap(ExtendedState extendedState) {
-        extendedState.getVariables().remove(SermoSystemConstants.INPUT_MAP_KEY);
+        extendedState.getVariables().remove(SystemConstants.INPUT_MAP_KEY);
     }
 
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {
-        return (InputMap) extendedState.getVariables().get(SermoSystemConstants.INPUT_MAP_KEY);
+        return (InputMap) extendedState.getVariables().get(SystemConstants.INPUT_MAP_KEY);
     }
 
     public static Optional<Object> getTransition(ExtendedState extendedState, String input) {
@@ -56,16 +56,16 @@ public class ExtendedStateSupport {
     }
 
     public static void setPagedMenuSetup(ExtendedState extendedState, PagedMenuSetup pagedMenuSetup) {
-        extendedState.getVariables().put(SermoSystemConstants.PAGED_SCREEN_KEY, pagedMenuSetup);
+        extendedState.getVariables().put(SystemConstants.PAGED_SCREEN_KEY, pagedMenuSetup);
     }
 
     public static PagedMenuSetup getPagedMenuSetup(ExtendedState extendedState) {
-        return (PagedMenuSetup) extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY);
+        return (PagedMenuSetup) extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY);
     }
 
     // TODO: should be removed
     public static Object getItemData(ExtendedState extendedState) {
-        return extendedState.getVariables().get(SermoSystemConstants.INPUT_ITEM_DATA_KEY);
+        return extendedState.getVariables().get(SystemConstants.INPUT_ITEM_DATA_KEY);
     }
 
     // TODO: should be removed
@@ -79,11 +79,11 @@ public class ExtendedStateSupport {
     }
 
     public static Optional<Exception> getExecutionException(ExtendedState extendedState) {
-        return Optional.ofNullable(extendedState.get(SermoSystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
+        return Optional.ofNullable(extendedState.get(SystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
     }
 
     public static void setExecutionException(ExtendedState extendedState, Exception executionException) {
-        extendedState.getVariables().put(SermoSystemConstants.EXECUTION_EXCEPTION_KEY, executionException);
+        extendedState.getVariables().put(SystemConstants.EXECUTION_EXCEPTION_KEY, executionException);
     }
 
 }

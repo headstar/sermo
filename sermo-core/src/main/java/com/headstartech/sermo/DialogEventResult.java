@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
- * Result from {@link SermoDialogExecutor}.
+ * Result from {@link DialogExecutor}.
  *
  * @author Per Johansson
  */

@@ -1,7 +1,7 @@
 package demo.web;
 
 import com.headstartech.sermo.DialogEventResult;
-import com.headstartech.sermo.SermoDialogExecutor;
+import com.headstartech.sermo.DialogExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SermoController {
 
     @Autowired
-    private SermoDialogExecutor<States, SubscriberEvent> sermoDialogExecutor;
+    private DialogExecutor<States, SubscriberEvent> dialogExecutor;
 
     @Autowired
     private List<ShortCode> shortCodes;
@@ -33,7 +33,7 @@ public class SermoController {
     public String input(@RequestParam("msisdn") String msisdn, @RequestParam("input") String input , Model model) throws Exception {
 
         try {
-            DialogEventResult dialogEventResult = sermoDialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
+            DialogEventResult dialogEventResult = dialogExecutor.applyEvent(msisdn, new SubscriberEvent(input, msisdn));
             if(dialogEventResult.isDialogComplete()) {
                 model.addAttribute("screen", dialogEventResult.getOutput().orElse("(completed)"));
             } else {

@@ -1,9 +1,9 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.TestUtils;
-import com.headstartech.sermo.statemachine.factory.SermoStateMachineFactoryBuilder;
+import com.headstartech.sermo.statemachine.factory.DialogStateMachineFactoryBuilder;
 import com.headstartech.sermo.statemachine.guards.RegExpTransitionGuard;
 import org.junit.jupiter.api.Test;
 import org.springframework.statemachine.StateMachine;
@@ -21,7 +21,7 @@ public class DefaultOutputHandlerTest {
         OutputHandler<States, DialogEvent> outputHandler = new DefaultOutputHandler<>();
         String expectedOutput = "ABC";
         StateMachine<States, DialogEvent> stateMachine = getStateMachine();
-        stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.OUTPUT_KEY, expectedOutput);
+        stateMachine.getExtendedState().getVariables().put(SystemConstants.OUTPUT_KEY, expectedOutput);
         assertFalse(stateMachine.isComplete());
 
         // when
@@ -29,8 +29,8 @@ public class DefaultOutputHandlerTest {
 
         // then
         assertEquals(expectedOutput, actualOutput);
-        assertNull(stateMachine.getExtendedState().getVariables().get(SermoSystemConstants.OUTPUT_KEY));
-        assertEquals(expectedOutput, stateMachine.getExtendedState().getVariables().get(SermoSystemConstants.LAST_OUTPUT_KEY));
+        assertNull(stateMachine.getExtendedState().getVariables().get(SystemConstants.OUTPUT_KEY));
+        assertEquals(expectedOutput, stateMachine.getExtendedState().getVariables().get(SystemConstants.LAST_OUTPUT_KEY));
     }
 
     @Test
@@ -40,15 +40,15 @@ public class DefaultOutputHandlerTest {
         StateMachine<States, DialogEvent> stateMachine = getStateMachine();
         assertFalse(stateMachine.isComplete());
         String expectedOutput = "ABC";
-        stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.LAST_OUTPUT_KEY, expectedOutput);
+        stateMachine.getExtendedState().getVariables().put(SystemConstants.LAST_OUTPUT_KEY, expectedOutput);
 
         // when
         String actualOutput = outputHandler.getOutput(stateMachine);
 
         // then
         assertEquals(expectedOutput, actualOutput);
-        assertEquals(expectedOutput, stateMachine.getExtendedState().getVariables().get(SermoSystemConstants.LAST_OUTPUT_KEY));
-        assertNull(stateMachine.getExtendedState().getVariables().get(SermoSystemConstants.OUTPUT_KEY));
+        assertEquals(expectedOutput, stateMachine.getExtendedState().getVariables().get(SystemConstants.LAST_OUTPUT_KEY));
+        assertNull(stateMachine.getExtendedState().getVariables().get(SystemConstants.OUTPUT_KEY));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class DefaultOutputHandlerTest {
         OutputHandler<States, DialogEvent> outputHandler = new DefaultOutputHandler<>();
         StateMachine<States, DialogEvent> stateMachine = getCompletedStateMachine();
         assertTrue(stateMachine.isComplete());
-        stateMachine.getExtendedState().getVariables().put(SermoSystemConstants.LAST_OUTPUT_KEY, "ABCDEF");
+        stateMachine.getExtendedState().getVariables().put(SystemConstants.LAST_OUTPUT_KEY, "ABCDEF");
 
         // when
         String actualOutput = outputHandler.getOutput(stateMachine);
@@ -67,7 +67,7 @@ public class DefaultOutputHandlerTest {
     }
 
     private StateMachine<States, DialogEvent> getStateMachine() throws Exception {
-        SermoStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = SermoStateMachineFactoryBuilder.builder(DialogEvent.class);
+        DialogStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = DialogStateMachineFactoryBuilder.builder(DialogEvent.class);
         builder.withState(createState(TestUtils.States.A, nopAction()));
         builder.withState(createEndState(TestUtils.States.B, nopAction()));
         builder.withInitialState(TestUtils.States.A);

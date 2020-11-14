@@ -1,6 +1,6 @@
 package com.headstartech.sermo.screen;
 
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.support.DefaultExtendedState;
@@ -24,7 +24,7 @@ public class DefaultPagedMenuSupportTest {
         pagedMenuSupport.initializePagedScreen(extendedState, pagedMenuSetup);
 
         // then
-        assertSame(pagedMenuSetup, extendedState.getVariables().get(SermoSystemConstants.PAGED_SCREEN_KEY));
+        assertSame(pagedMenuSetup, extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY));
     }
 
     @Test

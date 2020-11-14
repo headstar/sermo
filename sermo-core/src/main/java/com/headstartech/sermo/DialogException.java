@@ -16,26 +16,24 @@
 
 package com.headstartech.sermo;
 
-import com.headstartech.sermo.persist.CachePersist;
-import com.headstartech.sermo.statemachine.StateMachineDeleter;
-import com.headstartech.sermo.support.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.StateMachinePersist;
-import org.springframework.statemachine.config.StateMachineFactory;
-
-import java.util.Optional;
-
 /**
+ * Base class for exceptions thrown by {@link DialogExecutor} if there's an error when handling an event.
+ *
  * @author Per Johansson
  */
-public interface SermoDialogExecutor<S, E extends DialogEvent> {
+public abstract class DialogException extends RuntimeException {
 
-    DialogEventResult applyEvent(String sessionId, E event) throws SermoDialogException;
+    private static final long serialVersionUID = -4302908681874019397L;
 
-    void register(SermoDialogListener<E> listener);
+    public DialogException(Throwable cause) {
+        super(cause);
+    }
 
-    void unregister(SermoDialogListener<E> listener);
+    public DialogException(String message) {
+        super(message);
+    }
 
+    public DialogException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

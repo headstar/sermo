@@ -17,7 +17,7 @@
 package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.SermoSystemConstants;
+import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
 import com.headstartech.sermo.screen.PagedMenuSupport;
 import com.headstartech.sermo.screen.Screen;
@@ -46,9 +46,9 @@ public class PagedMenuInternalAction<S, E extends DialogEvent> implements Action
         Object transitionId = ExtendedStateSupport.getTransition(context.getExtendedState(), (context.getEvent()).getInput())
                 .orElseThrow(() -> new IllegalStateException("PagedMenuScreenInternalAction executed with no transition id set"));
 
-        if(SermoSystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
+        if(SystemConstants.NEXT_PAGE_KEY.equals(transitionId)) {
             pagedMenuSupport.incrementPage(context.getExtendedState());
-        } else if(SermoSystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
+        } else if(SystemConstants.PREVIOUS_PAGE_KEY.equals(transitionId)) {
             pagedMenuSupport.decrementPage(context.getExtendedState());
         } else {
             throw new IllegalStateException(String.format("PagedMenuScreenInternalAction executed with unknown transition id: transitionId=%s", transitionId));

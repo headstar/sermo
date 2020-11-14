@@ -29,23 +29,23 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class SermoMetricsBinder<S,E extends DialogEvent> implements MeterBinder {
 
-    private final SermoDialogExecutor<S, E> sermoDialogExecutor;
+    private final DialogExecutor<S, E> dialogExecutor;
 
-    public SermoMetricsBinder(SermoDialogExecutor<S, E> sermoDialogExecutor) {
-        this.sermoDialogExecutor = sermoDialogExecutor;
+    public SermoMetricsBinder(DialogExecutor<S, E> dialogExecutor) {
+        this.dialogExecutor = dialogExecutor;
     }
 
     @Override
     public void bindTo(MeterRegistry registry) {
         MetricsListener<E> metricsListener = new MetricsListener<>(registry);
-        sermoDialogExecutor.register(metricsListener);
+        dialogExecutor.addListener(metricsListener);
 
         FunctionCounter.builder("sermo.dialog.error", metricsListener,
                 s -> s.getDialogErrorCount())
               .register(registry);
     }
 
-    static class MetricsListener<E extends DialogEvent> implements SermoDialogListener<E> {
+    static class MetricsListener<E extends DialogEvent> implements DialogListener<E> {
 
         private AtomicLong dialogErrorCounter = new AtomicLong();
         private final MeterRegistry meterRegistry;
@@ -66,7 +66,7 @@ public class SermoMetricsBinder<S,E extends DialogEvent> implements MeterBinder 
         }
 
         @Override
-        public void postEventHandled(String sessionId, E event, SermoDialogException e) {
+        public void postEventHandled(String sessionId, E event, DialogException e) {
             Timer.Sample sample = sessionTimerSamples.remove(sessionId);
             if(e == null) {
                 sample.stop(meterRegistry.timer("sermo.dialog.event"));
