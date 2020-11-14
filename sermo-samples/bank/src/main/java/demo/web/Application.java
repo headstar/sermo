@@ -105,6 +105,7 @@ public class Application {
         builder.withScreenTransition(States.STATEMENT_MONTHLY, States.ROOT, Transitions.ROOT);
         builder.withScreenTransition(States.STATEMENT_ANNUAL, States.ROOT, Transitions.ROOT);
         builder.withScreenTransition(States.ROOT, States.INTEREST_RATE, Transitions.INTEREST);
+        builder.withScreenTransition(States.INTEREST_RATE, States.ROOT, Transitions.ROOT);
 
 
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false));

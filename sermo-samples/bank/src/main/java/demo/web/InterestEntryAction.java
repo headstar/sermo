@@ -17,6 +17,7 @@
 package demo.web;
 
 import com.headstartech.sermo.screen.Screen;
+import com.headstartech.sermo.screen.StaticMenuItem;
 import com.headstartech.sermo.screen.Text;
 import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
@@ -32,6 +33,7 @@ public class InterestEntryAction implements Action<States, SubscriberEvent> {
         Screen.Builder screenBuilder =  Screen.builder();
 
         screenBuilder.withScreenBlock(new Text("What's your age? (must be over 18)"));
+        screenBuilder.withScreenBlock(new StaticMenuItem("#", "Main menu", Transitions.ROOT));
 
         Screen screen = screenBuilder.build();
 
