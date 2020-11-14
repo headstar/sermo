@@ -24,8 +24,6 @@ import org.springframework.statemachine.ExtendedState;
 
 import java.util.Optional;
 
-import static com.headstartech.sermo.SystemConstants.INPUT_ITEM_DATA_KEY;
-
 /**
  * @author Per Johansson
  */
@@ -62,17 +60,7 @@ public class ExtendedStateSupport {
     public static PagedMenuSetup getPagedMenuSetup(ExtendedState extendedState) {
         return (PagedMenuSetup) extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY);
     }
-
-    // TODO: should be removed
-    public static Object getItemData(ExtendedState extendedState) {
-        return extendedState.getVariables().get(SystemConstants.INPUT_ITEM_DATA_KEY);
-    }
-
-    // TODO: should be removed
-    public static void setItemData(ExtendedState extendedState, Object itemData) {
-        extendedState.getVariables().put(INPUT_ITEM_DATA_KEY, itemData);
-    }
-
+    
     public static void setScreen(ExtendedState extendedState, Screen screen) {
         setScreenMenuInputMap(extendedState, screen.getInputMap());
         setOutput(extendedState, screen.getOutput());
