@@ -113,21 +113,24 @@ public class DialogStateMachineFactoryBuilder {
             return this;
         }
 
-        public Builder<S, E> withChoice(S s, S defaultTarget, Collection<ChoiceOption<S, E>> options) throws Exception {
+        @SafeVarargs
+        public final Builder<S, E> withChoice(S s, S defaultTarget, ChoiceOption<S, E>... options) throws Exception {
            return withChoice(s, new DefaultChoiceOption<>(defaultTarget), options);
         }
 
-        public Builder<S, E> withChoice(S s, DefaultChoiceOption<S, E> defaultOption, Collection<ChoiceOption<S, E>> options) throws Exception {
+        @SafeVarargs
+        public final Builder<S, E> withChoice(S s, DefaultChoiceOption<S, E> defaultOption, ChoiceOption<S, E>... options) throws Exception {
             stateConfigurer.choice(s);
             ChoiceTransitionConfigurer<S, E> choiceTransitionConfigurer = transitionConfigurer.withChoice();
             choiceTransitionConfigurer.source(s);
-            options.forEach(e -> {
-                if(e.getAction() != null) {
-                    choiceTransitionConfigurer.then(e.getTarget(), e.getGuard(), wrapWithErrorActions(e.getAction()));
+            for(int i=0; i<options.length; ++i) {
+                ChoiceOption<S, E> option = options[i];
+                if (option.getAction() != null) {
+                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard(), wrapWithErrorActions(option.getAction()));
                 } else {
-                    choiceTransitionConfigurer.then(e.getTarget(), e.getGuard());
+                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard());
                 }
-            });
+            }
             if(defaultOption.getAction() != null) {
                 choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorActions(defaultOption.getAction()));
             } else {

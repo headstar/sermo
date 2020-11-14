@@ -15,7 +15,6 @@ import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -108,7 +107,7 @@ public class Application {
         builder.withScreenTransition(States.ROOT, States.INTEREST_RATE, Transitions.INTEREST);
 
 
-        builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, Arrays.asList(new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false)));
+        builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false));
 
         builder.withFormInputTransition(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenPredicate());
         builder.withScreenTransition(States.INTEREST_RATE_OFFER, States.ROOT, Transitions.ROOT);
