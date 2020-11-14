@@ -6,6 +6,7 @@ import org.springframework.statemachine.action.Action;
 
 /**
  * Exit {@link Action} assuming the object associated with a {@link com.headstartech.sermo.screen.MenuItem} is an instance of {@link OnItemHandler}.
+ *
  * The action calls {@link OnItemHandler#handle(ExtendedState)} 
  * 
  * @param <S>
