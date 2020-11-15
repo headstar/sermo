@@ -18,7 +18,7 @@ public class ExecuteItemHandlerExitActionTest {
     @Test
     public void throwsExceptionIfNotOnItemHandler() {
         // given
-        Action<String, DialogEvent> action = new ExecuteItemHandlerExitAction<>();
+        Action<String, DialogEvent> action = new ExecuteItemHandlerAction<>();
 
         InputMap inputMap = InputMap.builder().
                 addMapping("1", "tr1", new Object())
@@ -33,7 +33,7 @@ public class ExecuteItemHandlerExitActionTest {
     @Test
     public void callingItemHandler() {
         // given
-        Action<String, DialogEvent> action = new ExecuteItemHandlerExitAction<>();
+        Action<String, DialogEvent> action = new ExecuteItemHandlerAction<>();
 
         OnItemHandler onItemHandler = Mockito.mock(OnItemHandler.class);
 

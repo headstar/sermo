@@ -29,7 +29,7 @@ import java.util.Optional;
  *
  * @author Per Johansson
  */
-public abstract class AbstractItemObjectExitAction<S, E extends DialogEvent> implements Action<S, E> {
+public abstract class AbstractScreenCleanupAction<S, E extends DialogEvent> implements Action<S, E> {
 
     @Override
     public void execute(StateContext<S, E> context) {

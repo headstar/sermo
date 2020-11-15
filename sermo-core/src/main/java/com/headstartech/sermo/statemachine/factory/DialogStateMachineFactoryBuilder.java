@@ -19,7 +19,7 @@ package com.headstartech.sermo.statemachine.factory;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.statemachine.LoggingStateMachineListener;
-import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerExitAction;
+import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerAction;
 import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
@@ -228,7 +228,7 @@ public class DialogStateMachineFactoryBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(screenTransitionGuard(transitionId))
-                    .action(new ExecuteItemHandlerExitAction<>())  // making sure item handler is executed before the supplied action
+                    .action(new ExecuteItemHandlerAction<>())  // making sure item handler is executed before the supplied action
                     .action(wrapWithErrorActions(action));
             return this;
         }

@@ -4,7 +4,7 @@ package com.headstartech.sermo.states;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
 import com.headstartech.sermo.screen.PagedMenuSupport;
-import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerExitAction;
+import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerAction;
 import com.headstartech.sermo.statemachine.actions.PagedMenuEntryAction;
 import com.headstartech.sermo.statemachine.actions.PagedMenuInternalAction;
 import com.headstartech.sermo.statemachine.actions.PagedMenuSetupProvider;
@@ -22,7 +22,7 @@ public class USSDStates {
     public static <S, E extends DialogEvent> USSDState<S, E> menuState(S id, Action<S, E> entryAction) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(entryAction);
-        builder.withExitAction(new ExecuteItemHandlerExitAction<>());
+        builder.withExitAction(new ExecuteItemHandlerAction<>());
         return builder.build();
     }
 
@@ -30,7 +30,7 @@ public class USSDStates {
                                                                        Action<S, E> exitAction) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(entryAction);
-        builder.withExitAction(new ExecuteItemHandlerExitAction<>());
+        builder.withExitAction(new ExecuteItemHandlerAction<>());
         builder.withExitAction(exitAction);
         return builder.build();
     }
@@ -55,7 +55,7 @@ public class USSDStates {
     public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuState(S id, PagedMenuSetupProvider<S, E> pagedMenuSetupProvider, PagedMenuSupport pagedMenuSupport) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(new PagedMenuEntryAction<>(pagedMenuSetupProvider, pagedMenuSupport));
-        builder.withExitAction(new ExecuteItemHandlerExitAction<>());
+        builder.withExitAction(new ExecuteItemHandlerAction<>());
         return new DefaultPagedUSSDState<>(builder.build(), new PagedMenuInternalAction<>());
     }
 

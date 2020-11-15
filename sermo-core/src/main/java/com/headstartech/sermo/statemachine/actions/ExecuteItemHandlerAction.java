@@ -12,7 +12,7 @@ import org.springframework.statemachine.action.Action;
  * @param <S>
  * @param <E>
  */
-public class ExecuteItemHandlerExitAction<S, E extends DialogEvent> extends AbstractItemObjectExitAction<S, E> {
+public class ExecuteItemHandlerAction<S, E extends DialogEvent> extends AbstractScreenCleanupAction<S, E> {
 
     @Override
     protected void handleItemObject(ExtendedState extendedState, Object itemObject) {
