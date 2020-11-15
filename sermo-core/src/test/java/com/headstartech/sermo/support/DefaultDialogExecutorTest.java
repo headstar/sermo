@@ -97,8 +97,6 @@ public class DefaultDialogExecutorTest {
 
         DialogExecutor<TestUtils.States, DialogEvent> dialogExecutor = new DefaultDialogExecutor<TestUtils.States, DialogEvent>(stateMachineService);
 
-        dialogExecutor.applyEvent("session222", new DialogEvent("1"));
-
         // when
         DialogEventResult result = dialogExecutor.applyEvent("session222", new DialogEvent("1"));
 
@@ -143,7 +141,7 @@ public class DefaultDialogExecutorTest {
         DialogStateMachineFactoryBuilder.Builder<TestUtils.States, DialogEvent> builder = DialogStateMachineFactoryBuilder.builder(DialogEvent.class);
 
         TestUtils.Transitions transition = TestUtils.Transitions.T1;
-        Action<TestUtils.States, DialogEvent> stateBEntryAction = new Action<TestUtils.States, DialogEvent>() {
+        Action<TestUtils.States, DialogEvent> stateAEntryAction = new Action<TestUtils.States, DialogEvent>() {
             @Override
             public void execute(StateContext<TestUtils.States, DialogEvent> context) {
                 MenuItem mi = new MenuItem("Option 1", transition, onItemHandler);
@@ -158,14 +156,11 @@ public class DefaultDialogExecutorTest {
         };
 
         // should be able to only have state A and B but the entry action is not getting executed for the initial state
-        builder.withState(TestUtils.createState(TestUtils.States.A));
-        builder.withState(TestUtils.createState(TestUtils.States.B, stateBEntryAction));
-        builder.withState(TestUtils.createState(TestUtils.States.C, new TestUtils.NopAction<>()));
+        builder.withState(TestUtils.createState(TestUtils.States.A, stateAEntryAction));
+        builder.withState(TestUtils.createState(TestUtils.States.B, new TestUtils.NopAction<>()));
         builder.withInitialState(TestUtils.States.A);
 
-        builder.withTransition(TestUtils.States.A, TestUtils.States.B, new TestUtils.AlwaysTrueGuard<>());
-        builder.withScreenTransition(TestUtils.States.B, TestUtils.States.C, transition, transitionAction);
-
+        builder.withScreenTransition(TestUtils.States.A, TestUtils.States.B, transition, transitionAction);
         return builder.build();
     }
 

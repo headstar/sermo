@@ -5,7 +5,3 @@
 * Auto-conf for sermo-metrics
 
 * Sample app. context test fails if importing com.headstartech.sermo.SermoMetricsConfiguration in demo.web.Application
-
-Spring Statemachine issues
-=============================
-* When calling org.springframework.statemachine.persist.StateMachinePersister.restore, the state is set to the initial state and any entry action assoctiated with the initial state is never executed!?
