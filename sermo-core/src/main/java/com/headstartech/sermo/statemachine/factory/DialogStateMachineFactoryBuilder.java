@@ -228,7 +228,7 @@ public class DialogStateMachineFactoryBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(screenTransitionGuard(transitionId))
-                    .action(new ExecuteItemHandlerAction<>())  // making sure item handler is executed before the supplied action
+                    .action(wrapWithErrorActions(new ExecuteItemHandlerAction<>()))  // making sure item handler is executed before the supplied action
                     .action(wrapWithErrorActions(action));
             return this;
         }
