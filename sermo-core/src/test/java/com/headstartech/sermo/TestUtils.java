@@ -31,6 +31,11 @@ public class TestUtils {
         return USSDStates.menuState(state, action);
     }
 
+    public static USSDState<States, DialogEvent> createState(States state) {
+        return USSDStates.menuState(state, null);
+    }
+
+
     public static USSDState<States, DialogEvent> createEndState(States state, Action<States, DialogEvent> action) {
         return USSDStates.endState(state, action);
     }
@@ -42,6 +47,11 @@ public class TestUtils {
     public static enum States {
         A, B, C
     }
+
+    public static enum Transitions {
+        T1, T2, T3
+    }
+
 
     public static class AlwaysTrueGuard<S, E> implements Guard<S, E> {
         @Override
