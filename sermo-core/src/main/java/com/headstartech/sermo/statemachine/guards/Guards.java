@@ -29,4 +29,8 @@ public class Guards {
         return new NotGuard<>(guard);
     }
 
+    public static <S, E extends DialogEvent> InputEqualsGuard<S, E> eq(String value) {
+        return new InputEqualsGuard<>(value);
+    }
+
 }
