@@ -55,7 +55,8 @@ public class LoggingStateMachineListener<S, E extends DialogEvent> extends State
         if(hasScreenTransitionGuard(transition)) {
             log.debug("Screen transition: transitionId={}, source={}, target={}", getTransitionId(transition), transition.getSource().getId(), transition.getTarget().getId());
         } else {
-            log.debug("Transition: source={}, target={}", transition.getSource().getId(), transition.getTarget().getId());
+            S sourceId = transition.getSource() != null ? transition.getSource().getId() : null;  // no transition source if it's an "inital" transition
+            log.debug("Transition: source={}, target={}", sourceId, transition.getTarget().getId());
         }
     }
 
