@@ -1,6 +1,9 @@
 package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.support.DefaultDialogExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.action.Action;
 
@@ -14,11 +17,14 @@ import org.springframework.statemachine.action.Action;
  */
 public class ExecuteItemHandlerAction<S, E extends DialogEvent> extends AbstractScreenCleanupAction<S, E> {
 
+    private static final Logger log = LoggerFactory.getLogger(ExecuteItemHandlerAction.class);
+
     @Override
-    protected void handleItemObject(ExtendedState extendedState, Object itemObject) {
-        if(!(itemObject instanceof OnItemHandler)) {
-            throw new IllegalStateException(String.format("Expected OnItemHandler, not %s", itemObject.getClass().getName()));
+    protected void handleItemObject(ExtendedState extendedState, Object onItemHandler) {
+        if(!(onItemHandler instanceof OnItemHandler)) {
+            throw new IllegalStateException(String.format("Expected OnItemHandler, not %s", onItemHandler.getClass().getName()));
         }
-        ((OnItemHandler) itemObject).handle(extendedState);
+        log.debug("Executing OnItemHandler: onItemHandler={}", onItemHandler);
+        ((OnItemHandler) onItemHandler).handle(extendedState);
     }
 }

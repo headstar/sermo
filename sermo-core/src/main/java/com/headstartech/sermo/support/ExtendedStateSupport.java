@@ -37,8 +37,8 @@ public class ExtendedStateSupport {
         extendedState.getVariables().put(SystemConstants.INPUT_MAP_KEY, inputMap);
     }
 
-    public static void clearScreenMenuInputMap(ExtendedState extendedState) {
-        extendedState.getVariables().remove(SystemConstants.INPUT_MAP_KEY);
+    public static boolean clearScreenMenuInputMap(ExtendedState extendedState) {
+        return extendedState.getVariables().remove(SystemConstants.INPUT_MAP_KEY) != null;
     }
 
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {

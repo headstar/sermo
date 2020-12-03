@@ -19,6 +19,8 @@ package com.headstartech.sermo.statemachine.actions;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.screen.InputMap;
 import com.headstartech.sermo.support.ExtendedStateSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
@@ -30,6 +32,8 @@ import java.util.Optional;
  * @author Per Johansson
  */
 public abstract class AbstractScreenCleanupAction<S, E extends DialogEvent> implements Action<S, E> {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractScreenCleanupAction.class);
 
     @Override
     public void execute(StateContext<S, E> context) {
@@ -50,6 +54,9 @@ public abstract class AbstractScreenCleanupAction<S, E extends DialogEvent> impl
     protected abstract void handleItemObject(ExtendedState extendedState, Object itemObject);
 
     protected void clearScreenInputMap(ExtendedState extendedState) {
-        ExtendedStateSupport.clearScreenMenuInputMap(extendedState);
+        boolean cleared = ExtendedStateSupport.clearScreenMenuInputMap(extendedState);
+        if(cleared) {
+            log.debug("Cleared screen input map");
+        }
     }
 }
