@@ -37,7 +37,11 @@ public class LoggingStateMachineListener<S, E extends DialogEvent> extends State
 
     @Override
     public void stateChanged(State<S, E> from, State<S, E> to) {
-        log.debug("State changed: from={}, to={}", from.getId(), to.getId());
+        S fromId = null;
+        if(from != null) {
+            fromId = from.getId();
+        }
+        log.debug("State changed: from={}, to={}", fromId, to.getId());
     }
 
     @Override
@@ -52,10 +56,11 @@ public class LoggingStateMachineListener<S, E extends DialogEvent> extends State
 
     @Override
     public void transition(Transition<S, E> transition) {
+        S sourceId = transition.getSource() != null ? transition.getSource().getId() : null;  // no transition source if it's an "inital" transition
+
         if(hasScreenTransitionGuard(transition)) {
-            log.debug("Screen transition: transitionId={}, source={}, target={}", getTransitionId(transition), transition.getSource().getId(), transition.getTarget().getId());
+            log.debug("Screen transition: transitionId={}, source={}, target={}", getTransitionId(transition), sourceId, transition.getTarget().getId());
         } else {
-            S sourceId = transition.getSource() != null ? transition.getSource().getId() : null;  // no transition source if it's an "inital" transition
             log.debug("Transition: source={}, target={}", sourceId, transition.getTarget().getId());
         }
     }
