@@ -37,10 +37,7 @@ public class LoggingStateMachineListener<S, E extends DialogEvent> extends State
 
     @Override
     public void stateChanged(State<S, E> from, State<S, E> to) {
-        S fromId = null;
-        if(from != null) {
-            fromId = from.getId();
-        }
+        S fromId = from != null ? from.getId() : null;
         log.debug("State changed: from={}, to={}", fromId, to.getId());
     }
 
