@@ -6,7 +6,7 @@ import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 
-public abstract class AbstractPagedInternalAction<S, E extends DialogEvent> implements Action<S, E> {
+public abstract class AbstractPagedScreenInternalAction<S, E extends DialogEvent> implements Action<S, E> {
 
     @Override
     public void execute(StateContext<S, E> context) {

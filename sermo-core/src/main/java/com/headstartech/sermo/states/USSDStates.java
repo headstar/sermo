@@ -2,12 +2,9 @@ package com.headstartech.sermo.states;
 
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
-import com.headstartech.sermo.screen.PagedMenuSupport;
-import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerAction;
-import com.headstartech.sermo.statemachine.actions.PagedMenuEntryAction;
-import com.headstartech.sermo.statemachine.actions.PagedMenuInternalAction;
-import com.headstartech.sermo.statemachine.actions.PagedMenuSetupProvider;
+import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
+import com.headstartech.sermo.screen.PagedScreenSupport;
+import com.headstartech.sermo.statemachine.actions.*;
 import org.springframework.statemachine.action.Action;
 
 /**
@@ -48,15 +45,15 @@ public class USSDStates {
         return builder.build();
     }
 
-    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuState(S id, PagedMenuSetupProvider<S, E> pagedMenuSetupProvider) {
-        return pagedMenuState(id, pagedMenuSetupProvider, new DefaultPagedMenuSupport());
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedScreenState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider) {
+        return pagedScreenState(id, pagedScreenSetupProvider, new DefaultPagedScreenSupport());
     }
 
-    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedMenuState(S id, PagedMenuSetupProvider<S, E> pagedMenuSetupProvider, PagedMenuSupport pagedMenuSupport) {
+    public static <S, E extends DialogEvent> PagedUSSDState<S, E> pagedScreenState(S id, PagedScreenSetupProvider<S, E> pagedScreenSetupProvider, PagedScreenSupport pagedScreenSupport) {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
-        builder.withEntryAction(new PagedMenuEntryAction<>(pagedMenuSetupProvider, pagedMenuSupport));
+        builder.withEntryAction(new DefaultPagedScreenEntryAction<>(pagedScreenSetupProvider, pagedScreenSupport));
         builder.withExitAction(new ExecuteItemHandlerAction<>());
-        return new DefaultPagedUSSDState<>(builder.build(), new PagedMenuInternalAction<>());
+        return new DefaultPagedUSSDState<>(builder.build(), new DefaultPagedScreenInternalAction<>(pagedScreenSupport));
     }
 
 }

@@ -17,8 +17,8 @@
 package com.headstartech.sermo.statemachine.actions;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.screen.DefaultPagedMenuSupport;
-import com.headstartech.sermo.screen.PagedMenuSupport;
+import com.headstartech.sermo.screen.DefaultPagedScreenSupport;
+import com.headstartech.sermo.screen.PagedScreenSupport;
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.springframework.statemachine.StateContext;
@@ -26,32 +26,32 @@ import org.springframework.statemachine.StateContext;
 /**
  * @author Per Johansson
  */
-public class PagedMenuInternalAction<S, E extends DialogEvent> extends AbstractPagedInternalAction<S, E> {
+public class DefaultPagedScreenInternalAction<S, E extends DialogEvent> extends AbstractPagedScreenInternalAction<S, E> {
 
-    private final PagedMenuSupport pagedMenuSupport;
+    private final PagedScreenSupport pagedScreenSupport;
 
-    public PagedMenuInternalAction(PagedMenuSupport pagedMenuSupport) {
-        this.pagedMenuSupport = pagedMenuSupport;
+    public DefaultPagedScreenInternalAction(PagedScreenSupport pagedScreenSupport) {
+        this.pagedScreenSupport = pagedScreenSupport;
     }
 
-    public PagedMenuInternalAction() {
-        this(new DefaultPagedMenuSupport());
+    public DefaultPagedScreenInternalAction() {
+        this(new DefaultPagedScreenSupport());
     }
 
     @Override
     protected void handleNextPage(StateContext<S, E> context) {
-        pagedMenuSupport.incrementPage(context.getExtendedState());
+        pagedScreenSupport.incrementPage(context.getExtendedState());
         createScreen(context);
     }
 
     @Override
     protected void handlePreviousPage(StateContext<S, E> context) {
-        pagedMenuSupport.decrementPage(context.getExtendedState());
+        pagedScreenSupport.decrementPage(context.getExtendedState());
         createScreen(context);
     }
 
     protected void createScreen(StateContext<S, E> context) {
-        Screen screen = pagedMenuSupport.createScreen(context.getExtendedState());
+        Screen screen = pagedScreenSupport.createScreen(context.getExtendedState());
         ExtendedStateSupport.setScreen(context.getExtendedState(), screen);
     }
 
