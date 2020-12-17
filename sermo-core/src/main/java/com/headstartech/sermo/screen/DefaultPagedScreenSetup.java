@@ -21,6 +21,9 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
 
     @Override
     public ScreenBlock getScreenBlockForCurrentPage() {
+        if(pages.isEmpty()) {
+            return null;
+        }
         return pages.get(page);
     }
 
