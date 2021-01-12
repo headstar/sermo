@@ -7,7 +7,9 @@ import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.support.DefaultExtendedState;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -70,6 +72,7 @@ public class DefaultPagedScreenSupportTest {
 
         PagedScreenSetup pagedScreenSetup = new DefaultPagedScreenSetup(screenBlocks, nextPageMenuItem, previousPageMenuItem, headerBlock, null);
 
+        Map<Object, Object> preTestVariables = new HashMap<>(extendedState.getVariables());
         pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
 
         // when ... then
@@ -97,5 +100,11 @@ public class DefaultPagedScreenSupportTest {
         pagedScreenSupport.decrementPage(extendedState);
         screen = pagedScreenSupport.createScreen(extendedState);
         assertEquals(expectedPage1, screen.getOutput());
+
+        // cleanup
+        pagedScreenSupport.cleanupPagedScreen(extendedState);
+
+        Map<Object, Object> postTestVariables = new HashMap<>(extendedState.getVariables());
+        assertEquals(preTestVariables, postTestVariables);
     }
 }

@@ -21,6 +21,11 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
     }
 
     @Override
+    public void cleanupPagedScreen(ExtendedState extendedState) {
+        ExtendedStateSupport.removePagedScreenSetup(extendedState);
+    }
+
+    @Override
     public Screen createScreen(ExtendedState extendedState) {
         PagedScreenSetup pagedScreenSetup = ExtendedStateSupport.getPagedScreenSetup(extendedState);
 

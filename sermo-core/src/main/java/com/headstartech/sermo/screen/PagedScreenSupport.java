@@ -6,6 +6,8 @@ public interface PagedScreenSupport {
 
     void initializePagedScreen(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup);
 
+    void cleanupPagedScreen(ExtendedState extendedState);
+
     Screen createScreen(ExtendedState extendedState);
 
     void incrementPage(ExtendedState extendedState);

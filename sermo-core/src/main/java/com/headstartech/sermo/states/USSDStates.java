@@ -53,6 +53,7 @@ public class USSDStates {
         DefaultUSSDState.Builder<S,E> builder = DefaultUSSDState.<S, E>builder(id);
         builder.withEntryAction(new DefaultPagedScreenEntryAction<>(pagedScreenSetupProvider, pagedScreenSupport));
         builder.withExitAction(new ExecuteItemHandlerAction<>());
+        builder.withExitAction(new DefaultPagedScreenExitAction<>(pagedScreenSupport));
         return new DefaultPagedUSSDState<>(builder.build(), new DefaultPagedScreenInternalAction<>(pagedScreenSupport));
     }
 

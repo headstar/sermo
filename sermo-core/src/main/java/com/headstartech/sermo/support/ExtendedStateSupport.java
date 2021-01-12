@@ -60,7 +60,11 @@ public class ExtendedStateSupport {
     public static PagedScreenSetup getPagedScreenSetup(ExtendedState extendedState) {
         return (PagedScreenSetup) extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY);
     }
-    
+
+    public static void removePagedScreenSetup(ExtendedState extendedState) {
+        extendedState.getVariables().remove(SystemConstants.PAGED_SCREEN_KEY);
+    }
+
     public static void setScreen(ExtendedState extendedState, Screen screen) {
         setScreenMenuInputMap(extendedState, screen.getInputMap());
         setOutput(extendedState, screen.getOutput());
