@@ -23,12 +23,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
-import org.springframework.statemachine.support.DefaultExtendedState;
-import org.springframework.statemachine.support.DefaultStateMachineContext;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Implementation of {@link StateMachinePersist} and {@link StateMachineDeleter} using a {@link Cache}.
@@ -40,8 +34,6 @@ import java.util.HashMap;
 public class CachePersist<S, E> implements StateMachinePersist<S, E, String>, StateMachineDeleter<String> {
 
     private static final Logger log = LoggerFactory.getLogger(CachePersist.class);
-
-    private final StateMachineContext<S, E> EMPTY_CONTEXT = new DefaultStateMachineContext<>(new ArrayList<>(), null, null, null, new DefaultExtendedState(), new HashMap<>(), null);
 
     private final Cache cache;
 
@@ -60,17 +52,8 @@ public class CachePersist<S, E> implements StateMachinePersist<S, E, String>, St
     public StateMachineContext<S, E> read(String contextObj) {
         log.debug("Reading state machine context: contextObj={}", contextObj);
         StateMachineContext<S, E> context = (StateMachineContext<S, E>) cache.get(contextObj, StateMachineContext.class);
-        if(context == null) {
-            // Workaround for a possible Spring Statemachine bug.
-            // Calling org.springframework.statemachine.persist.DefaultStateMachinePersister.restore with a context == null
-            // resulting in a state machine already in the initial state. If the intial state has an associated action,
-            // it won't be executed.
-            log.debug("No state machine context found, returning empty context: contextObj={}", contextObj);
-            return EMPTY_CONTEXT;
-        } else {
-            log.trace("State machine context read: contextObj={}, context={}", contextObj, context);
-            return context;
-        }
+        log.trace("State machine context read: contextObj={}, context={}", contextObj, context);
+        return context;
     }
 
     @Override

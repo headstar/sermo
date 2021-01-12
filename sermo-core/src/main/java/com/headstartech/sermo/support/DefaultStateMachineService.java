@@ -24,10 +24,16 @@ import com.headstartech.sermo.statemachine.StateMachinePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
+import org.springframework.statemachine.support.DefaultExtendedState;
+import org.springframework.statemachine.support.DefaultStateMachineContext;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Per Johansson
@@ -42,7 +48,9 @@ public class DefaultStateMachineService<S, E extends DialogEvent> implements Sta
 
 
     public DefaultStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
-        this(new DefaultStateMachinePool<>(stateMachineFactory), new DefaultStateMachinePersister<>(stateMachinePersist), stateMachineDeleter);
+        this(new DefaultStateMachinePool<>(stateMachineFactory),
+                new DefaultStateMachinePersister<>(new StateMachinePersistWrapper<>(stateMachinePersist)),
+                stateMachineDeleter);
     }
 
     public DefaultStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
@@ -111,5 +119,40 @@ public class DefaultStateMachineService<S, E extends DialogEvent> implements Sta
         stateMachine.start();
     }
 
+    /**
+     * Wrapper to handle the case where the read {@link StateMachineContext} is {@code null}.
+     *
+     * @param <S>
+     * @param <E>
+     */
+    private static class StateMachinePersistWrapper<S, E> implements StateMachinePersist<S, E, String> {
 
+        private final StateMachineContext<S, E> EMPTY_CONTEXT = new DefaultStateMachineContext<>(new ArrayList<>(), null, null, null, new DefaultExtendedState(), new HashMap<>(), null);
+
+        private StateMachinePersist<S, E, String> delegate;
+
+        public StateMachinePersistWrapper(StateMachinePersist<S, E, String> delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void write(StateMachineContext<S, E> context, String contextObj) throws Exception {
+            delegate.write(context, contextObj);
+        }
+
+        @Override
+        public StateMachineContext<S, E> read(String contextObj) throws Exception {
+            StateMachineContext<S, E> context = delegate.read(contextObj);
+            if(context == null) {
+                // Workaround for a possible Spring Statemachine bug.
+                // Calling org.springframework.statemachine.persist.DefaultStateMachinePersister.restore with a context == null
+                // resulting in a state machine already in the initial state. If the intial state has an associated action,
+                // it won't be executed.
+                log.debug("No state machine context found, returning empty context: contextObj={}", contextObj);
+                return EMPTY_CONTEXT;
+            } else {
+                return context;
+            }
+        }
+    }
 }
