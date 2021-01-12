@@ -34,15 +34,15 @@ public class DefaultPagedScreenSupportTest {
         String expectedPage1 = "Accounts\n" +
                 "1. Account A...\n" +
                 "2. Account B...\n" +
-                "0 Next page\n";
+                "0 Next page";
         String expectedPage2 = "Accounts\n" +
                 "1. Account C...\n" +
                 "2. Account D...\n" +
                 "0 Next page\n" +
-                "# Previous page\n";
+                "# Previous page";
         String expectedPage3 = "Accounts\n" +
                 "1. Account E...\n" +
-                "# Previous page\n";
+                "# Previous page";
 
         PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
         ExtendedState extendedState = new DefaultExtendedState();

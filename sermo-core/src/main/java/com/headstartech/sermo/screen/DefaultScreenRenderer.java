@@ -21,6 +21,7 @@ package com.headstartech.sermo.screen;
  */
 public class DefaultScreenRenderer implements ScreenRenderer {
 
+    private final String newline = "\n";
 
     @Override
     public ScreenRenderResult renderScreen(ScreenBlock screenBlock) {
@@ -45,7 +46,6 @@ public class DefaultScreenRenderer implements ScreenRenderer {
         } else {
             throw new IllegalStateException(String.format("unknown ScreenBlock type %s", screenBlock.getClass().getName()));
         }
-
     }
 
     protected void renderScreenBlocksContainer(ScreenBlocksContainer screenBlocksContainer, StringBuilder sb, InputMap.Builder inputMapBuilder) {
@@ -53,23 +53,28 @@ public class DefaultScreenRenderer implements ScreenRenderer {
     }
 
     protected void renderEmptyLine(StringBuilder sb) {
-        sb.append("\n");
+        appendNewline(sb);
     }
 
     protected void renderText(StringBuilder sb, Text text) {
-        sb.append(text.getText())
-                .append("\n");
-
+        if(!text.getText().isEmpty()) {
+            appendNewlineIfScreenNotEmpty(sb);
+            sb.append(text.getText());
+        }
     }
 
     protected void renderMenuGroup(StringBuilder sb, InputMap.Builder inputMapBuilder, MenuGroup menuGroup) {
         int i = 0;
         for (MenuItem menuItem : menuGroup.getMenuItems()) {
+            if(i > 0) {
+                appendNewline(sb);
+            } else {
+                appendNewlineIfScreenNotEmpty(sb);
+            }
             String input = getInput(i);
             String row = String.format("%s. %s", input, menuItem.getLabel());
             String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
             sb.append(elidedRow);
-            sb.append("\n");
             inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemObject());
             ++i;
         }
@@ -80,9 +85,20 @@ public class DefaultScreenRenderer implements ScreenRenderer {
     }
 
     protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {
-        sb.append(String.format("%s %s\n", staticMenuItem.getInput(), staticMenuItem.getLabel()));
+        appendNewlineIfScreenNotEmpty(sb);
+        sb.append(String.format("%s %s", staticMenuItem.getInput(), staticMenuItem.getLabel()));
         inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemObject());
 
+    }
+
+    protected void appendNewlineIfScreenNotEmpty(StringBuilder sb) {
+        if(sb.length() > 0) {
+            appendNewline(sb);
+        }
+    }
+
+    protected void appendNewline(StringBuilder sb) {
+        sb.append(newline);
     }
 
 }

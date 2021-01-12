@@ -48,7 +48,7 @@ public class DefaultScreenRendererTest {
         ScreenRenderer sr = new DefaultScreenRenderer();
         String text = "Apple banana";
         Text textItem = new Text(text);
-        String expectedOutput = text + "\n";
+        String expectedOutput = text;
 
         // when
         ScreenRenderResult srr = sr.renderScreen(textItem);
@@ -67,7 +67,7 @@ public class DefaultScreenRendererTest {
         String input = "3";
         String transitionId = "foo";
         StaticMenuItem staticMenuItem = new StaticMenuItem(input, label, transitionId);
-        String expectedOutput = input + " " + label + "\n";
+        String expectedOutput = input + " " + label;
 
         // when
         ScreenRenderResult srr = sr.renderScreen(staticMenuItem);
@@ -91,7 +91,7 @@ public class DefaultScreenRendererTest {
 
         String expectedOutput =
                 "1. " + mi1.getLabel() + "\n" +
-                "2. " + mi2.getLabel() + "\n";
+                "2. " + mi2.getLabel();
 
         MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2));
 
@@ -114,6 +114,23 @@ public class DefaultScreenRendererTest {
     }
 
     @Test
+    public void emptyMenuGroupRendersEmptyString() {
+        // given
+        ScreenRenderer sr = new DefaultScreenRenderer();
+
+        MenuGroup mg = new MenuGroup(Arrays.asList());
+
+        // when
+        ScreenRenderResult srr = sr.renderScreen(mg);
+
+        // then
+        assertEquals("", srr.getOutput());
+
+        InputMap im  = srr.getInputMap();
+        assertTrue(im.isEmpty());
+    }
+
+    @Test
     public void canRenderMenuGroupWithElidedText() {
         // given
         ScreenRenderer sr = new DefaultScreenRenderer();
@@ -124,7 +141,7 @@ public class DefaultScreenRendererTest {
         TextElide textElide = new TextElide(TextElide.Mode.RIGHT, 9);
 
         String expectedOutput = "1. " + "ABC..." + "\n" +
-                        "2. " + "JKL..." + "\n";
+                        "2. " + "JKL...";
 
         MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2), textElide);
 
@@ -157,17 +174,19 @@ public class DefaultScreenRendererTest {
         String text2 = "orange pear";
         Text textItem2 = new Text(text2);
 
-        ScreenBlocksContainer sbc = new ScreenBlocksContainer(Arrays.asList(textItem1, textItem2));
+        MenuItem mi1 = new MenuItem("ABCDEFGHI", "tr1", "myItem1");
+        MenuGroup mg = new MenuGroup(Arrays.asList(mi1));
 
-        String expectedOutput = text1 + "\n" + text2 + "\n";
+        ScreenBlocksContainer sbc = new ScreenBlocksContainer(
+                Arrays.asList(textItem1, textItem2, mg, EmptyLine.INSTANCE));
+
+        String expectedOutput = text1 + "\n" + text2 + "\n" + "1. " + mi1.getLabel() + "\n";
 
         // when
         ScreenRenderResult srr = sr.renderScreen(sbc);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
-
-        assertTrue(srr.getInputMap().isEmpty());
     }
 
 }
