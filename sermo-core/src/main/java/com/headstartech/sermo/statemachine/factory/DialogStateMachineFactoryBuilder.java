@@ -24,11 +24,7 @@ import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
 import com.headstartech.sermo.states.USSDState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
-import org.springframework.statemachine.action.Actions;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configurers.ChoiceTransitionConfigurer;
@@ -64,7 +60,6 @@ public class DialogStateMachineFactoryBuilder {
         private final ConfigurationConfigurer<S, E> configurationConfigurer;
         private S initialState;
         private final E eventToken;
-        private CompositeAction<S, E> compositeAction = new CompositeAction<>(new SetStateMachineErrorOnExceptionAction<>());
 
         public Builder(StateMachineFactoryBuilder.Builder<S, E> stateMachineFactoryBuilder, E eventToken) throws Exception {
             this.stateMachineFactoryBuilder = stateMachineFactoryBuilder;
@@ -127,13 +122,13 @@ public class DialogStateMachineFactoryBuilder {
             for(int i=0; i<options.length; ++i) {
                 ChoiceOption<S, E> option = options[i];
                 if (option.getAction() != null) {
-                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard(), wrapWithErrorActions(option.getAction()));
+                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard(), wrapWithErrorAction(option.getAction()));
                 } else {
                     choiceTransitionConfigurer.then(option.getTarget(), option.getGuard());
                 }
             }
             if(defaultOption.getAction() != null) {
-                choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorActions(defaultOption.getAction()));
+                choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorAction(defaultOption.getAction()));
             } else {
                 choiceTransitionConfigurer.last(defaultOption.getTarget());
             }
@@ -153,7 +148,7 @@ public class DialogStateMachineFactoryBuilder {
                     .guard(guard);
 
             if(action != null) {
-                externalTransitionConfigurer.action(wrapWithErrorActions(action));
+                externalTransitionConfigurer.action(wrapWithErrorAction(action));
             }
 
             return this;
@@ -173,7 +168,7 @@ public class DialogStateMachineFactoryBuilder {
                     .guard(new PredicateInputGuard<>(inputValid));
 
             if(inputValidAction != null) {
-                externalTransitionConfigurer.action(wrapWithErrorActions(inputValidAction));
+                externalTransitionConfigurer.action(wrapWithErrorAction(inputValidAction));
             }
 
             externalTransitionConfigurer = transitionConfigurer
@@ -184,7 +179,7 @@ public class DialogStateMachineFactoryBuilder {
                     .guard(new PredicateInputGuard<>(inputValid.negate()));
 
             if(inputInvalidAction != null) {
-                externalTransitionConfigurer.action(wrapWithErrorActions(inputInvalidAction));
+                externalTransitionConfigurer.action(wrapWithErrorAction(inputInvalidAction));
             }
             return this;
         }
@@ -196,7 +191,7 @@ public class DialogStateMachineFactoryBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(guard)
-                    .action(wrapWithErrorActions(action));
+                    .action(wrapWithErrorAction(action));
             return this;
         }
 
@@ -217,7 +212,7 @@ public class DialogStateMachineFactoryBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(screenTransitionGuard(transitionId))
-                    .action(wrapWithErrorActions(new ExecuteItemHandlerAction<>())); // making sure item handler is executed before application code
+                    .action(wrapWithErrorAction(new ExecuteItemHandlerAction<>())); // making sure item handler is executed before application code
             return this;
         }
 
@@ -228,13 +223,8 @@ public class DialogStateMachineFactoryBuilder {
                     .target(to)
                     .event(eventToken)
                     .guard(screenTransitionGuard(transitionId))
-                    .action(wrapWithErrorActions(new ExecuteItemHandlerAction<>()))  // making sure item handler is executed before application code
-                    .action(wrapWithErrorActions(action));
-            return this;
-        }
-
-        public Builder<S, E> withErrorAction(Action<S, E> action) {
-            compositeAction.setErrorAction(action);
+                    .action(wrapWithErrorAction(new ExecuteItemHandlerAction<>()))  // making sure item handler is executed before application code
+                    .action(wrapWithErrorAction(action));
             return this;
         }
 
@@ -248,14 +238,14 @@ public class DialogStateMachineFactoryBuilder {
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(SystemConstants.NEXT_PAGE_KEY))
-                    .action(wrapWithErrorActions(nextPreviousPageAction));
+                    .action(wrapWithErrorAction(nextPreviousPageAction));
 
             transitionConfigurer
                     .withInternal()
                     .source(state)
                     .event(eventToken)
                     .guard(screenTransitionGuard(SystemConstants.PREVIOUS_PAGE_KEY))
-                    .action(wrapWithErrorActions(nextPreviousPageAction));
+                    .action(wrapWithErrorAction(nextPreviousPageAction));
             return this;
         }
 
@@ -264,44 +254,13 @@ public class DialogStateMachineFactoryBuilder {
         }
 
         private Collection<Action<S, E>> wrapWithErrorActions(Collection<Action<S, E>> actions) {
-            return actions.stream().map(this::wrapWithErrorActions).collect(Collectors.toCollection(ArrayList::new));
+            return actions.stream().map(this::wrapWithErrorAction).collect(Collectors.toCollection(ArrayList::new));
         }
 
-
-        private Action<S, E> wrapWithErrorActions(Action<S, E> action) {
-            return Actions.errorCallingAction(action, compositeAction);
+        private Action<S, E> wrapWithErrorAction(Action<S, E> delegate) {
+            return new ErrorHandlingWrapperAction<>(delegate);
         }
 
     }
-
-
-    private static class CompositeAction<S, E> implements Action<S, E> {
-
-        private static final Logger log = LoggerFactory.getLogger(CompositeAction.class);
-
-        private final Action<S, E> setMachineOnErrorAction;
-        private Action<S, E> errorAction;
-
-        public CompositeAction(Action<S, E> setMachineOnErrorAction) {
-            this.setMachineOnErrorAction = setMachineOnErrorAction;
-        }
-
-        @Override
-        public void execute(StateContext<S, E> context) {
-            setMachineOnErrorAction.execute(context);
-            if (errorAction != null) {
-                try {
-                    errorAction.execute(context);
-                } catch (Exception e) {
-                    log.warn("Error action threw exception:", e);
-                }
-            }
-        }
-
-        public void setErrorAction(Action<S, E> errorAction) {
-            this.errorAction = errorAction;
-        }
-    }
-
 
 }
