@@ -66,7 +66,7 @@ public class SermoMetricsBinder<S,E extends DialogEvent> implements MeterBinder 
         }
 
         @Override
-        public void postEventHandled(String sessionId, E event, DialogException e) {
+        public void postEventHandled(String sessionId, E event, RuntimeException e) {
             Timer.Sample sample = sessionTimerSamples.remove(sessionId);
             if(e == null) {
                 sample.stop(meterRegistry.timer("sermo.dialog.event"));

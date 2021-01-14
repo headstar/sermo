@@ -16,7 +16,10 @@
 
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.*;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.DialogExecutor;
+import com.headstartech.sermo.DialogListener;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.statemachine.StateMachineDeleter;
 import org.slf4j.Logger;
@@ -56,15 +59,18 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
         this.compositeListener = new CompositeDialogListener<>();
     }
 
-    public DialogEventResult applyEvent(String sessionId, E event) throws DialogException {
+    public DialogEventResult applyEvent(String sessionId, E event) {
         StateMachine<S, E> stateMachine = null;
         DialogEventResult dialogEventResult = null;
-        DialogException exceptionThrown = null;
+        RuntimeException exceptionThrown = null;
 
         notifyPreEventHandled(sessionId, event);
         try {
             stateMachine = acquireStateMachine(sessionId);
             dialogEventResult = handleEvent(stateMachine, event);
+        } catch(RuntimeException e) {
+            exceptionThrown = e;
+            throw e;
         } finally {
             try {
                 if (stateMachine != null) {
@@ -118,7 +124,7 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
         compositeListener.preEventHandled(sessionId, event);
     }
 
-    protected void notifyPostEventHandled(String sessionId, E event, DialogException e) {
+    protected void notifyPostEventHandled(String sessionId, E event, RuntimeException e) {
         compositeListener.postEventHandled(sessionId, event, e);
     }
 

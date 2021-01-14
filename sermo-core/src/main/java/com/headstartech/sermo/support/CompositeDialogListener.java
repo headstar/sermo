@@ -16,7 +16,9 @@
 
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.*;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.DialogExecutor;
+import com.headstartech.sermo.DialogListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,7 @@ public class CompositeDialogListener<E extends DialogEvent> extends AbstractComp
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, DialogException sde) {
+    public void postEventHandled(String sessionId, E event, RuntimeException sde) {
         getListeners().stream().forEach(e ->
                 {
                     try {

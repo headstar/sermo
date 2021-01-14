@@ -17,7 +17,6 @@
 package com.headstartech.sermo.support;
 
 import com.headstartech.sermo.DialogEvent;
-import com.headstartech.sermo.DialogException;
 import com.headstartech.sermo.DialogListener;
 import org.slf4j.MDC;
 
@@ -36,7 +35,7 @@ public class MDCDialogListener<E extends DialogEvent> implements DialogListener<
     }
 
     @Override
-    public void postEventHandled(String sessionId, E event, DialogException e) {
+    public void postEventHandled(String sessionId, E event, RuntimeException e) {
         MDC.remove(MDC_SESSION_ID_KEY);
     }
 }

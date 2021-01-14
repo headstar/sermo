@@ -23,6 +23,6 @@ public interface DialogListener< E extends DialogEvent> {
 
     void preEventHandled(String sessionId, E event);
 
-    void postEventHandled(String sessionId, E event, DialogException e);
+    void postEventHandled(String sessionId, E event, RuntimeException e);
 
 }
