@@ -86,11 +86,7 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
     }
 
     protected StateMachine<S, E> acquireStateMachine(String sessionId) {
-        try {
-            return stateMachineService.acquireStateMachine(sessionId);
-        } catch(RuntimeException e) {
-            throw new DialogServiceException("Exception when acquiring a state machine", e);
-        }
+        return stateMachineService.acquireStateMachine(sessionId);
     }
 
     protected void releaseStateMachine(StateMachine<S, E> stateMachine, String sessionId, boolean exceptionThrown) {
