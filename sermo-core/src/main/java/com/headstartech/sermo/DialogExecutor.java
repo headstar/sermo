@@ -24,10 +24,12 @@ public interface DialogExecutor<S, E extends DialogEvent> {
     /**
      * Applies an event for a session.
      *
+     * Exceptions thrown by application {@link org.springframework.statemachine.action.Action}s are thrown from this method.
+     *
      * @param sessionId
      * @param event
      * @return
-     * @throws DialogException
+     * @throws DialogPersisterException if there is an error loading/persisting the dialog state
      */
     DialogEventResult applyEvent(String sessionId, E event);
 
