@@ -70,7 +70,7 @@ public class ExtendedStateSupport {
         setOutput(extendedState, screen.getOutput());
     }
 
-    public static Optional<Exception> getExecutionException(ExtendedState extendedState) {
+    public static Optional<RuntimeException> getExecutionException(ExtendedState extendedState) {
         return Optional.ofNullable(extendedState.get(SystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
     }
 

@@ -1,6 +1,9 @@
 package com.headstartech.sermo.support;
 
-import com.headstartech.sermo.*;
+import com.headstartech.sermo.DialogEvent;
+import com.headstartech.sermo.DialogEventResult;
+import com.headstartech.sermo.DialogExecutor;
+import com.headstartech.sermo.TestUtils;
 import com.headstartech.sermo.persist.CachePersist;
 import com.headstartech.sermo.screen.MenuGroup;
 import com.headstartech.sermo.screen.MenuItem;
@@ -44,9 +47,7 @@ public class DefaultDialogExecutorTest {
             fail("Expected exception");
         } catch(Exception e) {
             // then
-            assertTrue(e instanceof DialogException);
-            assertTrue(e.getCause() instanceof TestException);
-
+            assertTrue(e instanceof TestException);
             verify(cachePersist).delete("session1");
         }
     }

@@ -65,9 +65,6 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
         try {
             stateMachine = acquireStateMachine(sessionId);
             dialogEventResult = handleEvent(stateMachine, event);
-        } catch(Exception e) {
-            exceptionThrown = toSermoDialogException(e);
-            throw exceptionThrown;
         } finally {
             try {
                 if (stateMachine != null) {
@@ -110,12 +107,8 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
 
         DialogEventResult dialogEventResult;
         if (stateMachine.hasStateMachineError()) {
-            Optional<Exception> exOpt = ExtendedStateSupport.getExecutionException(stateMachine.getExtendedState());
-            if(exOpt.isPresent()) {
-                throw new DialogExecutionException("State machine action exception", exOpt.get());
-            } else {
-                throw new DialogExecutionException("State machine error (cause unknown)");
-            }
+            Optional<RuntimeException> exOpt = ExtendedStateSupport.getExecutionException(stateMachine.getExtendedState());
+            throw exOpt.orElseThrow(() -> new RuntimeException("State machine error (cause unknown)"));
         } else {
             boolean dialogComplete = stateMachine.isComplete();
             String output = outputHandler.getOutput(stateMachine);
@@ -131,14 +124,6 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
 
     protected void notifyPostEventHandled(String sessionId, E event, DialogException e) {
         compositeListener.postEventHandled(sessionId, event, e);
-    }
-
-    protected DialogException toSermoDialogException(Exception e) {
-        if (e instanceof DialogException) {
-            return (DialogException) e;
-        } else {
-            return new DialogServiceException(e);
-        }
     }
 
 }
