@@ -62,7 +62,7 @@ public class DefaultStateMachineService<S, E extends DialogEvent> implements Sta
     @Override
     public StateMachine<S, E> acquireStateMachine(String machineId) {
         log.debug("Acquiring state machine");
-        StateMachine<S, E> stateMachine = stateMachinePool.getStateMachine();
+        StateMachine<S, E> stateMachine = stateMachinePool.borrowStateMachine();
         try {
             log.debug("Restoring state machine machine state: machineId={}", machineId);
             stateMachinePersister.restore(stateMachine, machineId);

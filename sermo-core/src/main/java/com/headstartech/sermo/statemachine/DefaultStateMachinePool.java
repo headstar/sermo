@@ -34,7 +34,7 @@ public class DefaultStateMachinePool<S, E> implements StateMachinePool<S,E> {
     }
 
     @Override
-    public StateMachine<S, E> getStateMachine() {
+    public StateMachine<S, E> borrowStateMachine() {
         return stateMachineFactory.getStateMachine();
     }
 

@@ -19,13 +19,13 @@ package com.headstartech.sermo.statemachine;
 import org.springframework.statemachine.StateMachine;
 
 /**
- * Interface for a {@link StateMachine} pool.
+ * Interface for a {@link StateMachine} object pool.
  *
  * @author Per Johansson
  */
 public interface StateMachinePool<S, E> {
 
-    StateMachine<S, E> getStateMachine();
+    StateMachine<S, E> borrowStateMachine();
 
     void returnStateMachine(StateMachine<S,E> stateMachine);
 }
