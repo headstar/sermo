@@ -16,7 +16,7 @@ import org.springframework.statemachine.StateMachine;
  */
 public class DefaultOutputHandler<S, E extends DialogEvent> implements OutputHandler<S, E> {
 
-    private static final Logger log = LoggerFactory.getLogger(DialogExecutor.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultOutputHandler.class);
 
     @Override
     public String getOutput(StateMachine<S, E> stateMachine) {
