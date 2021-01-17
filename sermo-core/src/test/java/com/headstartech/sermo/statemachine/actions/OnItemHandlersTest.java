@@ -6,7 +6,6 @@ import org.springframework.statemachine.ExtendedState;
 import org.springframework.statemachine.support.DefaultExtendedState;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

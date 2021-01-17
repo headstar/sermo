@@ -16,9 +16,9 @@
 
 package com.headstartech.sermo.statemachine.guards;
 
-import com.headstartech.sermo.support.ExtendedStateSupport;
 import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.screen.InputMap;
+import com.headstartech.sermo.support.ExtendedStateSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;

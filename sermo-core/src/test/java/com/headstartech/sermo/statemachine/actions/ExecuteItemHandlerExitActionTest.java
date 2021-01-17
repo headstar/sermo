@@ -9,8 +9,6 @@ import org.mockito.Mockito;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class ExecuteItemHandlerExitActionTest {
