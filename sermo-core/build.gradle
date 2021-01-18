@@ -11,7 +11,7 @@ repositories {
 
 sourceCompatibility = 1.8
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+task mavenSourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
@@ -22,7 +22,7 @@ publishing {
             group = 'com.headstartech.sermo'
 
             from components.java
-            artifact sourcesJar
+            artifact mavenSourcesJar
         }
     }
 }
