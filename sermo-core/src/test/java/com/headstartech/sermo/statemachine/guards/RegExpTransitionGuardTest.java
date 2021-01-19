@@ -17,7 +17,7 @@ public class RegExpTransitionGuardTest {
     public void evaluatesToTrueIfPatternMatches() {
         // given
         Pattern pattern = Pattern.compile("a.c");
-        Guard<String, DialogEvent> guard = new RegExpTransitionGuard<>(pattern);
+        RegExpTransitionGuard<String, DialogEvent> guard = Guards.regExp(pattern);
         StateContext<String, DialogEvent> stateContext = createStateContext("abc");
 
         // when
@@ -31,7 +31,7 @@ public class RegExpTransitionGuardTest {
     public void evaluatesToFalseIfPatternDoesNotMatches() {
         // given
         Pattern pattern = Pattern.compile("a.c");
-        Guard<String, DialogEvent> guard = new RegExpTransitionGuard<>(pattern);
+        RegExpTransitionGuard<String, DialogEvent> guard = Guards.regExp(pattern);
         StateContext<String, DialogEvent> stateContext = createStateContext("c");
 
         // when

@@ -4,6 +4,7 @@ import com.headstartech.sermo.DialogEvent;
 import org.springframework.statemachine.guard.Guard;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * Convenience class for creating {@link Guard}s.
@@ -33,4 +34,11 @@ public class Guards {
         return new InputEqualsGuard<>(value);
     }
 
+    public static <S, E extends DialogEvent> RegExpTransitionGuard<S, E> regExp(String value) {
+        return regExp(Pattern.compile(value));
+    }
+
+    public static <S, E extends DialogEvent> RegExpTransitionGuard<S, E> regExp(Pattern pattern) {
+        return new RegExpTransitionGuard<>(pattern);
+    }
 }
