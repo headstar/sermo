@@ -49,13 +49,13 @@ public class DefaultStateMachineService<S, E extends DialogEvent> implements Sta
 
     public DefaultStateMachineService(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
         this(new DefaultStateMachinePool<>(stateMachineFactory),
-                new DefaultStateMachinePersister<>(new StateMachinePersistWrapper<>(stateMachinePersist)),
+                stateMachinePersist,
                 stateMachineDeleter);
     }
 
-    public DefaultStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersister<S, E, String> stateMachinePersister, StateMachineDeleter<String> stateMachineDeleter) {
+    public DefaultStateMachineService(StateMachinePool<S, E> stateMachinePool, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
         this.stateMachinePool = stateMachinePool;
-        this.stateMachinePersister = stateMachinePersister;
+        this.stateMachinePersister = new DefaultStateMachinePersister<>(new StateMachinePersistWrapper<>(stateMachinePersist));
         this.stateMachineDeleter = stateMachineDeleter;
     }
 
