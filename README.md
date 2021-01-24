@@ -3,9 +3,9 @@
 Sermo is a Java library supporting menu driven USSD applications built on top of [Spring Statemachine](https://projects.spring.io/spring-statemachine/).
 
 Features:
-* Dynamic menus
+* Menus
 * Paging
-* Session handling (persistence)
+* Session handling
 
 ## Sample
 
