@@ -42,11 +42,11 @@ public class DefaultDialogExecutor<S, E extends DialogEvent> implements DialogEx
     private final CompositeDialogListener<E> compositeListener;
 
     public DefaultDialogExecutor(StateMachineFactory<S, E> stateMachineFactory, CachePersist<S, E> cachePersist) {
-        this(new DefaultStateMachineService<S, E>(stateMachineFactory, cachePersist, cachePersist));
+        this(new DefaultStateMachineService<>(stateMachineFactory, cachePersist, cachePersist));
     }
 
     public DefaultDialogExecutor(StateMachineFactory<S, E> stateMachineFactory, StateMachinePersist<S, E, String> stateMachinePersist, StateMachineDeleter<String> stateMachineDeleter) {
-        this(new DefaultStateMachineService<S, E>(stateMachineFactory, stateMachinePersist, stateMachineDeleter));
+        this(new DefaultStateMachineService<>(stateMachineFactory, stateMachinePersist, stateMachineDeleter));
     }
 
     public DefaultDialogExecutor(StateMachineService<S, E> stateMachineService) {

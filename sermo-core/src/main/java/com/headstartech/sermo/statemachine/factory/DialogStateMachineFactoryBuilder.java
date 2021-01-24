@@ -97,7 +97,6 @@ public class DialogStateMachineFactoryBuilder {
             stateConfigurer.state(state.getId(), wrapWithErrorActions(state.getEntryActions()), wrapWithErrorActions(state.getExitActions()));
 
             if (state instanceof PagedUSSDState) {
-                @SuppressWarnings("unchecked")
                 PagedUSSDState<S,E> pagedUSSDState = ((PagedUSSDState<S, E>) state);
                 withPagedScreenTransitions(state.getId(), pagedUSSDState.toNextOrToPreviousPageAction());
             }

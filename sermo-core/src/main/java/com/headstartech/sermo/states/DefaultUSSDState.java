@@ -49,8 +49,8 @@ public class DefaultUSSDState<S, E extends DialogEvent> implements USSDState<S, 
 
     public DefaultUSSDState(S id, Collection<Action<S, E>> entryActions, Collection<Action<S, E>> exitActions, boolean end) {
         this.id = id;
-        this.entryActions = new ArrayList<>(entryActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
-        this.exitActions = new ArrayList<>(exitActions.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
+        this.entryActions = entryActions.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        this.exitActions = exitActions.stream().filter(Objects::nonNull).collect(Collectors.toList());
         this.end = end;
     }
 

@@ -29,7 +29,7 @@ public class ScreenBlocksContainer implements ScreenBlock {
     private final List<ScreenBlock> screenBlocks;
 
     public ScreenBlocksContainer(List<ScreenBlock> screenBlocks) {
-        Objects.requireNonNull("screenBlock must be non-null");
+        Objects.requireNonNull(screenBlocks, "screenBlock must be non-null");
         this.screenBlocks = Collections.unmodifiableList(screenBlocks);
     }
 

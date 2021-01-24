@@ -45,9 +45,7 @@ public abstract class AbstractScreenCleanupAction<S, E extends DialogEvent> impl
         InputMap inputMap = ExtendedStateSupport.getScreenMenuInputMap(extendedState);
         if (inputMap != null) {
             Optional<Object> itemObject = inputMap.getItemObjectForInput(event.getInput());
-            if(itemObject.isPresent()) {
-                handleItemObject(extendedState, itemObject.get());
-            }
+            itemObject.ifPresent(o -> handleItemObject(extendedState, o));
         }
     }
 
