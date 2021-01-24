@@ -20,6 +20,7 @@ import com.headstartech.sermo.DialogEvent;
 import com.headstartech.sermo.SystemConstants;
 import com.headstartech.sermo.statemachine.LoggingStateMachineListener;
 import com.headstartech.sermo.statemachine.actions.ExecuteItemHandlerAction;
+import com.headstartech.sermo.statemachine.guards.Guards;
 import com.headstartech.sermo.statemachine.guards.PredicateInputGuard;
 import com.headstartech.sermo.statemachine.guards.ScreenTransitionGuard;
 import com.headstartech.sermo.states.PagedUSSDState;
@@ -152,18 +153,14 @@ public class DialogStateMachineFactoryBuilder {
             return this;
         }
 
-        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid) throws Exception {
-            withFormInputTransition(from, to, inputValid, null, null);
-            return this;
-        }
-
-        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
+        @SuppressWarnings("overloads")
+        public Builder<S, E> withFormInputTransition(S from, S to, Guard<S,E> inputValidGuard, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
             ExternalTransitionConfigurer<S, E> externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(from)
                     .target(to)
                     .event(eventToken)
-                    .guard(new PredicateInputGuard<>(inputValid));
+                    .guard(inputValidGuard);
 
             if(inputValidAction != null) {
                 externalTransitionConfigurer.action(wrapWithErrorAction(inputValidAction));
@@ -174,12 +171,29 @@ public class DialogStateMachineFactoryBuilder {
                     .source(from)
                     .target(from)
                     .event(eventToken)
-                    .guard(new PredicateInputGuard<>(inputValid.negate()));
+                    .guard(Guards.not(inputValidGuard));
 
             if(inputInvalidAction != null) {
                 externalTransitionConfigurer.action(wrapWithErrorAction(inputInvalidAction));
             }
             return this;
+        }
+
+        @SuppressWarnings("overloads")
+        public Builder<S, E> withFormInputTransition(S from, S to,  Guard<S,E> inputValidGuard) throws Exception {
+            return withFormInputTransition(from, to, inputValidGuard, null, null);
+        }
+
+        @SuppressWarnings("overloads")
+        @Deprecated
+        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid) throws Exception {
+            return withFormInputTransition(from, to, new PredicateInputGuard<>(inputValid), null, null);
+        }
+
+        @SuppressWarnings("overloads")
+        @Deprecated
+        public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
+            return withFormInputTransition(from, to, new PredicateInputGuard<>(inputValid), inputValidAction, inputInvalidAction);
         }
 
         public Builder<S, E> withTransition(S from, S to, Guard<S,E> guard, Action<S, E> action) throws Exception {

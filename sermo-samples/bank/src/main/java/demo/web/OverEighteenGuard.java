@@ -16,22 +16,23 @@
 
 package demo.web;
 
-import java.util.function.Predicate;
+import com.headstartech.sermo.statemachine.guards.GuardBase;
+import org.springframework.statemachine.StateContext;
 
 /**
  * @author Per Johansson
  */
-public class OverEighteenPredicate implements Predicate<String> {
+public class OverEighteenGuard extends GuardBase<States, SubscriberEvent> {
 
     @Override
-    public boolean test(String s) {
-
+    protected boolean doEvaluate(StateContext<States, SubscriberEvent> context, String input) {
         try {
-            long v = Long.valueOf(s);
+            long v = Long.valueOf(input);
             return v >= 18;
         } catch (NumberFormatException e) {
             // ignore
         }
         return false;
     }
+
 }
