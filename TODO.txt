@@ -1,7 +1,0 @@
-* What happens on concurrent events for a session?
-* Support "state scope" for context variables?
-* How to handle multiple guards being true?
-* What's a "state action"?
-* Auto-conf for sermo-metrics
-
-* Sample app. context test fails if importing com.headstartech.sermo.SermoMetricsConfiguration in demo.web.Application
