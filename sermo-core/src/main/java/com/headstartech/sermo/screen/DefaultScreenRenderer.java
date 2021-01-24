@@ -72,12 +72,16 @@ public class DefaultScreenRenderer implements ScreenRenderer {
                 appendNewlineIfScreenNotEmpty(sb);
             }
             String input = getInput(i);
-            String row = String.format("%s. %s", input, menuItem.getLabel());
+            String row = renderMenuGroupItemRow(input, menuItem.getLabel());
             String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
             sb.append(elidedRow);
             inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemObject());
             ++i;
         }
+    }
+
+    protected String renderMenuGroupItemRow(String input, String label) {
+        return String.format("%s. %s", input, label);
     }
 
     protected String getInput(int menuItemIndex) {
@@ -86,9 +90,13 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {
         appendNewlineIfScreenNotEmpty(sb);
-        sb.append(String.format("%s %s", staticMenuItem.getInput(), staticMenuItem.getLabel()));
+        sb.append(renderStaticMenuItemRow(staticMenuItem.getInput(), staticMenuItem.getLabel()));
         inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemObject());
 
+    }
+
+    protected String renderStaticMenuItemRow(String input, String label) {
+        return String.format("%s %s", input, label);
     }
 
     protected void appendNewlineIfScreenNotEmpty(StringBuilder sb) {
