@@ -153,8 +153,7 @@ public class DialogStateMachineFactoryBuilder {
             return this;
         }
 
-        @SuppressWarnings("overloads")
-        public Builder<S, E> withFormInputTransition(S from, S to, Guard<S,E> inputValidGuard, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
+        public Builder<S, E> withFormInputTransitions(S from, S to, Guard<S,E> inputValidGuard, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
             ExternalTransitionConfigurer<S, E> externalTransitionConfigurer = transitionConfigurer
                     .withExternal()
                     .source(from)
@@ -179,21 +178,18 @@ public class DialogStateMachineFactoryBuilder {
             return this;
         }
 
-        @SuppressWarnings("overloads")
-        public Builder<S, E> withFormInputTransition(S from, S to,  Guard<S,E> inputValidGuard) throws Exception {
-            return withFormInputTransition(from, to, inputValidGuard, null, null);
+        public Builder<S, E> withFormInputTransitions(S from, S to, Guard<S,E> inputValidGuard) throws Exception {
+            return withFormInputTransitions(from, to, inputValidGuard, null, null);
         }
 
-        @SuppressWarnings("overloads")
         @Deprecated
         public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid) throws Exception {
-            return withFormInputTransition(from, to, new PredicateInputGuard<>(inputValid), null, null);
+            return withFormInputTransitions(from, to, new PredicateInputGuard<>(inputValid), null, null);
         }
 
-        @SuppressWarnings("overloads")
         @Deprecated
         public Builder<S, E> withFormInputTransition(S from, S to, Predicate<String> inputValid, Action<S, E> inputValidAction, Action<S, E> inputInvalidAction) throws Exception {
-            return withFormInputTransition(from, to, new PredicateInputGuard<>(inputValid), inputValidAction, inputInvalidAction);
+            return withFormInputTransitions(from, to, new PredicateInputGuard<>(inputValid), inputValidAction, inputInvalidAction);
         }
 
         public Builder<S, E> withTransition(S from, S to, Guard<S,E> guard, Action<S, E> action) throws Exception {

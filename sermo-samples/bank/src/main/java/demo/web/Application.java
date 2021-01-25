@@ -110,7 +110,7 @@ public class Application {
 
         builder.withChoice(States.STATEMENT_CHOICE, States.STATEMENT_ANNUAL, new ChoiceOption<>(States.STATEMENT_MONTHLY, (e) -> false));
 
-        builder.withFormInputTransition(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenGuard());
+        builder.withFormInputTransitions(States.INTEREST_RATE, States.INTEREST_RATE_OFFER, new OverEighteenGuard());
         builder.withScreenTransition(States.INTEREST_RATE_OFFER, States.ROOT, Transitions.ROOT);
 
         DialogExecutor<States, SubscriberEvent> dialogExecutor = new DefaultDialogExecutor<>(builder.build(), cachePersist);
