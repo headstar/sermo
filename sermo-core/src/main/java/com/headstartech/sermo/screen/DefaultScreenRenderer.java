@@ -71,7 +71,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
             } else {
                 appendNewlineIfScreenNotEmpty(sb);
             }
-            String input = getInput(i);
+            String input = getInput(menuGroup.getInputNumberingStartsAt(), i);
             String row = renderMenuGroupItemRow(input, menuItem.getLabel());
             String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
             sb.append(elidedRow);
@@ -84,8 +84,8 @@ public class DefaultScreenRenderer implements ScreenRenderer {
         return String.format("%s. %s", input, label);
     }
 
-    protected String getInput(int menuItemIndex) {
-        return String.format("%d", menuItemIndex + 1);
+    protected String getInput(int inputNumberingStartsAt, int menuItemIndex) {
+        return String.format("%d", inputNumberingStartsAt + menuItemIndex );
     }
 
     protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {

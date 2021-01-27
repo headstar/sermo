@@ -23,18 +23,22 @@ import java.util.*;
  */
 public class MenuGroup implements ScreenBlock {
 
+    private static int DEFAULT_INPUT_NUMBERING_STARTS_AT = 1;
+
     private final List<MenuItem> menuItems;
     private final TextElide elide;
+    private final int inputNumberingStartsAt;
 
-    public MenuGroup(List<MenuItem> menuItems, TextElide elide) {
+    public MenuGroup(List<MenuItem> menuItems, TextElide elide, int inputNumberingStartsAt) {
         Objects.requireNonNull(menuItems, "menuItems must be non-null");
         Objects.requireNonNull(elide, "elide must be non-null");
         this.menuItems = Collections.unmodifiableList(menuItems);
         this.elide = elide;
+        this.inputNumberingStartsAt = inputNumberingStartsAt;
     }
 
     public MenuGroup(List<MenuItem> menuItems) {
-        this(menuItems, new TextElide());
+        this(menuItems, new TextElide(), DEFAULT_INPUT_NUMBERING_STARTS_AT);
     }
 
     public List<MenuItem> getMenuItems() {
@@ -45,24 +49,33 @@ public class MenuGroup implements ScreenBlock {
         return elide;
     }
 
+    public int getInputNumberingStartsAt() {
+        return inputNumberingStartsAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MenuGroup menuGroup = (MenuGroup) o;
-        return menuItems.equals(menuGroup.menuItems);
+        return inputNumberingStartsAt == menuGroup.inputNumberingStartsAt &&
+                Objects.equals(menuItems, menuGroup.menuItems) &&
+                Objects.equals(elide, menuGroup.elide);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(menuItems);
+        return Objects.hash(menuItems, elide, inputNumberingStartsAt);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", MenuGroup.class.getSimpleName() + "[", "]")
-                .add("menuItems=" + menuItems)
-                .toString();
+        final StringBuffer sb = new StringBuffer("MenuGroup{");
+        sb.append("menuItems=").append(menuItems);
+        sb.append(", elide=").append(elide);
+        sb.append(", inputNumberingStartsAt=").append(inputNumberingStartsAt);
+        sb.append('}');
+        return sb.toString();
     }
 
     public static Builder builder() {
@@ -72,6 +85,7 @@ public class MenuGroup implements ScreenBlock {
     public static class Builder {
         private List<MenuItem> menuItems = new ArrayList<>();
         private TextElide elide = new TextElide();
+        private int inputNumberingStartsAt = DEFAULT_INPUT_NUMBERING_STARTS_AT;
 
         public Builder withMenuItem(MenuItem menuItem) {
             menuItems.add(menuItem);
@@ -93,8 +107,13 @@ public class MenuGroup implements ScreenBlock {
             return this;
         }
 
+        public Builder withInputNumberingStartAt(int inputNumberingStartsAt) {
+            this.inputNumberingStartsAt = inputNumberingStartsAt;
+            return this;
+        }
+
         public MenuGroup build() {
-            return new MenuGroup(menuItems, elide);
+            return new MenuGroup(menuItems, elide, inputNumberingStartsAt);
         }
     }
 

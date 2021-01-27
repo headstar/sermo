@@ -139,11 +139,12 @@ public class DefaultScreenRendererTest {
         MenuItem mi2 = new MenuItem("JKLMNOPQR", "tr2", "myItem2");
 
         TextElide textElide = new TextElide(TextElide.Mode.RIGHT, 9);
+        int itemNumberingStartsAt = 1;
 
         String expectedOutput = "1. " + "ABC..." + "\n" +
                         "2. " + "JKL...";
 
-        MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2), textElide);
+        MenuGroup mg = new MenuGroup(Arrays.asList(mi1, mi2), textElide, itemNumberingStartsAt);
 
         // when
         ScreenRenderResult srr = sr.renderScreen(mg);
@@ -184,6 +185,31 @@ public class DefaultScreenRendererTest {
 
         // when
         ScreenRenderResult srr = sr.renderScreen(sbc);
+
+        // then
+        assertEquals(expectedOutput, srr.getOutput());
+    }
+
+    @Test
+    public void canRenderMenuGroupWithItemNumberingGreaterThanOne() {
+        // given
+        ScreenRenderer sr = new DefaultScreenRenderer();
+
+        MenuItem mi1 = new MenuItem("Option 1", "tr1", "myItem1");
+        MenuItem mi2 = new MenuItem("Option 2", "tr2", "myItem2");
+
+        MenuGroup mg = MenuGroup.builder()
+                .withMenuItem(mi1)
+                .withMenuItem(mi2)
+                .withInputNumberingStartAt(7)
+                .build();
+
+        String expectedOutput =
+                "7. " + mi1.getLabel() + "\n" +
+                        "8. " + mi2.getLabel();
+
+        // when
+        ScreenRenderResult srr = sr.renderScreen(mg);
 
         // then
         assertEquals(expectedOutput, srr.getOutput());
