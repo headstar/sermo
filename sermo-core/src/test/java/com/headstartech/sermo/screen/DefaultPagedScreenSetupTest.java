@@ -22,7 +22,7 @@ public class DefaultPagedScreenSetupTest {
         items.add(new MenuItem("B", "tB", "itemB"));
         items.add(new MenuItem("C", "tC", "itemC"));
         items.add(new MenuItem("D", "tD", "itemD"));
-        List<ScreenBlock> pages = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, new TextElide());
+        List<ScreenBlock> pages = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, TextElide.NO_TEXT_ELIDE);
         assertEquals(2, pages.size());    // 2 items per page
 
         PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder()
@@ -71,7 +71,7 @@ public class DefaultPagedScreenSetupTest {
         items.add(new MenuItem("B", "tB", "itemB"));
         items.add(new MenuItem("C", "tC", "itemC"));
         items.add(new MenuItem("D", "tD", "itemD"));
-        List<ScreenBlock> pages = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, new TextElide());
+        List<ScreenBlock> pages = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, TextElide.NO_TEXT_ELIDE);
         assertEquals(2, pages.size());    // 2 items per page
 
         PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder()

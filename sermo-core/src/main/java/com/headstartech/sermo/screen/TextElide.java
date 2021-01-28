@@ -11,6 +11,8 @@ import static com.headstartech.sermo.screen.TextElide.Mode.RIGHT;
  */
 public class TextElide {
 
+    public static final TextElide NO_TEXT_ELIDE = new TextElide(NONE, 0, 3);
+
     public enum Mode {
         NONE, RIGHT
     }

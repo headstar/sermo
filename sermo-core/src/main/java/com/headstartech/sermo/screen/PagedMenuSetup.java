@@ -43,7 +43,7 @@ public class PagedMenuSetup {
     }
 
     public PagedMenuSetup(List<MenuItem> allMenuItems, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, int pageSize) {
-        this(allMenuItems, new TextElide(), nextPageMenuItem, previousPageMenuItem, headerBlock, footerBlock, pageSize);
+        this(allMenuItems, TextElide.NO_TEXT_ELIDE, nextPageMenuItem, previousPageMenuItem, headerBlock, footerBlock, pageSize);
     }
 
     public List<MenuItem> getAllMenuItems() {

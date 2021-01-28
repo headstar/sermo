@@ -12,7 +12,7 @@ public class TextElideTest {
         // given
 
         // when
-        String elided = TextElide.elidedString(null, new TextElide());
+        String elided = TextElide.elidedString(null, TextElide.NO_TEXT_ELIDE);
 
         // then
         assertNull(elided);
@@ -22,7 +22,7 @@ public class TextElideTest {
     public void originalStringReturnedIfElideModeNone() {
         // given
         String orig = "abcdefghijklmno";
-        TextElide elide = new TextElide();
+        TextElide elide = TextElide.NO_TEXT_ELIDE;
         assertEquals(TextElide.Mode.NONE, elide.getMode());
 
         // when

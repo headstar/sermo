@@ -24,7 +24,7 @@ public class PagedAccountsSetupProvider implements PagedScreenSetupProvider<Stat
                 .collect(Collectors.toList());
 
         return DefaultPagedScreenSetup.builder()
-                .withPages(PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, new TextElide()))
+                .withPages(PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, TextElide.NO_TEXT_ELIDE))
                 .withNextPageMenuItem(getNextScreenItem())
                 .withPreviousPageMenuItem(getPreviousScreenItem())
                 .withHeaderBlock(getHeaderBlock())

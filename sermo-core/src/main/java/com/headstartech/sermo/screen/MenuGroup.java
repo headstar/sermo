@@ -84,7 +84,7 @@ public class MenuGroup implements ScreenBlock {
 
     public static class Builder {
         private List<MenuItem> menuItems = new ArrayList<>();
-        private TextElide elide = new TextElide();
+        private TextElide elide = TextElide.NO_TEXT_ELIDE;
         private int inputNumberingStartsAt = DEFAULT_INPUT_NUMBERING_STARTS_AT;
 
         public Builder withMenuItem(MenuItem menuItem) {
