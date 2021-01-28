@@ -22,7 +22,7 @@ public class DefaultPagedScreenSupportTest {
         // given
         PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
         ExtendedState extendedState = new DefaultExtendedState();
-        PagedScreenSetup pagedScreenSetup = new DefaultPagedScreenSetup(null, null, null, null, null);
+        PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder().build();
 
         // when
         pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
@@ -71,7 +71,12 @@ public class DefaultPagedScreenSupportTest {
 
         List<ScreenBlock> screenBlocks = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, pageSize, elide);
 
-        PagedScreenSetup pagedScreenSetup = new DefaultPagedScreenSetup(screenBlocks, nextPageMenuItem, previousPageMenuItem, headerBlock, null);
+        PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder()
+                .withPages(screenBlocks)
+                .withNextPageMenuItem(nextPageMenuItem)
+                .withPreviousPageMenuItem(previousPageMenuItem)
+                .withHeaderBlock(headerBlock)
+                .build();
 
         Map<Object, Object> preTestVariables = new HashMap<>(extendedState.getVariables());
         pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
@@ -141,7 +146,9 @@ public class DefaultPagedScreenSupportTest {
 
             List<ScreenBlock> screenBlocks = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, pageSize, elide, pagedInputNumberingMode);
 
-            PagedScreenSetup pagedScreenSetup = new DefaultPagedScreenSetup(screenBlocks, null, null, null, null);
+            PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder()
+                    .withPages(screenBlocks)
+                    .build();
 
             Map<Object, Object> preTestVariables = new HashMap<>(extendedState.getVariables());
             pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);

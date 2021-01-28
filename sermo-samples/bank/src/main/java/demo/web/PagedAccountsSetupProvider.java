@@ -3,7 +3,6 @@ package demo.web;
 import com.headstartech.sermo.screen.*;
 import com.headstartech.sermo.statemachine.actions.OnItemHandlers;
 import com.headstartech.sermo.statemachine.actions.PagedMenuItemsUtil;
-import com.headstartech.sermo.statemachine.actions.PagedMenuSetupProvider;
 import com.headstartech.sermo.statemachine.actions.PagedScreenSetupProvider;
 import org.springframework.statemachine.StateContext;
 
@@ -24,8 +23,12 @@ public class PagedAccountsSetupProvider implements PagedScreenSetupProvider<Stat
                 )
                 .collect(Collectors.toList());
 
-        return new DefaultPagedScreenSetup(PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, new TextElide()),
-                getNextScreenItem(), getPreviousScreenItem(), getHeaderBlock(), null);
+        return DefaultPagedScreenSetup.builder()
+                .withPages(PagedMenuItemsUtil.getScreenBlockForMenuItems(items, 2, new TextElide()))
+                .withNextPageMenuItem(getNextScreenItem())
+                .withPreviousPageMenuItem(getPreviousScreenItem())
+                .withHeaderBlock(getHeaderBlock())
+                .build();
     }
 
     private ScreenBlock getHeaderBlock() {
