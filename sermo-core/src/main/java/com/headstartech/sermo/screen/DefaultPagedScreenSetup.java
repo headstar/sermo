@@ -73,13 +73,25 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     @Override
     public void incrementPage() {
         page++;
-        page = Math.min(pages.size() - 1, page);
+        clampPage();
     }
 
     @Override
     public void decrementPage() {
         page--;
-        page = Math.max(0, page);
+        clampPage();
+    }
+
+    private void clampPage() {
+        if(pages.isEmpty()) {
+            page = 0;
+        } else {
+            page = clamp(0, pages.size() - 1, page);
+        }
+    }
+
+    private int clamp(int min, int max, int value) {
+        return Math.min(Math.max(value, min), max);
     }
 
     public static DefaultPagedScreenSetup.Builder builder() {
