@@ -1,4 +1,4 @@
-package demo.web;
+package demo.web.dialog;
 
 public class AccountData {
 

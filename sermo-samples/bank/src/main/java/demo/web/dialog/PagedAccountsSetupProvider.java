@@ -1,4 +1,4 @@
-package demo.web;
+package demo.web.dialog;
 
 import com.headstartech.sermo.screen.*;
 import com.headstartech.sermo.statemachine.actions.OnItemHandlers;

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package demo.web;
+package demo.web.dialog;
 
 import com.headstartech.sermo.screen.Screen;
 import com.headstartech.sermo.screen.StaticMenuItem;
