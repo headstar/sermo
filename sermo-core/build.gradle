@@ -45,7 +45,7 @@ dependencies {
     api("org.springframework.statemachine:spring-statemachine-core:$springStatemachineVersion")
     implementation "org.springframework:spring-context-support:$springVersion"
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation "com.google.code.findbugs:jsr305:$jsr305Version"
+    compileOnly "com.google.code.findbugs:jsr305:$jsr305Version"
 
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
