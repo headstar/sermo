@@ -30,7 +30,7 @@ public class ScreenBlocksContainer implements ScreenBlock {
     }
 
     public List<ScreenBlock> getScreenBlocks() {
-        return screenBlocks;
+        return Collections.unmodifiableList(screenBlocks);
     }
 
     @Override

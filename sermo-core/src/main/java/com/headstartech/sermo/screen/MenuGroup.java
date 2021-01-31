@@ -33,7 +33,7 @@ public class MenuGroup implements ScreenBlock {
     private final int inputNumberingStartsAt;
 
     public MenuGroup(List<MenuItem> menuItems, TextElide elide, int inputNumberingStartsAt) {
-        this.menuItems = Collections.unmodifiableList(menuItems);
+        this.menuItems = new ArrayList<>(menuItems);
         this.elide = elide;
         this.inputNumberingStartsAt = inputNumberingStartsAt;
     }
@@ -48,7 +48,7 @@ public class MenuGroup implements ScreenBlock {
     }
 
     public List<MenuItem> getMenuItems() {
-        return menuItems;
+        return Collections.unmodifiableList(menuItems);
     }
 
     public TextElide getElide() {
