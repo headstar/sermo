@@ -32,18 +32,10 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
         Screen.Builder screenBuilder =  Screen.builder();
         screenBuilder.withScreenRenderer(screenRenderer);
 
-        screenBuilder.withScreenBlock(pagedScreenSetup.getHeaderBlock());
-
-        screenBuilder.withScreenBlock(pagedScreenSetup.getPageBody());
-
-        if(pagedScreenSetup.hasNextPage()) {
-            screenBuilder.withScreenBlock(pagedScreenSetup.getNextPageMenuItem());
-        }
-        if(pagedScreenSetup.hasPreviousPage()) {
-            screenBuilder.withScreenBlock(pagedScreenSetup.getPreviousPageMenuItem());
-        }
-
-        screenBuilder.withScreenBlock(pagedScreenSetup.getFooterBlock());
+        addHeader(screenBuilder, pagedScreenSetup);
+        addBody(screenBuilder, pagedScreenSetup);
+        addNextAndPreviousPage(screenBuilder, pagedScreenSetup);
+        addFooter(screenBuilder, pagedScreenSetup);
 
         return screenBuilder.build();
     }
@@ -60,4 +52,24 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
         setup.decrementPage();
     }
 
+    protected void addHeader(Screen.Builder builder, PagedScreenSetup pagedScreenSetup) {
+        pagedScreenSetup.getHeaderBlock().ifPresent(e -> builder.withScreenBlock(e));
+    }
+
+    protected void addBody(Screen.Builder builder, PagedScreenSetup pagedScreenSetup) {
+        pagedScreenSetup.getPageBody().ifPresent(e -> builder.withScreenBlock(e));
+    }
+
+    protected void addNextAndPreviousPage(Screen.Builder builder, PagedScreenSetup pagedScreenSetup) {
+        if(pagedScreenSetup.hasNextPage()) {
+            pagedScreenSetup.getNextPageMenuItem().ifPresent(e -> builder.withScreenBlock(e));
+        }
+        if(pagedScreenSetup.hasPreviousPage()) {
+            pagedScreenSetup.getPreviousPageMenuItem().ifPresent(e -> builder.withScreenBlock(e));
+        }
+    }
+
+    protected void addFooter(Screen.Builder builder, PagedScreenSetup pagedScreenSetup) {
+        pagedScreenSetup.getFooterBlock().ifPresent(e -> builder.withScreenBlock(e));
+    }
 }

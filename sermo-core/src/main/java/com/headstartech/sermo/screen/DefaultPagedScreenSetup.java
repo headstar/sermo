@@ -2,6 +2,7 @@ package com.headstartech.sermo.screen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DefaultPagedScreenSetup implements PagedScreenSetup {
 
@@ -14,7 +15,7 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     private final ScreenBlock firstPageFooterBlock;
     private int page = 0;
 
-    private DefaultPagedScreenSetup(List<ScreenBlock> pageBodies, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
+    public DefaultPagedScreenSetup(List<ScreenBlock> pageBodies, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
         this.pageBodies = pageBodies;
         this.nextPageMenuItem = nextPageMenuItem;
         this.previousPageMenuItem = previousPageMenuItem;
@@ -25,38 +26,38 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     }
 
     @Override
-    public ScreenBlock getPageBody() {
+    public Optional<ScreenBlock> getPageBody() {
         if(pageBodies.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return pageBodies.get(page);
+        return Optional.ofNullable(pageBodies.get(page));
     }
 
     @Override
-    public NextPageMenuItem getNextPageMenuItem() {
-        return nextPageMenuItem;
+    public Optional<NextPageMenuItem> getNextPageMenuItem() {
+        return Optional.ofNullable(nextPageMenuItem);
     }
 
     @Override
-    public PreviousPageMenuItem getPreviousPageMenuItem() {
-        return previousPageMenuItem;
+    public Optional<PreviousPageMenuItem> getPreviousPageMenuItem() {
+        return Optional.ofNullable(previousPageMenuItem);
     }
 
     @Override
-    public ScreenBlock getHeaderBlock() {
+    public Optional<ScreenBlock> getHeaderBlock() {
         if(page == 0 && firstPageHeaderBlock != null) {
-            return firstPageHeaderBlock;
+            return Optional.of(firstPageHeaderBlock);
         } else {
-            return headerBlock;
+            return Optional.ofNullable(headerBlock);
         }
     }
 
     @Override
-    public ScreenBlock getFooterBlock() {
+    public Optional<ScreenBlock> getFooterBlock() {
         if(page == 0 && firstPageFooterBlock != null) {
-            return firstPageFooterBlock;
+            return Optional.of(firstPageFooterBlock);
         } else {
-            return footerBlock;
+            return Optional.ofNullable(footerBlock);
         }
     }
 

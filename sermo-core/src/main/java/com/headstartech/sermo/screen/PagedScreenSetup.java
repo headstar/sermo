@@ -1,16 +1,18 @@
 package com.headstartech.sermo.screen;
 
+import java.util.Optional;
+
 public interface PagedScreenSetup {
 
-    public ScreenBlock getPageBody();
+    Optional<ScreenBlock> getPageBody();
 
-    NextPageMenuItem getNextPageMenuItem();
+    Optional<NextPageMenuItem> getNextPageMenuItem();
 
-    PreviousPageMenuItem getPreviousPageMenuItem();
+    Optional<PreviousPageMenuItem> getPreviousPageMenuItem();
 
-    ScreenBlock getHeaderBlock();
+    Optional<ScreenBlock> getHeaderBlock();
 
-    ScreenBlock getFooterBlock();
+    Optional<ScreenBlock> getFooterBlock();
 
     void incrementPage();
 
