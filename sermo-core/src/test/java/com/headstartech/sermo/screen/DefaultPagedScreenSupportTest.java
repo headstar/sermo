@@ -66,7 +66,7 @@ public class DefaultPagedScreenSupportTest {
         Text headerBlock = new Text("Accounts");
         NextPageMenuItem nextPageMenuItem = new NextPageMenuItem("0", "Next page");
         PreviousPageMenuItem previousPageMenuItem = new PreviousPageMenuItem("#", "Previous page");
-        TextElide elide = new TextElide(TextElide.Mode.RIGHT, 15);
+        TextElide elide = new TextElide(TextElideMode.RIGHT, 15);
         int pageSize = 2;
 
         List<ScreenBlock> screenBlocks = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, pageSize, elide);
@@ -141,7 +141,7 @@ public class DefaultPagedScreenSupportTest {
             items.add(new MenuItem("Account C12345", transationId, itemC));
             items.add(new MenuItem("Account D12345", transationId, itemD));
 
-            TextElide elide = new TextElide(TextElide.Mode.RIGHT, 15);
+            TextElide elide = new TextElide(TextElideMode.RIGHT, 15);
             int pageSize = 2;
 
             List<ScreenBlock> screenBlocks = PagedMenuItemsUtil.getScreenBlockForMenuItems(items, pageSize, elide, pagedInputNumberingMode);

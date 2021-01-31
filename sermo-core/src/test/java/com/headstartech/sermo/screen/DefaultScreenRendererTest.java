@@ -138,7 +138,7 @@ public class DefaultScreenRendererTest {
         MenuItem mi1 = new MenuItem("ABCDEFGHI", "tr1", "myItem1");
         MenuItem mi2 = new MenuItem("JKLMNOPQR", "tr2", "myItem2");
 
-        TextElide textElide = new TextElide(TextElide.Mode.RIGHT, 9);
+        TextElide textElide = new TextElide(TextElideMode.RIGHT, 9);
         int itemNumberingStartsAt = 1;
 
         String expectedOutput = "1. " + "ABC..." + "\n" +

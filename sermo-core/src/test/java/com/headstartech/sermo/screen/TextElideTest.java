@@ -23,7 +23,7 @@ public class TextElideTest {
         // given
         String orig = "abcdefghijklmno";
         TextElide elide = TextElide.NO_TEXT_ELIDE;
-        assertEquals(TextElide.Mode.NONE, elide.getMode());
+        assertEquals(TextElideMode.NONE, elide.getMode());
 
         // when
         String elided = TextElide.elidedString(orig, elide);
@@ -36,7 +36,7 @@ public class TextElideTest {
     public void originalStringReturnedWhenLengthIsEqualToMax() {
         // given
         String orig = "abcde";
-        TextElide elide = new TextElide(TextElide.Mode.RIGHT, orig.length());
+        TextElide elide = new TextElide(TextElideMode.RIGHT, orig.length());
 
         // when
         String elided = TextElide.elidedString(orig, elide);
@@ -49,7 +49,7 @@ public class TextElideTest {
     public void stringElidedWhenStringIsGreaterThanMaxLength() {
         // given
         String orig = "abcdefghijklmno";
-        TextElide elide = new TextElide(TextElide.Mode.RIGHT, 6);
+        TextElide elide = new TextElide(TextElideMode.RIGHT, 6);
 
         // when
         String elided = TextElide.elidedString(orig, elide);
@@ -63,7 +63,7 @@ public class TextElideTest {
         // given
         String orig = "abcde";
         int maxLen = orig.length();
-        TextElide elide = new TextElide(TextElide.Mode.RIGHT, maxLen, 2);
+        TextElide elide = new TextElide(TextElideMode.RIGHT, maxLen, 2);
 
         // when
         String elided = TextElide.elidedString(orig, elide);
@@ -77,7 +77,7 @@ public class TextElideTest {
         // given
         String orig = "abcdefghijklmno";
         int maxLen = orig.length();
-        TextElide elide = new TextElide(TextElide.Mode.RIGHT, 6, 2);
+        TextElide elide = new TextElide(TextElideMode.RIGHT, 6, 2);
 
         // when
         String elided = TextElide.elidedString(orig, elide);

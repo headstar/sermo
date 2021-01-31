@@ -2,8 +2,8 @@ package com.headstartech.sermo.screen;
 
 import java.util.Objects;
 
-import static com.headstartech.sermo.screen.TextElide.Mode.NONE;
-import static com.headstartech.sermo.screen.TextElide.Mode.RIGHT;
+import static com.headstartech.sermo.screen.TextElideMode.NONE;
+import static com.headstartech.sermo.screen.TextElideMode.RIGHT;
 
 /**
  * Class representing elided text setting (i.e. a string with "..." in it)
@@ -13,25 +13,17 @@ public class TextElide {
 
     public static final TextElide NO_TEXT_ELIDE = new TextElide(NONE, 0, 3);
 
-    public enum Mode {
-        NONE, RIGHT
-    }
-
     private static final int DEFAULT_NUM_ELLIPSIS = 3;
 
-    private final Mode mode;
+    private final TextElideMode mode;
     private final int maxLen;
     private final int numEllipsis;
-
-    public TextElide() {
-        this(NONE, 0, 3);
-    }
-
-    public TextElide(Mode mode, int maxLen) {
+    
+    public TextElide(TextElideMode mode, int maxLen) {
         this(mode, maxLen, DEFAULT_NUM_ELLIPSIS);
     }
 
-    public TextElide(Mode mode, int maxLen, int numEllipsis) {
+    public TextElide(TextElideMode mode, int maxLen, int numEllipsis) {
         if(numEllipsis < 2 && numEllipsis > 3) {
             throw new IllegalArgumentException("numEllipsis must be 2 or 3");
         }
@@ -46,7 +38,7 @@ public class TextElide {
         this.numEllipsis = numEllipsis;
     }
 
-    public Mode getMode() {
+    public TextElideMode getMode() {
         return mode;
     }
 
