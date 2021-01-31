@@ -11,6 +11,16 @@ repositories {
 
 sourceCompatibility = 1.8
 
+ext {
+    springVersion = '5.2.3.RELEASE'
+    springStatemachineVersion = '2.2.0.RELEASE'
+    slf4jVersion = '1.7.30'
+    jsr305Version = '3.0.2'
+    junitVersion = '5.5.2'
+    mockitoVersion = '3.3.3'
+    logbackClassicVersion = '1.1.2'
+}
+
 task mavenSourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -32,14 +42,14 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    api("org.springframework.statemachine:spring-statemachine-core:2.2.0.RELEASE")
-    implementation 'org.springframework:spring-context-support:5.2.3.RELEASE'
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    api("org.springframework.statemachine:spring-statemachine-core:$springStatemachineVersion")
+    implementation "org.springframework:spring-context-support:$springVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "com.google.code.findbugs:jsr305:$jsr305Version"
 
-    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
-    testImplementation('org.mockito:mockito-junit-jupiter:3.3.3')
-    testImplementation('ch.qos.logback:logback-classic:1.1.2')
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackClassicVersion")
 }
 
 
