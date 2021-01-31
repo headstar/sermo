@@ -5,17 +5,17 @@ import java.util.List;
 
 public class DefaultPagedScreenSetup implements PagedScreenSetup {
 
-    private final List<ScreenBlock> pages = new ArrayList<>();
+    private final List<ScreenBlock> pages ;
     private final NextPageMenuItem nextPageMenuItem;
     private final PreviousPageMenuItem previousPageMenuItem;
     private final ScreenBlock headerBlock;
     private final ScreenBlock footerBlock;
     private final ScreenBlock firstPageHeaderBlock;
     private final ScreenBlock firstPageFooterBlock;
-    private int page;
+    private int page = 0;
 
-    public DefaultPagedScreenSetup(List<ScreenBlock> pages, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
-        this.pages.addAll(pages);
+    private DefaultPagedScreenSetup(List<ScreenBlock> pages, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
+        this.pages = pages;
         this.nextPageMenuItem = nextPageMenuItem;
         this.previousPageMenuItem = previousPageMenuItem;
         this.headerBlock = headerBlock;
