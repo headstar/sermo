@@ -16,10 +16,7 @@
 
 package com.headstartech.sermo.screen;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 /**
  * @author Per Johansson
@@ -29,8 +26,7 @@ public class ScreenBlocksContainer implements ScreenBlock {
     private final List<ScreenBlock> screenBlocks;
 
     public ScreenBlocksContainer(List<ScreenBlock> screenBlocks) {
-        Objects.requireNonNull(screenBlocks, "screenBlock must be non-null");
-        this.screenBlocks = Collections.unmodifiableList(screenBlocks);
+        this.screenBlocks = new ArrayList<>(screenBlocks);
     }
 
     public List<ScreenBlock> getScreenBlocks() {

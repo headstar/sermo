@@ -29,8 +29,6 @@ public class MenuItem {
     private final Object itemObject;
 
     public MenuItem(String label, Object transitionId, Object itemObject) {
-        Objects.requireNonNull(label, "label must be non-null");
-        Objects.requireNonNull(transitionId, "transitionId must be non-null");
         this.transitionId = transitionId;
         this.label = label;
         this.itemObject = itemObject;

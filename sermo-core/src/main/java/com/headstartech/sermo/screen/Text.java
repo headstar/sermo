@@ -26,7 +26,6 @@ public class Text implements ScreenBlock {
     private final String text;
 
     public Text(String text) {
-        Objects.requireNonNull(text, "text must be non-null");
         this.text = text;
     }
 

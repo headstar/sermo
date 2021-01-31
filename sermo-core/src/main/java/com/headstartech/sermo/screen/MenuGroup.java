@@ -16,7 +16,10 @@
 
 package com.headstartech.sermo.screen;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Per Johansson
@@ -30,15 +33,18 @@ public class MenuGroup implements ScreenBlock {
     private final int inputNumberingStartsAt;
 
     public MenuGroup(List<MenuItem> menuItems, TextElide elide, int inputNumberingStartsAt) {
-        Objects.requireNonNull(menuItems, "menuItems must be non-null");
-        Objects.requireNonNull(elide, "elide must be non-null");
         this.menuItems = Collections.unmodifiableList(menuItems);
         this.elide = elide;
         this.inputNumberingStartsAt = inputNumberingStartsAt;
     }
 
+    public MenuGroup(List<MenuItem> menuItems, TextElide elide) {
+        this(menuItems, elide, DEFAULT_INPUT_NUMBERING_STARTS_AT);
+    }
+
+
     public MenuGroup(List<MenuItem> menuItems) {
-        this(menuItems, new TextElide(), DEFAULT_INPUT_NUMBERING_STARTS_AT);
+        this(menuItems, TextElide.NO_TEXT_ELIDE, DEFAULT_INPUT_NUMBERING_STARTS_AT);
     }
 
     public List<MenuItem> getMenuItems() {

@@ -28,7 +28,6 @@ public class StaticMenuItem extends MenuItem implements ScreenBlock {
 
     public StaticMenuItem(String input, String label, Object transitionKey) {
         super(label, transitionKey);
-        Objects.requireNonNull(input, "input must be non-null");
         this.input = input;
     }
 

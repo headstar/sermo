@@ -32,7 +32,6 @@ public class TextElide {
     }
 
     public TextElide(Mode mode, int maxLen, int numEllipsis) {
-        Objects.requireNonNull(mode, "mode must be non-null");
         if(numEllipsis < 2 && numEllipsis > 3) {
             throw new IllegalArgumentException("numEllipsis must be 2 or 3");
         }
