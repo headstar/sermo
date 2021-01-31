@@ -16,6 +16,8 @@
 
 package com.headstartech.sermo.screen;
 
+import java.util.Optional;
+
 /**
  * @author Per Johansson
  */
@@ -75,7 +77,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
             String row = renderMenuGroupItemRow(input, menuItem.getLabel());
             String elidedRow = TextElide.elidedString(row, menuGroup.getElide());
             sb.append(elidedRow);
-            inputMapBuilder.addMapping(input, menuItem.getTransition(), menuItem.getItemObject());
+            addInputMapping(inputMapBuilder, input, menuItem.getTransition(), menuItem.getItemObject());
             ++i;
         }
     }
@@ -91,8 +93,7 @@ public class DefaultScreenRenderer implements ScreenRenderer {
     protected void renderStaticMenuItem(StringBuilder sb, InputMap.Builder inputMapBuilder, StaticMenuItem staticMenuItem) {
         appendNewlineIfScreenNotEmpty(sb);
         sb.append(renderStaticMenuItemRow(staticMenuItem.getInput(), staticMenuItem.getLabel()));
-        inputMapBuilder.addMapping(staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemObject());
-
+        addInputMapping(inputMapBuilder, staticMenuItem.getInput(), staticMenuItem.getTransition(), staticMenuItem.getItemObject());
     }
 
     protected String renderStaticMenuItemRow(String input, String label) {
@@ -107,6 +108,14 @@ public class DefaultScreenRenderer implements ScreenRenderer {
 
     protected void appendNewline(StringBuilder sb) {
         sb.append(newline);
+    }
+
+    protected void addInputMapping(InputMap.Builder inputMapBuilder, String input, Object transition, Optional<Object> itemObject) {
+        if(itemObject.isPresent()) {
+            inputMapBuilder.addMapping(input, transition, itemObject.get());
+        } else {
+            inputMapBuilder.addMapping(input, transition);
+        }
     }
 
 }

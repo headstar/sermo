@@ -16,6 +16,7 @@
 
 package com.headstartech.sermo.statemachine.factory;
 
+import org.springframework.lang.Nullable;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.guard.Guard;
 
@@ -35,7 +36,7 @@ public class DefaultChoiceOption<S, E> {
         this(target, null);
     }
 
-    public DefaultChoiceOption(S target, Action<S, E> action) {
+    public DefaultChoiceOption(S target, @Nullable Action<S, E> action) {
         this.target = target;
         this.action = action;
     }

@@ -16,6 +16,7 @@
 
 package com.headstartech.sermo.statemachine.factory;
 
+import org.springframework.lang.Nullable;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.guard.Guard;
 
@@ -36,7 +37,7 @@ public class ChoiceOption<S, E> {
         this(target, guard, null);
     }
 
-    public ChoiceOption(S target, Guard<S, E> guard, Action<S, E> action) {
+    public ChoiceOption(S target, Guard<S, E> guard, @Nullable Action<S, E> action) {
         this.target = target;
         this.guard = guard;
         this.action = action;

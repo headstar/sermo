@@ -16,7 +16,10 @@
 
 package com.headstartech.sermo.screen;
 
+import org.springframework.lang.Nullable;
+
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
@@ -28,7 +31,7 @@ public class MenuItem {
     private final Object transitionId;
     private final Object itemObject;
 
-    public MenuItem(String label, Object transitionId, Object itemObject) {
+    public MenuItem(String label, Object transitionId, @Nullable Object itemObject) {
         this.transitionId = transitionId;
         this.label = label;
         this.itemObject = itemObject;
@@ -46,8 +49,8 @@ public class MenuItem {
         return label;
     }
 
-    public Object getItemObject() {
-        return itemObject;
+    public Optional<Object> getItemObject() {
+        return Optional.ofNullable(itemObject);
     }
 
     @Override
