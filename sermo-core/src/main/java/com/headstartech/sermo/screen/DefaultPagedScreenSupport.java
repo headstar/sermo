@@ -34,7 +34,7 @@ public class DefaultPagedScreenSupport implements PagedScreenSupport {
 
         screenBuilder.withScreenBlock(pagedScreenSetup.getHeaderBlock());
 
-        screenBuilder.withScreenBlock(pagedScreenSetup.getScreenBlockForCurrentPage());
+        screenBuilder.withScreenBlock(pagedScreenSetup.getPageBody());
 
         if(pagedScreenSetup.hasNextPage()) {
             screenBuilder.withScreenBlock(pagedScreenSetup.getNextPageMenuItem());

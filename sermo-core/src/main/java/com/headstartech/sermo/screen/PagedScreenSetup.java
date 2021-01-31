@@ -2,7 +2,7 @@ package com.headstartech.sermo.screen;
 
 public interface PagedScreenSetup {
 
-    public ScreenBlock getScreenBlockForCurrentPage();
+    public ScreenBlock getPageBody();
 
     NextPageMenuItem getNextPageMenuItem();
 

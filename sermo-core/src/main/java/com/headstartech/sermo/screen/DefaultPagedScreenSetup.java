@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DefaultPagedScreenSetup implements PagedScreenSetup {
 
-    private final List<ScreenBlock> pages ;
+    private final List<ScreenBlock> pageBodies;
     private final NextPageMenuItem nextPageMenuItem;
     private final PreviousPageMenuItem previousPageMenuItem;
     private final ScreenBlock headerBlock;
@@ -14,8 +14,8 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     private final ScreenBlock firstPageFooterBlock;
     private int page = 0;
 
-    private DefaultPagedScreenSetup(List<ScreenBlock> pages, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
-        this.pages = pages;
+    private DefaultPagedScreenSetup(List<ScreenBlock> pageBodies, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
+        this.pageBodies = pageBodies;
         this.nextPageMenuItem = nextPageMenuItem;
         this.previousPageMenuItem = previousPageMenuItem;
         this.headerBlock = headerBlock;
@@ -25,11 +25,11 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     }
 
     @Override
-    public ScreenBlock getScreenBlockForCurrentPage() {
-        if(pages.isEmpty()) {
+    public ScreenBlock getPageBody() {
+        if(pageBodies.isEmpty()) {
             return null;
         }
-        return pages.get(page);
+        return pageBodies.get(page);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
 
     @Override
     public boolean hasNextPage() {
-        return page < (pages.size() - 1);
+        return page < (pageBodies.size() - 1);
     }
 
     @Override
@@ -83,10 +83,10 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     }
 
     private void clampPage() {
-        if(pages.isEmpty()) {
+        if(pageBodies.isEmpty()) {
             page = 0;
         } else {
-            page = clamp(0, pages.size() - 1, page);
+            page = clamp(0, pageBodies.size() - 1, page);
         }
     }
 

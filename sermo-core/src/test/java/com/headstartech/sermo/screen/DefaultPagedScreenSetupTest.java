@@ -38,7 +38,7 @@ public class DefaultPagedScreenSetupTest {
           // first page
         assertFalse(pagedScreenSetup.hasPreviousPage());
         assertTrue(pagedScreenSetup.hasNextPage());
-        assertSame(pages.get(0), pagedScreenSetup.getScreenBlockForCurrentPage());
+        assertSame(pages.get(0), pagedScreenSetup.getPageBody());
         assertSame(headerBlock, pagedScreenSetup.getHeaderBlock());
         assertSame(footerBlock, pagedScreenSetup.getFooterBlock());
         assertSame(nextPageMenuItem, pagedScreenSetup.getNextPageMenuItem());
@@ -49,7 +49,7 @@ public class DefaultPagedScreenSetupTest {
 
         assertTrue(pagedScreenSetup.hasPreviousPage());
         assertFalse(pagedScreenSetup.hasNextPage());
-        assertSame(pages.get(1), pagedScreenSetup.getScreenBlockForCurrentPage());
+        assertSame(pages.get(1), pagedScreenSetup.getPageBody());
         assertSame(headerBlock, pagedScreenSetup.getHeaderBlock());
         assertSame(footerBlock, pagedScreenSetup.getFooterBlock());
         assertSame(nextPageMenuItem, pagedScreenSetup.getNextPageMenuItem());
@@ -89,7 +89,7 @@ public class DefaultPagedScreenSetupTest {
         // first page
         assertFalse(pagedScreenSetup.hasPreviousPage());
         assertTrue(pagedScreenSetup.hasNextPage());
-        assertSame(pages.get(0), pagedScreenSetup.getScreenBlockForCurrentPage());
+        assertSame(pages.get(0), pagedScreenSetup.getPageBody());
         assertSame(firstPageHeaderBlock, pagedScreenSetup.getHeaderBlock());
         assertSame(firstPageFooterBlock, pagedScreenSetup.getFooterBlock());
         assertSame(nextPageMenuItem, pagedScreenSetup.getNextPageMenuItem());
@@ -100,7 +100,7 @@ public class DefaultPagedScreenSetupTest {
 
         assertTrue(pagedScreenSetup.hasPreviousPage());
         assertFalse(pagedScreenSetup.hasNextPage());
-        assertSame(pages.get(1), pagedScreenSetup.getScreenBlockForCurrentPage());
+        assertSame(pages.get(1), pagedScreenSetup.getPageBody());
         assertSame(headerBlock, pagedScreenSetup.getHeaderBlock());
         assertSame(footerBlock, pagedScreenSetup.getFooterBlock());
         assertSame(nextPageMenuItem, pagedScreenSetup.getNextPageMenuItem());
