@@ -17,20 +17,34 @@
 package com.headstartech.sermo.statemachine.factory;
 
 import org.springframework.statemachine.action.Action;
+import org.springframework.statemachine.guard.Guard;
+
+import java.util.Optional;
 
 /**
  * Class representing the default option when configuring a "choice" construct.
  *
  * @author Per Johansson
  */
-public class DefaultChoiceOption<S, E> extends ChoiceOption<S, E> {
+public class DefaultChoiceOption<S, E> {
+
+    private final S target;
+    private final Action<S, E> action;
 
     public DefaultChoiceOption(S target) {
-        super(target, null, null);
+        this(target, null);
     }
 
     public DefaultChoiceOption(S target, Action<S, E> action) {
-        super(target, null, action);
+        this.target = target;
+        this.action = action;
     }
 
+    public S getTarget() {
+        return target;
+    }
+
+    public Optional<Action<S, E>> getAction() {
+        return Optional.ofNullable(action);
+    }
 }

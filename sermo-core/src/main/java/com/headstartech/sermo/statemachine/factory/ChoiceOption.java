@@ -19,6 +19,8 @@ package com.headstartech.sermo.statemachine.factory;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.guard.Guard;
 
+import java.util.Optional;
+
 /**
  * Class representing the an option when configuring a "choice" construct.
  *
@@ -48,7 +50,7 @@ public class ChoiceOption<S, E> {
         return guard;
     }
 
-    public Action<S, E> getAction() {
-        return action;
+    public Optional<Action<S, E>> getAction() {
+        return Optional.ofNullable(action);
     }
 }

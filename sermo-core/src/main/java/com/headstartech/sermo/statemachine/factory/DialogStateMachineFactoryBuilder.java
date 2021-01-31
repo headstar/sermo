@@ -120,14 +120,14 @@ public class DialogStateMachineFactoryBuilder {
             choiceTransitionConfigurer.source(s);
             for(int i=0; i<options.length; ++i) {
                 ChoiceOption<S, E> option = options[i];
-                if (option.getAction() != null) {
-                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard(), wrapWithErrorAction(option.getAction()));
+                if (option.getAction().isPresent()) {
+                    choiceTransitionConfigurer.then(option.getTarget(), option.getGuard(), wrapWithErrorAction(option.getAction().get()));
                 } else {
                     choiceTransitionConfigurer.then(option.getTarget(), option.getGuard());
                 }
             }
-            if(defaultOption.getAction() != null) {
-                choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorAction(defaultOption.getAction()));
+            if(defaultOption.getAction().isPresent()) {
+                choiceTransitionConfigurer.last(defaultOption.getTarget(), wrapWithErrorAction(defaultOption.getAction().get()));
             } else {
                 choiceTransitionConfigurer.last(defaultOption.getTarget());
             }
