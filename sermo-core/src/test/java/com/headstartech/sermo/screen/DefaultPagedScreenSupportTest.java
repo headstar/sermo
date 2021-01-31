@@ -164,4 +164,31 @@ public class DefaultPagedScreenSupportTest {
             screen = pagedScreenSupport.createScreen(extendedState);
             assertEquals(expectedPage2, screen.getOutput());
         }
+
+    @Test
+    public void canRenderScreenOnlyHeader() {
+        // given
+
+        String expectedPage = "My header";
+
+        PagedScreenSupport pagedScreenSupport = new DefaultPagedScreenSupport();
+        ExtendedState extendedState = new DefaultExtendedState();
+
+        Text header = new Text("My header");
+
+        PagedScreenSetup pagedScreenSetup = DefaultPagedScreenSetup.builder()
+                .withHeaderBlock(header)
+                .build();
+
+        pagedScreenSupport.initializePagedScreen(extendedState, pagedScreenSetup);
+
+        // when ... then
+
+        // page 1
+        Screen screen = pagedScreenSupport.createScreen(extendedState);
+
+        assertEquals(expectedPage, screen.getOutput());
+
+    }
+
 }

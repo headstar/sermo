@@ -1,5 +1,7 @@
 package com.headstartech.sermo.screen;
 
+import org.springframework.lang.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +17,8 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     private final ScreenBlock firstPageFooterBlock;
     private int page = 0;
 
-    public DefaultPagedScreenSetup(List<ScreenBlock> pageBodies, NextPageMenuItem nextPageMenuItem, PreviousPageMenuItem previousPageMenuItem, ScreenBlock headerBlock, ScreenBlock footerBlock, ScreenBlock firstPageHeaderBlock, ScreenBlock firstPageFooterBlock) {
-        this.pageBodies = pageBodies;
+    public DefaultPagedScreenSetup(@Nullable List<ScreenBlock> pageBodies, @Nullable NextPageMenuItem nextPageMenuItem, @Nullable PreviousPageMenuItem previousPageMenuItem, @Nullable ScreenBlock headerBlock, @Nullable ScreenBlock footerBlock, @Nullable  ScreenBlock firstPageHeaderBlock, @Nullable ScreenBlock firstPageFooterBlock) {
+        this.pageBodies = pageBodies == null ? new ArrayList<>(): new ArrayList<>(pageBodies);
         this.nextPageMenuItem = nextPageMenuItem;
         this.previousPageMenuItem = previousPageMenuItem;
         this.headerBlock = headerBlock;
@@ -100,7 +102,7 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
     }
 
     public static class Builder {
-        private List<ScreenBlock> pages = new ArrayList<>();
+        private List<ScreenBlock> pages;
 
         private NextPageMenuItem nextPageMenuItem;
         private PreviousPageMenuItem previousPageMenuItem;
@@ -112,7 +114,7 @@ public class DefaultPagedScreenSetup implements PagedScreenSetup {
         private ScreenBlock firstPageFooterBlock;
 
         public Builder withPages(List<ScreenBlock> pages) {
-            this.pages.addAll(pages);
+            this.pages = pages;
             return this;
         }
 
