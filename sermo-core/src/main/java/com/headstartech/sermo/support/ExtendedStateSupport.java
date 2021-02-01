@@ -29,22 +29,64 @@ import java.util.Optional;
  */
 public class ExtendedStateSupport {
 
+    /**
+     * Sets the string output which will be returned in {@link com.headstartech.sermo.DialogEventResult}.
+     *
+     * @param extendedState
+     * @param output
+     */
     public static void setOutput(ExtendedState extendedState, String output) {
         extendedState.getVariables().put(SystemConstants.OUTPUT_KEY, output);
     }
 
+    /**
+     * Sets the screen output which will be returned in {@link com.headstartech.sermo.DialogEventResult}
+     * and the screens input map.
+     *
+     * @param extendedState
+     * @param screen
+     */
+    public static void setScreen(ExtendedState extendedState, Screen screen) {
+        setScreenMenuInputMap(extendedState, screen.getInputMap());
+        setOutput(extendedState, screen.getOutput());
+    }
+
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static void setScreenMenuInputMap(ExtendedState extendedState, InputMap inputMap) {
         extendedState.getVariables().put(SystemConstants.INPUT_MAP_KEY, inputMap);
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static boolean clearScreenMenuInputMap(ExtendedState extendedState) {
         return extendedState.getVariables().remove(SystemConstants.INPUT_MAP_KEY) != null;
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {
         return (InputMap) extendedState.getVariables().get(SystemConstants.INPUT_MAP_KEY);
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static Optional<Object> getTransition(ExtendedState extendedState, String input) {
         InputMap inputMap = getScreenMenuInputMap(extendedState);
         if(inputMap != null) {
@@ -53,27 +95,52 @@ public class ExtendedStateSupport {
         return Optional.empty();
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static void setPagedScreenSetup(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
         extendedState.getVariables().put(SystemConstants.PAGED_SCREEN_KEY, pagedScreenSetup);
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static PagedScreenSetup getPagedScreenSetup(ExtendedState extendedState) {
         return (PagedScreenSetup) extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY);
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static void removePagedScreenSetup(ExtendedState extendedState) {
         extendedState.getVariables().remove(SystemConstants.PAGED_SCREEN_KEY);
     }
 
-    public static void setScreen(ExtendedState extendedState, Screen screen) {
-        setScreenMenuInputMap(extendedState, screen.getInputMap());
-        setOutput(extendedState, screen.getOutput());
-    }
-
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static Optional<RuntimeException> getExecutionException(ExtendedState extendedState) {
         return Optional.ofNullable(extendedState.get(SystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
     }
 
+    /**
+     * Internal helper method used by the library.
+     *
+     * @param extendedState
+     * @param inputMap
+     */
     public static void setExecutionException(ExtendedState extendedState, Exception executionException) {
         extendedState.getVariables().put(SystemConstants.EXECUTION_EXCEPTION_KEY, executionException);
     }
