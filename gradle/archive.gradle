@@ -5,7 +5,7 @@ group = 'com.headstartech.sermo'
 modifyPom {
     project {
         name 'Sermo'
-        description 'USSD menu library'
+        description 'USSD application library'
         url 'https://github.com/headstar/sermo'
         inceptionYear '2021'
 
