@@ -16,7 +16,13 @@
 
 package com.headstartech.sermo;
 
+import org.springframework.statemachine.action.Action;
+
 /**
+ * Dialog excutor interface.
+ *
+ * A Dialog session is completed either if reaching an end state or if an {@link Action} throws an exception.
+ *
  * @author Per Johansson
  */
 public interface DialogExecutor<S, E extends DialogEvent> {
@@ -24,12 +30,14 @@ public interface DialogExecutor<S, E extends DialogEvent> {
     /**
      * Applies an event for a session.
      *
-     * Exceptions thrown by application {@link org.springframework.statemachine.action.Action}s are thrown from this method.
+
+     * If an exception is thrown by an {@code Action}, it's re-thrown out of this method.
      *
      * @param sessionId
      * @param event
-     * @return
+     * @return the {@link DialogEventResult}
      * @throws DialogPersisterException if there is an error loading/persisting the dialog state
+     * @throws RuntimeException thrown by {@link Action}s.
      */
     DialogEventResult applyEvent(String sessionId, E event);
 
