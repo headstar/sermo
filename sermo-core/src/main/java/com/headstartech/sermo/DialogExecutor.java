@@ -30,7 +30,6 @@ public interface DialogExecutor<S, E extends DialogEvent> {
     /**
      * Applies an event for a session.
      *
-
      * If an exception is thrown by an {@code Action}, it's re-thrown out of this method.
      *
      * @param sessionId
