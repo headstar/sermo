@@ -41,6 +41,13 @@ extraArchive {
 
 nexus {
     sign = true
+
+    // Local publication to allow checks
+    /*
     snapshotRepositoryUrl = 'http://localhost:8081/repository/maven-snapshots/'
     repositoryUrl = 'http://localhost:8081/repository/maven-releases/'
+     */
+
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 }
