@@ -27,8 +27,8 @@ import org.springframework.statemachine.action.Action;
  *
  *  Sets state machine error state if application {@code }Action} throws an exception. The application exception will be thrown out of {@link }com.headstartech.sermo.DialogExecutor#applyEvent(java.lang.String, com.headstartech.sermo.DialogEvent). After the first exception is thrown, further {@code Action}s will be ignored.
  *
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public class ErrorHandlingWrapperAction<S, E> implements Action<S, E> {
 

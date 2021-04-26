@@ -11,8 +11,8 @@ import org.springframework.statemachine.action.Action;
  *
  * The action calls {@link OnItemHandler#handle(ExtendedState)} 
  * 
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public class ExecuteItemHandlerAction<S, E extends DialogEvent> extends AbstractScreenCleanupAction<S, E> {
 

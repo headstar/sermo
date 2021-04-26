@@ -8,8 +8,8 @@ import java.util.Collection;
 /**
  * Core interface representing a USSD state.
  *
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public interface USSDState<S, E extends DialogEvent> {
 
