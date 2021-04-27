@@ -65,7 +65,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static boolean clearScreenMenuInputMap(ExtendedState extendedState) {
         return extendedState.getVariables().remove(SystemConstants.INPUT_MAP_KEY) != null;
@@ -75,7 +74,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static InputMap getScreenMenuInputMap(ExtendedState extendedState) {
         return (InputMap) extendedState.getVariables().get(SystemConstants.INPUT_MAP_KEY);
@@ -85,7 +83,7 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
+     * @param input
      */
     public static Optional<Object> getTransition(ExtendedState extendedState, String input) {
         InputMap inputMap = getScreenMenuInputMap(extendedState);
@@ -99,7 +97,7 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
+     * @param pagedScreenSetup
      */
     public static void setPagedScreenSetup(ExtendedState extendedState, PagedScreenSetup pagedScreenSetup) {
         extendedState.getVariables().put(SystemConstants.PAGED_SCREEN_KEY, pagedScreenSetup);
@@ -109,7 +107,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static PagedScreenSetup getPagedScreenSetup(ExtendedState extendedState) {
         return (PagedScreenSetup) extendedState.getVariables().get(SystemConstants.PAGED_SCREEN_KEY);
@@ -119,7 +116,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static void removePagedScreenSetup(ExtendedState extendedState) {
         extendedState.getVariables().remove(SystemConstants.PAGED_SCREEN_KEY);
@@ -129,7 +125,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static Optional<RuntimeException> getExecutionException(ExtendedState extendedState) {
         return Optional.ofNullable(extendedState.get(SystemConstants.EXECUTION_EXCEPTION_KEY, RuntimeException.class));
@@ -139,7 +134,6 @@ public class ExtendedStateSupport {
      * Internal helper method used by the library.
      *
      * @param extendedState
-     * @param inputMap
      */
     public static void setExecutionException(ExtendedState extendedState, Exception executionException) {
         extendedState.getVariables().put(SystemConstants.EXECUTION_EXCEPTION_KEY, executionException);

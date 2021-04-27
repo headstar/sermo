@@ -79,7 +79,7 @@ public class TextElide {
      * Returns an elided version of the string (i.e. a string with "..." in it) if the string is wider than the max length.
      * Otherwise, returns the original string.
      *
-     * Mode RIGHT specifies the text is elided on the right (e.g. "abcdefghijk" -> "abcd...").
+     * Mode RIGHT specifies the text is elided on the right (e.g. "abcdefghijk" returns "abcd...").
      *
      * The width is specified in pixels, not characters.
      * @param str

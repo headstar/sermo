@@ -11,7 +11,7 @@ import org.springframework.statemachine.StateMachine;
  * Default implementation of {@link OutputHandler}.
  *
  * Stores the last non-null output produced by the application. If the output for the current event is null it returns the last non-null output.
- * E.g. if a menu with 2 options (1 & 2) is displayed and the user inputs "3" the same menu will be displayed again.
+ * E.g. if a menu with 2 options is displayed and the user inputs "3" the same menu will be displayed again.
  *
  */
 public class DefaultOutputHandler<S, E extends DialogEvent> implements OutputHandler<S, E> {

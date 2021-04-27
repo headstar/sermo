@@ -26,8 +26,8 @@ import org.springframework.statemachine.StateContext;
 /**
  * A {@link org.springframework.statemachine.guard.Guard} returning true/false based on whether the user input has been associated with a transition or not.
  *
- * @see {@link com.headstartech.sermo.screen.MenuItem}
- * @see {@link com.headstartech.sermo.screen.Screen}
+ * @see com.headstartech.sermo.screen.MenuItem
+ * @see com.headstartech.sermo.screen.Screen
  *
  * @author Per Johansson
  */
