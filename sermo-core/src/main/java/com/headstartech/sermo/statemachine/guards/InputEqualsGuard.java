@@ -6,8 +6,8 @@ import org.springframework.statemachine.StateContext;
 /**
  * A {@link org.springframework.statemachine.guard.Guard} returning true/false based on whether the user input equals the supplied value or not.
  *
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public class InputEqualsGuard<S, E extends DialogEvent> extends GuardBase<S, E> {
 

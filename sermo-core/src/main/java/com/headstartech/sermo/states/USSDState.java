@@ -16,28 +16,28 @@ public interface USSDState<S, E extends DialogEvent> {
     /**
      * Gets id of state.
      *
-     * @return
+     * @return the state id
      */
     S getId();
 
     /**
      * Gets actions executed when the state is entered.
      *
-     * @return
+     * @return the entry actions
      */
     Collection<Action<S, E>> getEntryActions();
 
     /**
      * Gets actions executed when the state is exited.
      *
-     * @return
+     * @return the exit actions
      */
     Collection<Action<S, E>> getExitActions();
 
     /**
      * Indicates whether the state is an end state or not.
      *
-     * @return
+     * @return {@code true} if it's an end state, {@code false} otherwise
      */
     boolean isEnd();
 }
