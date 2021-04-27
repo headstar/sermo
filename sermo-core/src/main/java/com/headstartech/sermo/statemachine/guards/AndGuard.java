@@ -9,8 +9,8 @@ import java.util.Collection;
 /**
  * A composed {@link Guard} that represents a short-circuiting logical AND of the supplied guards.
  *
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public class AndGuard<S, E extends DialogEvent> implements Guard<S,E> {
 

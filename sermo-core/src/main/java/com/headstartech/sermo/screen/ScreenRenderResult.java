@@ -35,7 +35,7 @@ public class ScreenRenderResult {
     /**
      * Gets the {@link InputMap} associated with the result.
      *
-     * @return
+     * @return the input map
      */
     public InputMap getInputMap() {
         return inputMap;
@@ -44,7 +44,7 @@ public class ScreenRenderResult {
     /**
      * Gets the output.
      *
-     * @return
+     * @return the output
      */
     public String getOutput() {
         return output;

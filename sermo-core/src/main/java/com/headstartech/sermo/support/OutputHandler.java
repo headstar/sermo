@@ -6,8 +6,8 @@ import org.springframework.statemachine.StateMachine;
 /**
  * Strategy for handling dialog output.
  *
- * @param <S>
- * @param <E>
+ * @param <S> the type of state
+ * @param <E> the type of event
  */
 public interface OutputHandler<S, E extends DialogEvent> {
 
